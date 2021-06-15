@@ -137,10 +137,10 @@
       "name": "magic_express_delivery",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "2.7"
+      "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-06-15T06:50:40.263883Z",
+  "generated": "2021-06-15T09:27:56.466474Z",
   "generator": "pub",
   "generatorVersion": "2.12.0"
 }
