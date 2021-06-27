@@ -40,8 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Login to account',
-              style: Theme.of(context).textTheme.headline5),
+          Text(
+            'login to account',
+            style: Theme.of(context).textTheme.headline6,
+          ),
         ],
       ),
     );
@@ -57,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: TextFormField(
         cursorColor: Theme.of(context).primaryColorDark,
         decoration: InputDecoration(
-          hintText: 'Email',
+          hintText: 'email',
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               width: 2.0,
@@ -86,14 +88,14 @@ class _LoginScreenState extends State<LoginScreen> {
         left: 16.0,
         right: 16.0,
         bottom: 16.0,
-        top: 32.0,
+        top: 16.0,
       ),
       child: TextFormField(
         cursorColor: Theme.of(context).primaryColorDark,
         obscureText: true,
         obscuringCharacter: '*',
         decoration: InputDecoration(
-          hintText: 'Password',
+          hintText: 'password',
           focusColor: Theme.of(context).primaryColorDark,
           suffixIcon: Icon(
             Icons.remove_red_eye,
@@ -130,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       width: double.infinity,
       child: ElevatedButton(
-        child: Text('LOGIN'),
+        child: Text('login'),
         style: ElevatedButton.styleFrom(
           textStyle: Theme.of(context).textTheme.button,
           padding: EdgeInsets.all(16.0),
@@ -145,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
       margin: EdgeInsets.only(right: 16.0),
       alignment: Alignment.centerRight,
       child: TextButton(
-        child: Text('Not registered? Click here!'),
+        child: Text('not registered? click here!'),
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
         ),
