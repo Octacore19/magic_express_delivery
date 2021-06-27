@@ -66,29 +66,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Align(
       alignment: Alignment.center,
       child: Card(
+        shadowColor: Colors.blue[50],
+        elevation: 6.0,
         margin: EdgeInsets.only(top: 36.0),
         child: InkWell(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 36.0),
+            padding: EdgeInsets.only(left: 36.0, right: 36.0, top: 16.0),
             child: Column(
               children: [
                 Image.asset(
-                  'assets/shopping_cart.jpg',
-                  fit: BoxFit.cover,
-                  width: MediaQuery.of(context).size.width * 0.4,
+                  'assets/shopping_cart.png',
+                  fit: BoxFit.none,
+                  width: MediaQuery.of(context).size.width * 0.3,
                   height: MediaQuery.of(context).size.height * 0.2,
+                  color: Theme.of(context).primaryColor,
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
-                    'Send on errand?',
+                    'send on errand?',
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 )
               ],
             ),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, Routes.ERRAND);
+          },
         ),
       ),
     );
@@ -98,29 +103,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Align(
       alignment: Alignment.center,
       child: Card(
+        shadowColor: Colors.blue[50],
+        elevation: 6.0,
         margin: EdgeInsets.only(top: 36.0),
         child: InkWell(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 36.0),
+            padding: EdgeInsets.only(left: 36.0, right: 36.0, top: 16.0),
             child: Column(
               children: [
                 Image.asset(
                   'assets/dispatch_rider.png',
                   fit: BoxFit.fitWidth,
-                  width: MediaQuery.of(context).size.width * 0.4,
+                  width: MediaQuery.of(context).size.width * 0.3,
                   height: MediaQuery.of(context).size.height * 0.2,
+                  color: Theme.of(context).primaryColor,
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
-                    'Make a delivery?',
+                    'make a delivery?',
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 )
               ],
             ),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, Routes.DELIVERY);
+          },
         ),
       ),
     );

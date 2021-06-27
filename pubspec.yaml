@@ -13,6 +13,7 @@ dependencies:
   flutter_bloc: ^7.0.0
   google_fonts: ^2.0.0
   flutter_simple_dependency_injection: ^2.0.0
+  material_design_icons_flutter: ^5.0.5955-rc.1
 
 dev_dependencies:
   flutter_test:
@@ -23,4 +24,4 @@ flutter:
 
   assets:
     - assets/dispatch_rider.png
-    - assets/shopping_cart.jpg
+    - assets/shopping_cart.png

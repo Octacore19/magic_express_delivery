@@ -49,6 +49,8 @@ class MyApp extends StatelessWidget {
         Routes.DEFAULT: (_) => LoginScreen(),
         Routes.REGISTRATION: (_) => RegistrationScreen(),
         Routes.DASHBOARD: (_) => DashboardScreen(),
+        Routes.DELIVERY: (_) => DeliveryScreen(),
+        Routes.ERRAND: (_) => ErrandScreen(),
       },
     );
   }

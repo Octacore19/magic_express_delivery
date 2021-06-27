@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:magic_express_delivery/commons/commons.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -8,6 +9,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  bool _passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +59,11 @@ class _LoginScreenState extends State<LoginScreen> {
         top: 32.0,
       ),
       child: TextFormField(
+        keyboardType: TextInputType.emailAddress,
+        textInputAction: TextInputAction.next,
         cursorColor: Theme.of(context).primaryColorDark,
         decoration: InputDecoration(
+          isDense: true,
           hintText: 'email',
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
@@ -92,14 +97,22 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       child: TextFormField(
         cursorColor: Theme.of(context).primaryColorDark,
-        obscureText: true,
+        textInputAction: TextInputAction.done,
+        obscureText: _passwordVisible,
         obscuringCharacter: '*',
         decoration: InputDecoration(
+          isDense: true,
           hintText: 'password',
           focusColor: Theme.of(context).primaryColorDark,
-          suffixIcon: Icon(
-            Icons.remove_red_eye,
-            color: Theme.of(context).primaryColorDark,
+          suffixIcon: InkWell(
+            child: Icon(
+              _passwordVisible ? MdiIcons.eye : MdiIcons.eyeOff,
+              color: Theme.of(context).primaryColorDark,
+            ),
+            onTap: () {
+              _passwordVisible = !_passwordVisible;
+              setState(() {});
+            },
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
