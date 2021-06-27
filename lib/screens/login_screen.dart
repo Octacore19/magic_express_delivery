@@ -137,7 +137,9 @@ class _LoginScreenState extends State<LoginScreen> {
           textStyle: Theme.of(context).textTheme.button,
           padding: EdgeInsets.all(16.0),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, Routes.DASHBOARD);
+        },
       ),
     );
   }

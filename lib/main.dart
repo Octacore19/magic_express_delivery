@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:magic_express_delivery/commons/commons.dart';
-import 'package:magic_express_delivery/screens/registration_screen.dart';
 import 'package:magic_express_delivery/screens/screens.dart';
 
 void main() {
@@ -47,8 +46,9 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routes: {
-        Routes.HOME: (_) => LoginScreen(),
+        Routes.DEFAULT: (_) => LoginScreen(),
         Routes.REGISTRATION: (_) => RegistrationScreen(),
+        Routes.DASHBOARD: (_) => DashboardScreen(),
       },
     );
   }
