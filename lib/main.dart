@@ -1,66 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:magic_express_delivery/commons/commons.dart';
+import 'package:magic_express_delivery/screens/registration_screen.dart';
+import 'package:magic_express_delivery/screens/screens.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
-
-  final String? title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title!),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      title: 'Magic Express Delivery',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.from(colorScheme: ColorScheme.light()).copyWith(
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        primaryColor: Colors.blue[700],
+        primaryColorLight: Colors.blue,
+        primaryColorDark: Colors.blue[900],
+        accentColor: Colors.blue,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            textStyle: Theme.of(context).textTheme.button,
+            primary: Colors.blue[900],
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            textStyle: Theme.of(context).textTheme.button,
+            primary: Colors.blue[700],
+          ),
+        ),
+        textTheme: GoogleFonts.workSansTextTheme(
+          Theme.of(context).textTheme.apply(
+                displayColor: Colors.blue[900],
+                bodyColor: Colors.blue[900],
+              ),
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconTheme: IconThemeData(
+            color: Colors.blue[900],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+      routes: {
+        Routes.HOME: (_) => LoginScreen(),
+        Routes.REGISTRATION: (_) => RegistrationScreen(),
+      },
     );
   }
 }

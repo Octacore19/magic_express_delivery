@@ -68,3 +68,20 @@ fastlane/readme.md
 .idea/vcs.xml
 
 .dart_tool/flutter_build
+.dart_tool/package_config.json
+.dart_tool/package_config.json
+.dart_tool/package_config_subset
+.dart_tool/version
+.dart_tool/version
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool/version
+.dart_tool/package_config_subset
+.packages
+.dart_tool/version
+.dart_tool/package_config_subset
+.dart_tool/package_config.json
+*.json
+.dart_tool/package_config_subset
+.dart_tool/version
+.packages
