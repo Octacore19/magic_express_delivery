@@ -14,8 +14,17 @@ dependencies:
   google_fonts: ^2.0.0
   flutter_simple_dependency_injection: ^2.0.0
   material_design_icons_flutter: ^5.0.5955-rc.1
+  equatable: ^1.2.5
+  intl: ^0.17.0
+  dartz: ^0.10.0-nullsafety.2
+  super_enum: ^0.5.0
+  dio: ^4.0.0
+  http_parser: ^4.0.0
+  shared_preferences: ^2.0.5
 
 dev_dependencies:
+  super_enum_generator: ^0.6.0
+  build_runner: ^1.7.1
   flutter_test:
     sdk: flutter
 

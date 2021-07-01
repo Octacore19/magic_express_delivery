@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:magic_express_delivery/commons/commons.dart';
+import 'package:magic_express_delivery/src/index.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override

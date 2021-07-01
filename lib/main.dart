@@ -1,7 +1,8 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:magic_express_delivery/commons/commons.dart';
-import 'package:magic_express_delivery/screens/screens.dart';
+import 'package:magic_express_delivery/src/index.dart';
 
 void main() {
   runApp(MyApp());
