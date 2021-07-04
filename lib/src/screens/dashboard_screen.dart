@@ -66,6 +66,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               );
             },
           ),
+          SizedBox(
+            height: 8.0,
+          ),
           Text(
             'How can I help you today?',
             style: Theme.of(context).textTheme.subtitle1,

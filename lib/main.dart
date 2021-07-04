@@ -10,6 +10,7 @@ void main() {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(create: (_) => injector.get<LoginBloc>()),
+      BlocProvider(create: (_) => injector.get<RegistrationBloc>())
     ],
     child: MyApp(),
   ));

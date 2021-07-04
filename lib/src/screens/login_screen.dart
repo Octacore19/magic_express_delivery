@@ -13,7 +13,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _passwordVisible = true;
+  bool _passwordObscured = true;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
         controller: _passwordController,
         cursorColor: Theme.of(context).primaryColorDark,
         textInputAction: TextInputAction.done,
-        obscureText: _passwordVisible,
+        obscureText: _passwordObscured,
         obscuringCharacter: '*',
         validator: _validatePassword,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -116,11 +123,11 @@ class _LoginScreenState extends State<LoginScreen> {
           focusColor: Theme.of(context).primaryColorDark,
           suffixIcon: InkWell(
             child: Icon(
-              _passwordVisible ? MdiIcons.eye : MdiIcons.eyeOff,
+              _passwordObscured ? MdiIcons.eye : MdiIcons.eyeOff,
               color: Theme.of(context).primaryColorDark,
             ),
             onTap: () {
-              _passwordVisible = !_passwordVisible;
+              _passwordObscured = !_passwordObscured;
               setState(() {});
             },
           ),
@@ -194,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget get _registerButton {
     return Container(
       margin: EdgeInsets.only(right: 16.0),
-      alignment: Alignment.centerRight,
+      alignment: Alignment.center,
       child: TextButton(
         child: Text('not registered? click here!'),
         style: TextButton.styleFrom(
@@ -211,6 +218,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onLoginPressed() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
     if (_formKey.currentState!.validate()) {
       context.read<LoginBloc>().add(
             LoginEvents.loginUser(

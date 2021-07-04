@@ -48,6 +48,23 @@ class ErrorInterceptor extends Interceptor {
               errorDescription = 'No response/connection';
               break;
             }
+          case 422:
+            {
+              if (errorData != null && errorData is Map) {
+                if (errorData.containsKey('errors')) {
+                  final errors = errorData['errors'];
+                  if (errors.containsKey('phone_number'))
+                    errorDescription = errors['phone_number'].first;
+                  else if (errors.containsKey('email'))
+                    errorDescription = errors['email'].first;
+                  else if (errors.containsKey('password'))
+                    errorDescription = errors['password'].first;
+                  else
+                    errorDescription = errorData['message'];
+                }
+              }
+              break;
+            }
           default:
             {
               errorDescription = 'An unexpected error occurred';

@@ -28,19 +28,6 @@ abstract class LoginState extends Equatable {
       required R Function() loginLoading,
       required R Function(User) loginSuccess,
       required R Function(LoginError) loginError}) {
-    assert(() {
-      // ignore: unnecessary_null_comparison
-      if (loginInitial == null ||
-          // ignore: unnecessary_null_comparison
-          loginLoading == null ||
-          // ignore: unnecessary_null_comparison
-          loginSuccess == null ||
-          // ignore: unnecessary_null_comparison
-          loginError == null) {
-        throw 'check for all possible cases';
-      }
-      return true;
-    }());
     switch (this._type) {
       case _LoginState.LoginInitial:
         return loginInitial();
@@ -64,13 +51,6 @@ abstract class LoginState extends Equatable {
       R Function(User)? loginSuccess,
       R Function(LoginError)? loginError,
       required R Function(LoginState) orElse}) {
-    assert(() {
-      // ignore: unnecessary_null_comparison
-      if (orElse == null) {
-        throw 'Missing orElse case';
-      }
-      return true;
-    }());
     switch (this._type) {
       case _LoginState.LoginInitial:
         if (loginInitial == null) break;

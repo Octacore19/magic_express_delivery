@@ -7,7 +7,4 @@ part 'login_events.super.dart';
 enum _LoginEvents {
   @Data(fields: [DataField<String>('email'), DataField<String>('password')])
   LoginUser,
-
-  // ForgotPassword,
-  // ResetPassword
 }

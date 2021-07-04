@@ -266,6 +266,10 @@ pubspec_parse
 2.7
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/pubspec_parse-0.1.8/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/pubspec_parse-0.1.8/lib/
+quiver
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.0.1/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.0.1/lib/
 shared_preferences
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.6/

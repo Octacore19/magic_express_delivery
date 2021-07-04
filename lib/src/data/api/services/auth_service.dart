@@ -22,8 +22,23 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future registerUser(String firstName, String lastName, String email,
-      String phoneNumber, String password, String confirmPassword) {
-    throw UnimplementedError();
+  Future<BaseResponse> registerUser(String firstName, String lastName, String email,
+      String phoneNumber, String password, String confirmPassword) async {
+    final baseResponse = await _provider.dioInstance.post(
+      ApiEndpoints.REGISTER_USER,
+      data: FormData.fromMap({
+        'first_name': firstName,
+        'last_name': lastName,
+        'email': email,
+        'role_id': 3,
+        'phone_number': phoneNumber,
+        'password': password,
+        'password_confirmation': confirmPassword,
+      }),
+      options: Options(
+        headers: {"no_token": true},
+      ),
+    );
+    return BaseResponse.fromJson(baseResponse.data);
   }
 }

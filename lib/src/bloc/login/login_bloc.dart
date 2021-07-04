@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/index.dart';
 
 class LoginBloc extends Bloc<LoginEvents, LoginState> {
-  final IAuthRepo _repo;
+  final IAuthRepo _authRepo;
 
-  LoginBloc(this._repo) : super(LoginState.loginInitial());
+  LoginBloc(this._authRepo) : super(LoginState.loginInitial());
 
   @override
   Stream<LoginState> mapEventToState(LoginEvents event) async* {
@@ -16,7 +16,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
   Stream<LoginState> _mapLoginUserToState(LoginUser event) async* {
     yield LoginState.loginLoading();
     try {
-      final result = await _repo.loginuser(event.email, event.password);
+      final result = await _authRepo.loginuser(event.email, event.password);
       yield result.fold(
         (l) => LoginState.loginError(message: _mapFailureToMessage(l)),
         (r) => LoginState.loginSuccess(r),
@@ -30,8 +30,8 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
 
   _mapFailureToMessage(Failure failure) {
     switch (failure.runtimeType) {
-      case LoginFailure:
-        return (failure as LoginFailure).message;
+      case AuthFailure:
+        return (failure as AuthFailure).message;
       default:
         return 'Unexpected error';
     }

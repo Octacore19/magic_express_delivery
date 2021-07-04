@@ -40,13 +40,6 @@ abstract class LoginEvents extends Equatable {
   R whenOrElse<R extends Object>(
       {R Function(LoginUser)? loginUser,
       required R Function(LoginEvents) orElse}) {
-    assert(() {
-      // ignore: unnecessary_null_comparison
-      if (orElse == null) {
-        throw 'Missing orElse case';
-      }
-      return true;
-    }());
     switch (this._type) {
       case _LoginEvents.LoginUser:
         if (loginUser == null) break;
