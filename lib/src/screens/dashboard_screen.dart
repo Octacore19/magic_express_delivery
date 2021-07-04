@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/index.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -15,13 +16,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _accountWidget,
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _greetingWidget,
-          _errandCardWidget,
-          _deliveryCardWidget,
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _greetingWidget,
+            _errandCardWidget,
+            _deliveryCardWidget,
+          ],
+        ),
       ),
     );
   }
@@ -49,9 +52,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'Good morning, John!',
-            style: Theme.of(context).textTheme.headline6,
+          BlocBuilder<LoginBloc, LoginState>(
+            builder: (_, _state) {
+              return _state.whenOrElse(
+                loginSuccess: (user) => Text(
+                  _generateGreeting() + ', ${user.firstName} ${user.lastName}!',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                orElse: (_) => Text(
+                  _generateGreeting() + ', John Doe!',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              );
+            },
           ),
           Text(
             'How can I help you today?',
@@ -134,5 +147,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ),
     );
+  }
+
+  String _generateGreeting() {
+    final hourOfDay = DateTime.now().hour;
+    if (hourOfDay >= 12 && hourOfDay < 18)
+      return 'Good afternoon';
+    else if (hourOfDay >= 18 && hourOfDay < 21)
+      return 'Good evening';
+    else if (hourOfDay >= 21 && hourOfDay < 3) return 'Goodnight';
+    return 'Good morning';
   }
 }

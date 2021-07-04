@@ -1,14 +1,26 @@
 // @dart=2.9
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:magic_express_delivery/src/index.dart';
 
 void main() {
-  runApp(MyApp());
+  Bloc.observer = MyBlocObserver();
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider(create: (_) => injector.get<LoginBloc>()),
+    ],
+    child: MyApp(),
+  ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,5 +66,11 @@ class MyApp extends StatelessWidget {
         Routes.ERRAND: (_) => ErrandScreen(),
       },
     );
+  }
+
+  @override
+  void dispose() {
+    injector.dispose();
+    super.dispose();
   }
 }

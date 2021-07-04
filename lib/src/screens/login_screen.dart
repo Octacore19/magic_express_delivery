@@ -1,4 +1,6 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/index.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -9,7 +11,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool _passwordVisible = false;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _passwordVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +63,12 @@ class _LoginScreenState extends State<LoginScreen> {
         top: 32.0,
       ),
       child: TextFormField(
+        controller: _emailController,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
         cursorColor: Theme.of(context).primaryColorDark,
+        validator: _validateEmail,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           isDense: true,
           hintText: 'email',
@@ -96,10 +103,13 @@ class _LoginScreenState extends State<LoginScreen> {
         top: 16.0,
       ),
       child: TextFormField(
+        controller: _passwordController,
         cursorColor: Theme.of(context).primaryColorDark,
         textInputAction: TextInputAction.done,
         obscureText: _passwordVisible,
         obscuringCharacter: '*',
+        validator: _validatePassword,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           isDense: true,
           hintText: 'password',
@@ -137,23 +147,47 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget get _loginButton {
-    return Container(
-      margin: EdgeInsets.only(
-        top: 32.0,
-        left: 16.0,
-        right: 16.0,
-      ),
-      width: double.infinity,
-      child: ElevatedButton(
-        child: Text('login'),
-        style: ElevatedButton.styleFrom(
-          textStyle: Theme.of(context).textTheme.button,
-          padding: EdgeInsets.all(16.0),
-        ),
-        onPressed: () {
-          Navigator.pushReplacementNamed(context, Routes.DASHBOARD);
-        },
-      ),
+    return BlocConsumer<LoginBloc, LoginState>(
+      listener: (_, _state) {
+        _state.whenPartial(
+          loginSuccess: (user) => Navigator.pushReplacementNamed(
+            context,
+            Routes.DASHBOARD,
+          ),
+          loginError: (err) => ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(err.message)),
+          ),
+        );
+      },
+      builder: (_, _state) {
+        return Container(
+          margin: EdgeInsets.only(top: 32.0, left: 16.0, right: 16.0),
+          width: double.infinity,
+          child: ElevatedButton(
+            child: _state.whenOrElse(
+              orElse: (_) => Text('login'),
+              loginLoading: () => SizedBox.fromSize(
+                child: CircularProgressIndicator.adaptive(
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
+                size: Size(22.0, 22.0),
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.button,
+              padding: EdgeInsets.all(16.0),
+              primary: _state.whenOrElse(
+                orElse: (_) => Theme.of(context).primaryColorDark,
+                loginLoading: () => Colors.transparent,
+              ),
+            ),
+            onPressed: _state.whenOrElse(
+              orElse: (_) => _onLoginPressed,
+              loginLoading: null,
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -174,5 +208,34 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       ),
     );
+  }
+
+  void _onLoginPressed() {
+    if (_formKey.currentState!.validate()) {
+      context.read<LoginBloc>().add(
+            LoginEvents.loginUser(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim(),
+            ),
+          );
+    }
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter an email address';
+    } else if (!EmailValidator.validate(value)) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    } else if (value.isNotEmpty && value.length < 5) {
+      return 'Password is too short';
+    }
+    return null;
   }
 }

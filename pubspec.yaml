@@ -21,6 +21,7 @@ dependencies:
   dio: ^4.0.0
   http_parser: ^4.0.0
   shared_preferences: ^2.0.5
+  email_validator: '^2.0.1'
 
 dev_dependencies:
   super_enum_generator: ^0.6.0
