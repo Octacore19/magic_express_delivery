@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.octacoresoftwares.magic_express_delivery">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Magic Express Delivery"
         android:icon="@mipmap/ic_launcher">

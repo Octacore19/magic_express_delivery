@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
       margin: EdgeInsets.only(
         left: 16.0,
         right: 16.0,
-        top: 32.0,
+        top: 48.0,
       ),
       child: TextFormField(
         controller: _emailController,
