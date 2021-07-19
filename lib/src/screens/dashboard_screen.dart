@@ -100,7 +100,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
-                    'send on errand?',
+                    'Send on errand?',
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 )
@@ -108,7 +108,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           onTap: () {
-            Navigator.pushNamed(context, Routes.ERRAND);
+            Navigator.pushNamed(context, Routes.DELIVERY_OPTIONS, arguments: 0);
           },
         ),
       ),
@@ -137,7 +137,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
-                    'make a delivery?',
+                    'Make a delivery?',
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 )
@@ -145,7 +145,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           onTap: () {
-            Navigator.pushNamed(context, Routes.DELIVERY);
+            Navigator.pushNamed(context, Routes.DELIVERY_OPTIONS, arguments: 1);
           },
         ),
       ),
@@ -154,11 +154,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   String _generateGreeting() {
     final hourOfDay = DateTime.now().hour;
-    if (hourOfDay >= 12 && hourOfDay < 18)
+    if (hourOfDay >= 12 && hourOfDay < 18) {
       return 'Good afternoon';
-    else if (hourOfDay >= 18 && hourOfDay < 21)
+    } else if (hourOfDay >= 18 && hourOfDay < 21) {
       return 'Good evening';
-    else if (hourOfDay >= 21 && hourOfDay < 3) return 'Goodnight';
-    return 'Good morning';
+    } else if (hourOfDay >= 21 || hourOfDay < 3) {
+      return 'Goodnight';
+    } else
+      return 'Good morning';
   }
 }

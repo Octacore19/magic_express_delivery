@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'login to account',
+            'Login to account',
             style: Theme.of(context).textTheme.headline6,
           ),
         ],
@@ -79,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           isDense: true,
           hintText: 'email',
+          hintStyle: Theme.of(context).textTheme.caption,
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               width: 2.0,
@@ -91,6 +92,23 @@ class _LoginScreenState extends State<LoginScreen> {
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).primaryColorDark,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(8.0),
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Theme.of(context).errorColor,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(8.0),
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 2.0,
+              color: Theme.of(context).errorColor,
             ),
             borderRadius: BorderRadius.all(
               Radius.circular(8.0),
@@ -120,6 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           isDense: true,
           hintText: 'password',
+          hintStyle: Theme.of(context).textTheme.caption,
           focusColor: Theme.of(context).primaryColorDark,
           suffixIcon: InkWell(
             child: Icon(
@@ -143,6 +162,23 @@ class _LoginScreenState extends State<LoginScreen> {
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Theme.of(context).primaryColorDark,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(8.0),
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Theme.of(context).errorColor,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(8.0),
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 2.0,
+              color: Theme.of(context).errorColor,
             ),
             borderRadius: BorderRadius.all(
               Radius.circular(8.0),
@@ -172,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
           width: double.infinity,
           child: ElevatedButton(
             child: _state.whenOrElse(
-              orElse: (_) => Text('login'),
+              orElse: (_) => Text('Login'),
               loginLoading: () => SizedBox.fromSize(
                 child: CircularProgressIndicator.adaptive(
                   backgroundColor: Theme.of(context).primaryColor,
@@ -203,9 +239,10 @@ class _LoginScreenState extends State<LoginScreen> {
       margin: EdgeInsets.only(right: 16.0),
       alignment: Alignment.center,
       child: TextButton(
-        child: Text('not registered? click here!'),
+        child: Text('Not registered? Click here!'),
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
+          textStyle: Theme.of(context).textTheme.button,
         ),
         onPressed: () {
           Navigator.pushNamed(

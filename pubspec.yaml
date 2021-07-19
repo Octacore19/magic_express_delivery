@@ -10,8 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  flutter_bloc: ^7.0.0
   google_fonts: ^2.0.0
+  flutter_bloc: ^7.0.0
+  flutter_typeahead: ^3.1.1
   flutter_simple_dependency_injection: ^2.0.0
   material_design_icons_flutter: ^5.0.5955-rc.1
   equatable: ^1.2.5

@@ -212,6 +212,24 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_keyboard_visibility",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_keyboard_visibility-5.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_keyboard_visibility_platform_interface",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_keyboard_visibility_platform_interface-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_keyboard_visibility_web",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_keyboard_visibility_web-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_simple_dependency_injection",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_simple_dependency_injection-2.0.0",
       "packageUri": "lib/",
@@ -220,6 +238,12 @@
     {
       "name": "flutter_test",
       "rootUri": "file:///C:/src/flutter/packages/flutter_test",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_typeahead",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_typeahead-3.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -590,7 +614,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-07-04T19:44:09.752767Z",
+  "generated": "2021-07-18T09:29:04.533336Z",
   "generator": "pub",
   "generatorVersion": "2.13.3"
 }
