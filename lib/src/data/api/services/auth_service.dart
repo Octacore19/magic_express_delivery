@@ -7,13 +7,10 @@ class AuthService implements IAuthService {
   AuthService(this._provider);
 
   @override
-  Future<BaseResponse> loginuser(String email, String password) async {
+  Future<BaseResponse> loginUser(Map<String, String> data) async {
     final baseResponse = await _provider.dioInstance.post(
       ApiEndpoints.LOGIN_USER,
-      data: FormData.fromMap({
-        'email': email,
-        'password': password,
-      }),
+      data: FormData.fromMap(data),
       options: Options(
         headers: {"no_token": true},
       ),
@@ -22,19 +19,10 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<BaseResponse> registerUser(String firstName, String lastName, String email,
-      String phoneNumber, String password, String confirmPassword) async {
+  Future<BaseResponse> registerUser(Map<String, dynamic> data) async {
     final baseResponse = await _provider.dioInstance.post(
       ApiEndpoints.REGISTER_USER,
-      data: FormData.fromMap({
-        'first_name': firstName,
-        'last_name': lastName,
-        'email': email,
-        'role_id': 3,
-        'phone_number': phoneNumber,
-        'password': password,
-        'password_confirmation': confirmPassword,
-      }),
+      data: FormData.fromMap(data),
       options: Options(
         headers: {"no_token": true},
       ),

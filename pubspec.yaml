@@ -28,6 +28,7 @@ dependencies:
 dev_dependencies:
   super_enum_generator: ^0.6.0
   build_runner: ^1.7.1
+  flutter_native_splash: ^1.2.0
   flutter_test:
     sdk: flutter
 
@@ -37,3 +38,4 @@ flutter:
   assets:
     - assets/dispatch_rider.png
     - assets/shopping_cart.png
+    - assets/banner.png

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:magic_express_delivery/src/index.dart';
 
@@ -24,6 +26,9 @@ class ApiProvider {
       LogInterceptor(
         responseBody: true,
         requestBody: true,
+        logPrint: (d) {
+          log(d.toString());
+        },
       ),
       RequestInterceptor(
         preferences: preferences,

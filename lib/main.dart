@@ -76,17 +76,17 @@ class _MyAppState extends State<MyApp> {
             return _buildRoute(settings, DashboardScreen());
           case Routes.DELIVERY:
             final data = settings.arguments as List;
-            return _buildRoute(settings, DeliveryScreen(data[0], data[1]));
+            return _buildRoute(settings, DeliveryScreen(data[0], data[1], data[2]));
           case Routes.ERRAND:
             final data = settings.arguments as List;
-            return _buildRoute(settings, ErrandScreen(data[0], data[1]));
+            return _buildRoute(settings, ErrandScreen(data[0], data[1], data[2]));
           case Routes.DELIVERY_OPTIONS:
             return _buildRoute(
                 settings, DeliveryOptionsScreen(settings.arguments));
           case Routes.PROCESS_DELIVERY:
             final data = settings.arguments as List;
             return _buildRoute(
-                settings, ProcessDeliveryScreen(data[0], data[1]));
+                settings, ProcessDeliveryScreen(data[0], data[1], data[2]));
           default:
             return _buildRoute(settings, LoginScreen());
         }

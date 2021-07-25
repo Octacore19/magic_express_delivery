@@ -4,10 +4,11 @@ import 'package:magic_express_delivery/src/commons/routes.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DeliveryScreen extends StatefulWidget {
+  final int _taskType;
   final int _vehicleType;
   final int _deliveryType;
 
-  DeliveryScreen(this._vehicleType, this._deliveryType);
+  DeliveryScreen(this._taskType, this._vehicleType, this._deliveryType);
 
   @override
   State<StatefulWidget> createState() => _DeliveryScreenState();
@@ -230,7 +231,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
           Navigator.pushNamed(
             context,
             Routes.PROCESS_DELIVERY,
-            arguments: [widget._vehicleType, widget._deliveryType],
+            arguments: [widget._taskType, widget._vehicleType, widget._deliveryType],
           );
         },
         icon: Icon(MdiIcons.chevronRight),

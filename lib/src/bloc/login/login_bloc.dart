@@ -16,7 +16,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
   Stream<LoginState> _mapLoginUserToState(LoginUser event) async* {
     yield LoginState.loginLoading();
     try {
-      final result = await _authRepo.loginuser(event.email, event.password);
+      final result = await _authRepo.loginUser(event.email, event.password);
       yield result.fold(
         (l) => LoginState.loginError(message: _mapFailureToMessage(l)),
         (r) => LoginState.loginSuccess(r),

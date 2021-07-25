@@ -5,4 +5,6 @@ class ApiEndpoints {
   static const VERIFIY_USER = '/auth/verify';
   static const FORGOT_PASSWORD = '/auth/password/forgot';
   static const RESET_PASSWORD = '/auth/password/reset';
+
+  static const CREATE_ORDER = '/user/place-order';
 }

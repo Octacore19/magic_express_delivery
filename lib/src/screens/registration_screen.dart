@@ -61,7 +61,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.0),
       child: Text(
-        'create account',
+        'Create account',
         style: Theme.of(context).textTheme.headline6,
       ),
     );
@@ -382,7 +382,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           width: double.infinity,
           child: ElevatedButton(
             child: _state.whenOrElse(
-              orElse: (_) => Text('create'),
+              orElse: (_) => Text('Create'),
               registrationLoading: () => SizedBox.fromSize(
                 child: CircularProgressIndicator.adaptive(
                   backgroundColor: Theme.of(context).primaryColor,

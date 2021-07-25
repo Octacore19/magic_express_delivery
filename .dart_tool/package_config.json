@@ -14,6 +14,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "archive",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/archive-3.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "args",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/args-2.1.1",
       "packageUri": "lib/",
@@ -230,6 +236,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_native_splash",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_native_splash-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_simple_dependency_injection",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_simple_dependency_injection-2.0.0",
       "packageUri": "lib/",
@@ -286,6 +298,12 @@
     {
       "name": "http_parser",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "image",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/image-3.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -394,6 +412,12 @@
     {
       "name": "pedantic",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.11.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "petitparser",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-4.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -572,6 +596,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "universal_io",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/universal_io-2.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "vector_math",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.0",
       "packageUri": "lib/",
@@ -602,6 +632,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "xml",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/xml-5.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "yaml",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/yaml-3.1.0",
       "packageUri": "lib/",
@@ -614,7 +650,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-07-18T09:29:04.533336Z",
+  "generated": "2021-07-24T23:38:58.901282Z",
   "generator": "pub",
   "generatorVersion": "2.13.3"
 }

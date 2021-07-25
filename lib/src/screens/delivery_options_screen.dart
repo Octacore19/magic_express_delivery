@@ -28,7 +28,7 @@ class _DeliveryOptionsScreenState extends State<DeliveryOptionsScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _vehicleOption,
+            // _vehicleOption,
             _personnelOption,
             _continueButton,
           ],
@@ -37,9 +37,10 @@ class _DeliveryOptionsScreenState extends State<DeliveryOptionsScreen> {
     );
   }
 
+  // ignore: unused_element
   Widget get _vehicleOption {
     final widget = Container(
-      padding: EdgeInsets.only(left: 16.0, top: 36.0, right: 16.0),
+      padding: EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -90,7 +91,7 @@ class _DeliveryOptionsScreenState extends State<DeliveryOptionsScreen> {
 
   Widget get _personnelOption {
     final widget = Container(
-      padding: EdgeInsets.only(left: 16.0, top: 56.0, right: 16.0),
+      padding: EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,22 +158,22 @@ class _DeliveryOptionsScreenState extends State<DeliveryOptionsScreen> {
           textStyle: Theme.of(context).textTheme.button,
         ),
         onPressed: () {
-          final _veh =
-              _vehicleSelection.where((element) => element == true).toList();
+          /* final _veh =
+              _vehicleSelection.where((element) => element == true).toList(); */
           final _per =
               _personnelSelection.where((element) => element == true).toList();
-          if (_veh.isNotEmpty && _per.isNotEmpty) {
+          if (_per.isNotEmpty) {
             if (widget.position == 0) {
               Navigator.pushNamed(
                 context,
                 Routes.ERRAND,
-                arguments: [_vehicleIndex, _personnelIndex],
+                arguments: [widget.position, 0, _personnelIndex],
               );
             } else {
               Navigator.pushNamed(
                 context,
                 Routes.DELIVERY,
-                arguments: [_vehicleIndex, _personnelIndex],
+                arguments: [widget.position, 0, _personnelIndex],
               );
             }
           } else {

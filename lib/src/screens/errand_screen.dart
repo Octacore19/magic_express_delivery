@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:intl/intl.dart';
 import 'package:magic_express_delivery/src/index.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ErrandScreen extends StatefulWidget {
+  final int _taskType;
   final int _vehicleType;
   final int _deliveryType;
 
-  ErrandScreen(this._vehicleType, this._deliveryType);
+  ErrandScreen(this._taskType, this._vehicleType, this._deliveryType);
 
   @override
   State<StatefulWidget> createState() => _ErrandScreenState();
@@ -18,13 +22,15 @@ class _ErrandScreenState extends State<ErrandScreen> {
 
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _quantityCOntroller = TextEditingController();
+  final _quantityController = TextEditingController();
+  final _unitPriceController = TextEditingController();
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
-    _quantityCOntroller.dispose();
+    _quantityController.dispose();
+    _unitPriceController.dispose();
     super.dispose();
   }
 
@@ -121,10 +127,36 @@ class _ErrandScreenState extends State<ErrandScreen> {
               ),
             ),
             _itemsListContent,
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: LayoutBuilder(
+                builder: (_, __) {
+                  if (_items.isNotEmpty) {
+                    int price = 0;
+                    _items.forEach((element) {
+                      price += int.parse(element['totalPrice']);
+                    });
+                    final symbol = getCurrency();
+                    return Text(
+                      'Total Price: $symbol ${price.toStringAsFixed(2)}',
+                      style: Theme.of(context).textTheme.caption,
+                    );
+                  }
+                  return Container();
+                },
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  String getCurrency() {
+    var format =
+        NumberFormat.simpleCurrency(locale: Platform.localeName, name: 'NGN');
+    return format.currencySymbol;
   }
 
   Widget get _itemsListContent {
@@ -186,13 +218,31 @@ class _ErrandScreenState extends State<ErrandScreen> {
           SizedBox(
             height: 8.0,
           ),
-          TextField(
-            controller: _quantityCOntroller,
-            decoration: InputDecoration(
-              isDense: true,
-              labelText: 'Quantity',
-              labelStyle: Theme.of(context).textTheme.bodyText2,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Flexible(
+                child: TextField(
+                  controller: _quantityController,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    labelText: 'Quantity',
+                    labelStyle: Theme.of(context).textTheme.bodyText2,
+                  ),
+                ),
+              ),
+              SizedBox(width: 96.0),
+              Flexible(
+                child: TextField(
+                  controller: _unitPriceController,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    labelText: 'Unit Price',
+                    labelStyle: Theme.of(context).textTheme.bodyText2,
+                  ),
+                ),
+              ),
+            ],
           ),
           TextButton.icon(
             style: TextButton.styleFrom(
@@ -201,17 +251,25 @@ class _ErrandScreenState extends State<ErrandScreen> {
             onPressed: () {
               final name = _titleController.text.trim();
               final description = _descriptionController.text.trim();
-              final quantity = _quantityCOntroller.text.trim();
-              if (name.isNotEmpty && quantity.isNotEmpty) {
+              final quantity = _quantityController.text.trim();
+              final unitPrice = _unitPriceController.text.trim();
+              final totalPrice =
+                  (int.parse(quantity) * int.parse(unitPrice)).toString();
+              if (name.isNotEmpty &&
+                  quantity.isNotEmpty &&
+                  unitPrice.isNotEmpty) {
                 setState(() {
                   _items.add({
                     'name': name,
                     'description': description,
                     'quantity': quantity,
+                    'unitPrice': unitPrice,
+                    'totalPrice': totalPrice,
                   });
                   _titleController.clear();
                   _descriptionController.clear();
-                  _quantityCOntroller.clear();
+                  _quantityController.clear();
+                  _unitPriceController.clear();
                 });
               }
             },
@@ -239,7 +297,11 @@ class _ErrandScreenState extends State<ErrandScreen> {
           Navigator.pushNamed(
             context,
             Routes.PROCESS_DELIVERY,
-            arguments: [widget._vehicleType, widget._deliveryType],
+            arguments: [
+              widget._taskType,
+              widget._vehicleType,
+              widget._deliveryType
+            ],
           );
         },
         icon: Icon(MdiIcons.chevronRight),

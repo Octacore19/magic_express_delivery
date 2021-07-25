@@ -2,18 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ProcessDeliveryScreen extends StatefulWidget {
+  final int _taskType;
   final int _vehicleType;
   final int _deliveryType;
 
-  ProcessDeliveryScreen(this._vehicleType, this._deliveryType);
+  ProcessDeliveryScreen(this._taskType, this._vehicleType, this._deliveryType);
 
   @override
   State<StatefulWidget> createState() => _ProcessDeliveryScreenState();
 }
 
 class _ProcessDeliveryScreenState extends State<ProcessDeliveryScreen> {
-  List<bool> _paymentSelection = [true, false];
+  late List<bool> _paymentSelection;
   late int _paymentIndex;
+
+  @override
+  void initState() {
+    if (widget._taskType == 1) {
+      _paymentSelection = [true, false];
+    } else {
+      _paymentSelection = [true];
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +50,7 @@ class _ProcessDeliveryScreenState extends State<ProcessDeliveryScreen> {
 
   Widget get _senderOption {
     return Visibility(
-      visible: widget._deliveryType == 0 || widget._deliveryType == 2,
+      visible: widget._deliveryType == 1 || widget._deliveryType == 2,
       child: Container(
         margin: EdgeInsets.only(left: 16.0, right: 16.0),
         child: Column(
@@ -89,7 +100,7 @@ class _ProcessDeliveryScreenState extends State<ProcessDeliveryScreen> {
 
   Widget get _receiverOption {
     return Visibility(
-      visible: widget._deliveryType == 1 || widget._deliveryType == 2,
+      visible: widget._deliveryType == 0 || widget._deliveryType == 2,
       child: Container(
         margin: EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0),
         child: Column(
@@ -138,44 +149,7 @@ class _ProcessDeliveryScreenState extends State<ProcessDeliveryScreen> {
             width: double.infinity,
             child: ToggleButtons(
               isSelected: _paymentSelection,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text.rich(
-                    TextSpan(
-                      text: 'Cash  ',
-                      style: Theme.of(context).textTheme.bodyText2,
-                      children: [
-                        WidgetSpan(
-                          child: Icon(
-                            MdiIcons.cash,
-                            size: 16.0,
-                            color: Colors.blue[900],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
-                  child: Text.rich(
-                    TextSpan(
-                      text: 'Card  ',
-                      style: Theme.of(context).textTheme.bodyText2,
-                      children: [
-                        WidgetSpan(
-                          child: Icon(
-                            MdiIcons.creditCard,
-                            size: 16.0,
-                            color: Colors.blue[900],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
+              children: _paymentSelectionsWidgets,
               onPressed: (i) {
                 setState(() {
                   for (int index = 0;
@@ -195,6 +169,72 @@ class _ProcessDeliveryScreenState extends State<ProcessDeliveryScreen> {
         ],
       ),
     );
+  }
+
+  List<Widget> get _paymentSelectionsWidgets {
+    List<Widget> content = [];
+    if (widget._taskType == 1) {
+      content.addAll([
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text.rich(
+            TextSpan(
+              text: 'Cash',
+              style: Theme.of(context).textTheme.bodyText2,
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    MdiIcons.cash,
+                    size: 16.0,
+                    color: Colors.blue[900],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+          child: Text.rich(
+            TextSpan(
+              text: 'Card  ',
+              style: Theme.of(context).textTheme.bodyText2,
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    MdiIcons.creditCard,
+                    size: 16.0,
+                    color: Colors.blue[900],
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ]);
+    } else {
+      content.add(
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text.rich(
+            TextSpan(
+              text: 'Cash',
+              style: Theme.of(context).textTheme.bodyText2,
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    MdiIcons.cash,
+                    size: 16.0,
+                    color: Colors.blue[900],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    return content;
   }
 
   Widget get _nextButton {
