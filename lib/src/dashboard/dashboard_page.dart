@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:magic_express_delivery/src/dashboard/dashboard_views.dart';
 
 class DashboardPage extends StatelessWidget {
+
+  const DashboardPage();
+
+  static Page route() => const MaterialPage<void>(child: const DashboardPage());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

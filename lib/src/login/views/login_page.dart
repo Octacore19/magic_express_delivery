@@ -5,6 +5,11 @@ import 'package:magic_express_delivery/src/login/bloc/login_bloc.dart';
 import 'package:magic_express_delivery/src/login/views/login_views.dart';
 
 class LoginPage extends StatelessWidget {
+
+  const LoginPage();
+
+  static Page route() => const MaterialPage<void>(child: const LoginPage());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

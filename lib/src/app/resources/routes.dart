@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:magic_express_delivery/src/dashboard/dashboard_page.dart';
 import 'package:magic_express_delivery/src/login/login.dart';
 import 'package:magic_express_delivery/src/screens/screens.dart';
+import 'package:repositories/repositories.dart';
 
 class AppRoutes {
   static const DEFAULT = '/';
@@ -16,32 +17,28 @@ class AppRoutes {
   static AppPageRoute generatePageRoute(RouteSettings settings) {
     switch (settings.name) {
       case DEFAULT:
-        return _buildRoute(settings, LoginPage());
+        return buildRoute(settings, LoginPage());
       case REGISTRATION:
-        return _buildRoute(settings, RegistrationScreen());
+        return buildRoute(settings, RegistrationScreen());
       case DASHBOARD:
-        return _buildRoute(settings, DashboardPage());
-      case DELIVERY:
-        final data = settings.arguments as List;
-        return _buildRoute(
-            settings, DeliveryScreen(data[0], data[1], data[2]));
-      case ERRAND:
-        final data = settings.arguments as List;
-        return _buildRoute(
-            settings, ErrandScreen(data[0], data[1], data[2]));
-      case DELIVERY_OPTIONS:
-        return _buildRoute(
-            settings, DeliveryOptionsScreen(settings.arguments as int));
-      case PROCESS_DELIVERY:
-        final data = settings.arguments as List;
-        return _buildRoute(
-            settings, ProcessDeliveryScreen(data[0], data[1], data[2]));
+        return buildRoute(settings, DashboardPage());
       default:
-        return _buildRoute(settings, LoginPage());
+        return buildRoute(settings, LoginPage());
     }
   }
 
-  static AppPageRoute _buildRoute(RouteSettings settings, Widget builder) {
+  static List<Page> onGenerateAppViewPages(AuthStatus state, List<Page<dynamic>> pages) {
+    switch (state) {
+      case AuthStatus.loggedIn:
+        return [DashboardPage.route()];
+      case AuthStatus.loggedOut:
+      case AuthStatus.registered:
+      default:
+        return [LoginPage.route()];
+    }
+  }
+
+  static AppPageRoute buildRoute(RouteSettings settings, Widget builder) {
     return AppPageRoute(
       settings: settings,
       builder: (ctx) => builder,

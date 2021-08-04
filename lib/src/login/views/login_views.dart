@@ -57,12 +57,14 @@ class EmailInput extends StatelessWidget {
   }
 
   String? getError(EmailValidationError? error) {
-    switch(error) {
+    switch (error) {
       case EmailValidationError.invalid:
         return 'Invalid email';
       case EmailValidationError.empty:
-        if (node.hasFocus) return 'Enter an email';
-        else return null;
+        if (node.hasFocus)
+          return 'Enter an email';
+        else
+          return null;
       default:
         return null;
     }
@@ -133,12 +135,14 @@ class PasswordInput extends StatelessWidget {
   }
 
   String? getError(PasswordValidationError? error) {
-    switch(error) {
+    switch (error) {
       case PasswordValidationError.invalid:
         return 'Invalid password';
       case PasswordValidationError.empty:
-        if (node.hasFocus) return 'Enter a password';
-        else return null;
+        if (node.hasFocus)
+          return 'Enter a password';
+        else
+          return null;
       default:
         return null;
     }
@@ -174,7 +178,10 @@ class SubmitButton extends StatelessWidget {
               primary: primaryColorSelect(context),
             ),
             onPressed: state.status.isValidated
-                ? () => context.read<LoginBloc>().add(LoginSubmitted())
+                ? () {
+                    FocusScope.of(context).unfocus();
+                    context.read<LoginBloc>().add(LoginSubmitted());
+                  }
                 : null,
           ),
         );
