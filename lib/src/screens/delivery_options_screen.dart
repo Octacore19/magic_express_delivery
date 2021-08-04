@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:magic_express_delivery/src/index.dart';
+import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DeliveryOptionsScreen extends StatefulWidget {
@@ -158,21 +158,22 @@ class _DeliveryOptionsScreenState extends State<DeliveryOptionsScreen> {
           textStyle: Theme.of(context).textTheme.button,
         ),
         onPressed: () {
-          /* final _veh =
-              _vehicleSelection.where((element) => element == true).toList(); */
+ final _veh =
+              _vehicleSelection.where((element) => element == true).toList();
+
           final _per =
               _personnelSelection.where((element) => element == true).toList();
           if (_per.isNotEmpty) {
             if (widget.position == 0) {
               Navigator.pushNamed(
                 context,
-                Routes.ERRAND,
+                AppRoutes.ERRAND,
                 arguments: [widget.position, 0, _personnelIndex],
               );
             } else {
               Navigator.pushNamed(
                 context,
-                Routes.DELIVERY,
+                AppRoutes.DELIVERY,
                 arguments: [widget.position, 0, _personnelIndex],
               );
             }

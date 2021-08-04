@@ -1,3 +1,4 @@
+/*
 import 'package:dartz/dartz.dart';
 import 'package:magic_express_delivery/src/index.dart';
 
@@ -7,4 +8,4 @@ abstract class IOrdersService {
 abstract class IOrdersRepo {
   Future<Either<Failure, dynamic>> createErrandOrders(ErrandModel data);
   Future<Either<Failure, dynamic>> createDeliveryOrder(DeliveryModel data);
-}
+}*/

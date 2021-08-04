@@ -1,3 +1,3 @@
 export 'login/login.dart';
 export 'registration/registration.dart';
-export 'bloc_observer.dart';
+export '../app/bloc/bloc_observer.dart';

@@ -1,10 +1,14 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:magic_express_delivery/src/index.dart';
+import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen();
+
+  static Page route() => const MaterialPage<void>(child: LoginScreen());
+
   @override
   State<StatefulWidget> createState() => _LoginScreenState();
 }
@@ -190,7 +194,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget get _loginButton {
-    return BlocConsumer<LoginBloc, LoginState>(
+    return Container();
+    /*return BlocConsumer<LoginBloc, LoginState>(
       listener: (_, _state) {
         _state.whenPartial(
           loginSuccess: (user) => Navigator.pushReplacementNamed(
@@ -231,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       },
-    );
+    );*/
   }
 
   Widget get _registerButton {
@@ -247,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
         onPressed: () {
           Navigator.pushNamed(
             context,
-            Routes.REGISTRATION,
+            AppRoutes.REGISTRATION,
           );
         },
       ),
@@ -260,14 +265,14 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
     }
-    if (_formKey.currentState!.validate()) {
+    /*if (_formKey.currentState!.validate()) {
       context.read<LoginBloc>().add(
             LoginEvents.loginUser(
               email: _emailController.text.trim(),
               password: _passwordController.text.trim(),
             ),
           );
-    }
+    }*/
   }
 
   String? _validateEmail(String? value) {

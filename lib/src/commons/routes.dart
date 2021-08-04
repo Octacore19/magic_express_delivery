@@ -1,3 +1,4 @@
+/*
 class Routes {
   static const DEFAULT = '/';
   static const LOGIN = '/login';
@@ -8,3 +9,4 @@ class Routes {
   static const DELIVERY_OPTIONS = '/options';
   static const PROCESS_DELIVERY = '/process delivery';
 }
+*/

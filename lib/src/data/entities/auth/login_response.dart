@@ -1,3 +1,4 @@
+/*
 import 'package:magic_express_delivery/src/domain/domain.dart';
 
 class LoginResponse {
@@ -55,3 +56,4 @@ class _User {
         '"role":$role. ';
   }
 }
+*/

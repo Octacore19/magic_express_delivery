@@ -1,4 +1,4 @@
-import 'package:magic_express_delivery/src/index.dart';
+/*
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences implements IPreferences {
@@ -26,3 +26,4 @@ class Preferences implements IPreferences {
     }
   }
 }
+*/

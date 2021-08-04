@@ -1,3 +1,4 @@
+/*
 import 'package:magic_express_delivery/src/index.dart';
 
 class DeliveryModel {
@@ -96,3 +97,4 @@ class _DeliveryItem extends Item {
     return 'DeliveryItem(item: $_item, description: $_description, quantity: $_quantity)';
   }
 }
+*/

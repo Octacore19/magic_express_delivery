@@ -1,7 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:magic_express_delivery/src/index.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:quiver/async.dart';
 
@@ -42,14 +41,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _headerWidget,
+              /*_headerWidget,
               _firstNameWidget,
               _lastNameWidget,
               _emailWidget,
               _phoneNumberWidget,
               _passwordWidget,
               _confirmPasswordWidget,
-              _createButton,
+              _createButton,*/
             ],
           ),
         ),
@@ -326,7 +325,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
-  Widget get _createButton {
+  /*Widget get _createButton {
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (_, _state) {
         _state.whenPartial(
@@ -406,9 +405,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         );
       },
     );
-  }
+  }*/
 
-  void _onRegisterPressed() {
+  /*void _onRegisterPressed() {
     FocusScopeNode currentFocus = FocusScope.of(context);
 
     if (!currentFocus.hasPrimaryFocus) {
@@ -426,7 +425,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         ),
       );
     }
-  }
+  }*/
 
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {

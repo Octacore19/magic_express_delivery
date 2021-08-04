@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:magic_express_delivery/src/index.dart';
+import 'package:magic_express_delivery/src/app/app.dart';
 
 class DashboardScreen extends StatefulWidget {
+  const DashboardScreen();
+
+  static Page route() => const MaterialPage<void>(child: DashboardScreen());
+
   @override
   State<StatefulWidget> createState() => _DashboardScreenState();
 }
@@ -34,7 +38,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       margin: EdgeInsets.only(right: 8.0),
       child: InkWell(
         onTap: () {
-          Navigator.pushReplacementNamed(context, Routes.DEFAULT);
+          Navigator.pushReplacementNamed(context, AppRoutes.DEFAULT);
         },
         borderRadius: BorderRadius.circular(36.0),
         child: Container(
@@ -52,7 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          BlocBuilder<LoginBloc, LoginState>(
+          /*BlocBuilder<LoginBloc, LoginState>(
             builder: (_, _state) {
               return _state.whenOrElse(
                 loginSuccess: (user) => Text(
@@ -65,7 +69,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               );
             },
-          ),
+          ),*/
           SizedBox(
             height: 8.0,
           ),
@@ -108,7 +112,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           onTap: () {
-            Navigator.pushNamed(context, Routes.DELIVERY_OPTIONS, arguments: 0);
+            Navigator.pushNamed(context, AppRoutes.DELIVERY_OPTIONS, arguments: 0);
           },
         ),
       ),
@@ -145,7 +149,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           onTap: () {
-            Navigator.pushNamed(context, Routes.DELIVERY_OPTIONS, arguments: 1);
+            Navigator.pushNamed(context, AppRoutes.DELIVERY_OPTIONS, arguments: 1);
           },
         ),
       ),

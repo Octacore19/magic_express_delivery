@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
-import 'package:magic_express_delivery/src/index.dart';
+import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ErrandScreen extends StatefulWidget {
@@ -296,7 +296,7 @@ class _ErrandScreenState extends State<ErrandScreen> {
         onPressed: () {
           Navigator.pushNamed(
             context,
-            Routes.PROCESS_DELIVERY,
+            AppRoutes.PROCESS_DELIVERY,
             arguments: [
               widget._taskType,
               widget._vehicleType,

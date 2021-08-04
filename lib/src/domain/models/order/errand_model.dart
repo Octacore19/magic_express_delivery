@@ -1,3 +1,4 @@
+/*
 import 'package:magic_express_delivery/src/index.dart';
 
 class ErrandModel {
@@ -109,3 +110,4 @@ class _ErrandItems extends Item {
     return 'ErrandItem(item: $_item, description: $_description, quantity: $_quantity, unitPrice: $_unitPrice, totalPrice: $_totalPrice)';
   }
 }
+*/

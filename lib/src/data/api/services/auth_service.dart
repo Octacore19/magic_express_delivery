@@ -1,3 +1,4 @@
+/*
 import 'package:dio/dio.dart';
 import 'package:magic_express_delivery/src/index.dart';
 
@@ -30,3 +31,4 @@ class AuthService implements IAuthService {
     return BaseResponse.fromJson(baseResponse.data);
   }
 }
+*/
