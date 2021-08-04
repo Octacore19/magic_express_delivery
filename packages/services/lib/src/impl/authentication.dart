@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:services/src/commons/commons.dart';
 import 'package:services/src/contracts/contracts.dart';
@@ -17,7 +19,9 @@ class AuthImpl implements IAuthenticationService {
         headers: {"no_token": true},
       ),
     );
-    return BaseResponse.fromJson(baseResponse.data);
+    final response = BaseResponse.fromJson(baseResponse.data);
+    log('Login service response: $response');
+    return response;
   }
 
   @override
@@ -29,6 +33,8 @@ class AuthImpl implements IAuthenticationService {
         headers: {"no_token": true},
       ),
     );
-    return BaseResponse.fromJson(baseResponse.data);
+    final response = BaseResponse.fromJson(baseResponse.data);
+    log('Register service response: $response');
+    return response;
   }
 }

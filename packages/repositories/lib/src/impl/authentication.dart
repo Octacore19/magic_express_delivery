@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:repositories/src/api/api.dart';
 import 'package:repositories/src/contracts/contracts.dart';
@@ -40,14 +41,16 @@ class AuthRepoImpl extends IAuthRepo {
         'password': password,
       };
       final response = await _auth.loginUser(data);
+      log('Login repo response => $response');
       if (response.success) {
         final data = LoginResponse.fromJson(response.data);
         _cache.write(key: userCacheKey, value: data.toUser);
         _statusController.add(AuthStatus.loggedIn);
+      } else {
+        throw LoginException(response.message);
       }
-      throw LoginException(response.message);
-    } on Exception {
-      throw LoginException();
+    } on Exception catch (e) {
+      throw e;
     }
   }
 
@@ -71,12 +74,14 @@ class AuthRepoImpl extends IAuthRepo {
         'password_confirmation': confirmPassword,
       };
       final response = await _auth.registerUser(data);
+      log('Register repo response => $response');
       if (response.success) {
         _statusController.add(AuthStatus.registered);
+      } else {
+        throw RegistrationException(response.message);
       }
-      throw LoginException(response.message);
-    } on Exception {
-      throw LoginException();
+    } on Exception catch (e) {
+      throw e;
     }
   }
 

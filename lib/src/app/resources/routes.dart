@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:magic_express_delivery/src/app/app.dart';
+import 'package:magic_express_delivery/src/login/login.dart';
 import 'package:magic_express_delivery/src/screens/screens.dart';
 
 class AppRoutes {
@@ -15,7 +15,7 @@ class AppRoutes {
   static AppPageRoute generatePageRoute(RouteSettings settings) {
     switch (settings.name) {
       case DEFAULT:
-        return _buildRoute(settings, LoginScreen());
+        return _buildRoute(settings, LoginPage());
       case REGISTRATION:
         return _buildRoute(settings, RegistrationScreen());
       case DASHBOARD:
@@ -36,7 +36,7 @@ class AppRoutes {
         return _buildRoute(
             settings, ProcessDeliveryScreen(data[0], data[1], data[2]));
       default:
-        return _buildRoute(settings, LoginScreen());
+        return _buildRoute(settings, LoginPage());
     }
   }
 

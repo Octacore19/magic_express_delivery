@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:services/src/commons/commons.dart';
 import 'package:services/src/contracts/orders.dart';
@@ -14,6 +16,8 @@ class OrdersImpl implements IOrdersService {
       ApiEndpoints.CREATE_ORDER,
       data: FormData.fromMap(data),
     );
-    return BaseResponse.fromJson(baseResponse.data);
+    final response = BaseResponse.fromJson(baseResponse.data);
+    log('Orders service response: $response');
+    return response;
   }
 }
