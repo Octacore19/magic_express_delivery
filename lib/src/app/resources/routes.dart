@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:magic_express_delivery/src/dashboard/dashboard_page.dart';
 import 'package:magic_express_delivery/src/login/login.dart';
 import 'package:magic_express_delivery/src/screens/screens.dart';
 
@@ -19,7 +20,7 @@ class AppRoutes {
       case REGISTRATION:
         return _buildRoute(settings, RegistrationScreen());
       case DASHBOARD:
-        return _buildRoute(settings, DashboardScreen());
+        return _buildRoute(settings, DashboardPage());
       case DELIVERY:
         final data = settings.arguments as List;
         return _buildRoute(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:magic_express_delivery/src/dashboard/dashboard_views.dart';
 
 class DashboardPage extends StatelessWidget {
   @override
@@ -6,23 +7,18 @@ class DashboardPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /*_greetingWidget,
-            _errandCardWidget,
-            _deliveryCardWidget,*/
-          ],
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GreetingsView(),
+              ErrandCardView(),
+              DeliveryCardView(),
+            ],
+          ),
         ),
       ),
     );
-  }
-}
-
-class GreetingsWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
   }
 }
