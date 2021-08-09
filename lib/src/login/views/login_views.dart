@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:magic_express_delivery/src/login/login.dart';
+import 'package:magic_express_delivery/src/registration/registration.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class EmailInput extends StatelessWidget {
@@ -82,14 +83,13 @@ class PasswordInput extends StatelessWidget {
       builder: (context, state) => TextFormField(
         initialValue: state.password.value,
         focusNode: node,
-        keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.done,
-        obscureText: state.passwordVisible,
+        obscureText: state.passwordObscured,
         obscuringCharacter: '*',
         onChanged: (password) =>
             context.read<LoginBloc>().add(LoginPasswordChanged(password)),
         cursorColor: Theme.of(context).primaryColorDark,
-        decoration: setInputDecoration(context, state.passwordVisible),
+        decoration: setInputDecoration(context, state.passwordObscured),
       ),
     );
   }
@@ -195,5 +195,22 @@ class SubmitButton extends StatelessWidget {
         context.select((LoginBloc b) => b.state.status).isSubmissionInProgress;
     if (isLoading) return Colors.transparent;
     return primaryColorDark;
+  }
+}
+
+class RegistrationButton extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: Text('Not registered? Click here!'),
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.zero,
+        textStyle: Theme.of(context).textTheme.button,
+      ),
+      onPressed: () {
+        Navigator.of(context).push(RegistrationPage.route());
+      }
+    );
   }
 }

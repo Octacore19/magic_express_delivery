@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:magic_express_delivery/src/dashboard/dashboard_page.dart';
 import 'package:magic_express_delivery/src/login/login.dart';
-import 'package:magic_express_delivery/src/screens/screens.dart';
+import 'package:magic_express_delivery/src/registration/registration.dart';
 import 'package:repositories/repositories.dart';
 
 class AppRoutes {
@@ -16,14 +16,10 @@ class AppRoutes {
 
   static AppPageRoute generatePageRoute(RouteSettings settings) {
     switch (settings.name) {
-      case DEFAULT:
-        return buildRoute(settings, LoginPage());
       case REGISTRATION:
-        return buildRoute(settings, RegistrationScreen());
-      case DASHBOARD:
-        return buildRoute(settings, DashboardPage());
+        return buildRoute(RegistrationPage(), settings);
       default:
-        return buildRoute(settings, LoginPage());
+        return buildRoute(LoginPage(), settings);
     }
   }
 
@@ -38,7 +34,7 @@ class AppRoutes {
     }
   }
 
-  static AppPageRoute buildRoute(RouteSettings settings, Widget builder) {
+  static AppPageRoute buildRoute(Widget builder, [RouteSettings? settings]) {
     return AppPageRoute(
       settings: settings,
       builder: (ctx) => builder,
@@ -48,7 +44,7 @@ class AppRoutes {
 
 class AppPageRoute<T> extends MaterialPageRoute<T> {
   AppPageRoute(
-      {required WidgetBuilder builder, required RouteSettings settings})
+      {required WidgetBuilder builder, RouteSettings? settings})
       : super(builder: builder, settings: settings);
 
   @override

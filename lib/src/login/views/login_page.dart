@@ -5,7 +5,6 @@ import 'package:magic_express_delivery/src/login/bloc/login_bloc.dart';
 import 'package:magic_express_delivery/src/login/views/login_views.dart';
 
 class LoginPage extends StatelessWidget {
-
   const LoginPage();
 
   static Page route() => const MaterialPage<void>(child: const LoginPage());
@@ -62,7 +61,7 @@ class _LoginFormState extends State<_LoginForm> {
     return SingleChildScrollView(
       child: BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
-          if (state.status == FormzStatus.submissionFailure) {
+          if (state.status.isSubmissionFailure) {
             String msg =
                 state.message.isEmpty ? 'Login failure' : state.message;
             SnackBar snack = SnackBar(content: Text(msg));
@@ -76,12 +75,14 @@ class _LoginFormState extends State<_LoginForm> {
           child: Column(
             children: [
               headerWidget(),
-              const SizedBox(height: 48.0),
+              const SizedBox(height: 16.0),
               EmailInput(_emailFocusNode),
               const SizedBox(height: 16.0),
               PasswordInput(_passwordFocusNode),
               const SizedBox(height: 32.0),
               SubmitButton(),
+              const SizedBox(height: 16.0),
+              RegistrationButton(),
             ],
           ),
         ),
@@ -91,6 +92,7 @@ class _LoginFormState extends State<_LoginForm> {
 
   Widget headerWidget() {
     return Align(
+      alignment: Alignment.topLeft,
       child: Text(
         'Login to account',
         style: Theme.of(context).textTheme.headline6,

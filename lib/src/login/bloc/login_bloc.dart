@@ -29,7 +29,8 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
       yield _mapPasswordUnfocusedToState(event, state);
     else if (event is LoginPasswordVisibility)
       yield _mapPasswordVisibilityToState(event, state);
-    if (event is LoginSubmitted) yield* _mapLoginSubmittedToState(event, state);
+    else if (event is LoginSubmitted)
+      yield* _mapLoginSubmittedToState(event, state);
   }
 
   LoginState _mapEmailChangedToState(
@@ -80,7 +81,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
     LoginPasswordVisibility event,
     LoginState state,
   ) {
-    final visibility = !state.passwordVisible;
+    final visibility = !state.passwordObscured;
     return state.copyWith(passwordVisible: visibility);
   }
 
@@ -102,7 +103,10 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
         yield state.copyWith(status: FormzStatus.submissionSuccess);
       } on LoginException catch (e) {
         log("Exception caught: ${e.message}");
-        yield state.copyWith(status: FormzStatus.submissionFailure, message: e.message);
+        yield state.copyWith(
+          status: FormzStatus.submissionFailure,
+          message: e.message,
+        );
       }
     }
   }

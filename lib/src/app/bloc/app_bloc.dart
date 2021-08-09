@@ -23,13 +23,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   @override
   Stream<AppState> mapEventToState(AppEvent event) async* {
     if (event is AuthenticationStatusChanged) {
-      yield await _mapAuthenticationChangedToState(event, state);
+      yield await _mapAuthenticationChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
       _authRepo.logOut();
     }
   }
 
-  Future<AppState> _mapAuthenticationChangedToState(AuthenticationStatusChanged event, AppState state) async {
+  Future<AppState> _mapAuthenticationChangedToState(AuthenticationStatusChanged event) async {
     switch (event.status) {
       case AuthStatus.registered:
         return const AppState.registered();
