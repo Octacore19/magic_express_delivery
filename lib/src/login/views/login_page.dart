@@ -58,32 +58,35 @@ class _LoginFormState extends State<_LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: BlocListener<LoginBloc, LoginState>(
-        listener: (context, state) {
-          if (state.status.isSubmissionFailure) {
-            String msg =
-                state.message.isEmpty ? 'Login failure' : state.message;
-            SnackBar snack = SnackBar(content: Text(msg));
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(snack);
-          }
-        },
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            children: [
-              headerWidget(),
-              const SizedBox(height: 16.0),
-              EmailInput(_emailFocusNode),
-              const SizedBox(height: 16.0),
-              PasswordInput(_passwordFocusNode),
-              const SizedBox(height: 32.0),
-              SubmitButton(),
-              const SizedBox(height: 16.0),
-              RegistrationButton(),
-            ],
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state.status.isSubmissionFailure) {
+          String msg =
+          state.message.isEmpty ? 'Login failure' : state.message;
+          SnackBar snack = SnackBar(content: Text(msg));
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(snack);
+        }
+      },
+      child: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 72),
+            child: Column(
+              children: [
+                headerWidget(),
+                const SizedBox(height: 24.0),
+                EmailInput(_emailFocusNode),
+                const SizedBox(height: 24.0),
+                PasswordInput(_passwordFocusNode),
+                const SizedBox(height: 96.0),
+                SubmitButton(),
+                const SizedBox(height: 16.0),
+                RegistrationButton(),
+              ],
+            ),
           ),
         ),
       ),

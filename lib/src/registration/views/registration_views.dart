@@ -38,10 +38,9 @@ class FirstNameInput extends StatelessWidget {
     final error =
         context.select((RegistrationBloc b) => b.state.firstName).error;
     return InputDecoration(
-      isDense: true,
       prefixIcon: Icon(Icons.person, color: primaryColor),
       focusColor: primaryColor,
-      hintText: 'first name',
+      hintText: 'First name',
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,
       focusedBorder: OutlineInputBorder(
@@ -104,10 +103,9 @@ class LastNameInput extends StatelessWidget {
     final error =
         context.select((RegistrationBloc b) => b.state.lastName).error;
     return InputDecoration(
-      isDense: true,
       focusColor: primaryColor,
       prefixIcon: Icon(Icons.person, color: primaryColor),
-      hintText: 'last name',
+      hintText: 'Last name',
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,
       focusedBorder: OutlineInputBorder(
@@ -170,10 +168,9 @@ class EmailInput extends StatelessWidget {
     final errorColor = Theme.of(context).errorColor;
     final error = context.select((RegistrationBloc b) => b.state.email).error;
     return InputDecoration(
-      isDense: true,
       prefixIcon: Icon(Icons.email, color: primaryColor),
       focusColor: primaryColor,
-      hintText: 'email',
+      hintText: 'Email',
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,
       focusedBorder: OutlineInputBorder(
@@ -243,10 +240,9 @@ class PhoneNumberInput extends StatelessWidget {
     final error =
         context.select((RegistrationBloc b) => b.state.phoneNumber).error;
     return InputDecoration(
-      isDense: true,
       focusColor: primaryColor,
       prefixIcon: Icon(Icons.phone, color: primaryColor),
-      hintText: 'phone number',
+      hintText: 'Phone number',
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,
       focusedBorder: OutlineInputBorder(
@@ -314,8 +310,7 @@ class PasswordInput extends StatelessWidget {
         context.select((RegistrationBloc b) => b.state.password).error;
     return InputDecoration(
       prefixIcon: Icon(Icons.password, color: primaryColor),
-      isDense: true,
-      hintText: 'password',
+      hintText: 'Password',
       focusColor: primaryColor,
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,
@@ -400,8 +395,7 @@ class ConfirmPasswordInput extends StatelessWidget {
         context.select((RegistrationBloc b) => b.state.confirmPassword).error;
     return InputDecoration(
       prefixIcon: Icon(Icons.password, color: primaryColor),
-      isDense: true,
-      hintText: 'confirm password',
+      hintText: 'Confirm password',
       focusColor: primaryColor,
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,

@@ -32,10 +32,9 @@ class EmailInput extends StatelessWidget {
     final errorColor = Theme.of(context).errorColor;
     final error = context.select((LoginBloc b) => b.state.email).error;
     return InputDecoration(
-      isDense: true,
       prefixIcon: Icon(Icons.email, color: primaryColor),
       focusColor: primaryColor,
-      hintText: 'email',
+      hintText: 'Email',
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,
       focusedBorder: OutlineInputBorder(
@@ -101,8 +100,7 @@ class PasswordInput extends StatelessWidget {
     final error = context.select((LoginBloc b) => b.state.password).error;
     return InputDecoration(
       prefixIcon: Icon(Icons.password, color: primaryColor),
-      isDense: true,
-      hintText: 'password',
+      hintText: 'Password',
       focusColor: primaryColor,
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,

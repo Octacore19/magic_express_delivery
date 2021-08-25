@@ -1,16 +1,16 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:services/services.dart';
 import 'package:services/src/commons/commons.dart';
 import 'package:services/src/interceptors/interceptors.dart';
-import 'package:services/src/local/local.dart';
 
 class ApiProvider {
-  final ICache _cache;
+  final Cache _cache;
   late Dio _dio;
   // late Dio _tokenDio;
 
-  ApiProvider({required ICache cache}) : _cache = cache {
+  ApiProvider({required Cache cache}) : _cache = cache {
     init();
   }
 
@@ -26,7 +26,7 @@ class ApiProvider {
     // _tokenDio = Dio(options);
   }
 
-  void _setInterceptors(Dio dio, ICache cache) {
+  void _setInterceptors(Dio dio, Cache cache) {
     dio.interceptors.addAll([
       LogInterceptor(
         responseBody: true,

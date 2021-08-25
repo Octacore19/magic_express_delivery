@@ -310,6 +310,10 @@ quiver
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.0.1/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.0.1/lib/
+rxdart
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.27.1/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.27.1/lib/
 shared_preferences
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.6/
@@ -382,6 +386,10 @@ universal_io
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/universal_io-2.0.4/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/universal_io-2.0.4/lib/
+uuid
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/uuid-3.0.4/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/uuid-3.0.4/lib/
 vector_math
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.0/

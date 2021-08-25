@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:services/services.dart';
 import 'package:services/src/commons/commons.dart';
-import 'package:services/src/local/local.dart';
 
 class RequestInterceptor extends Interceptor {
-  final ICache _cache;
+  final Cache _cache;
   final Dio _dio;
 
   RequestInterceptor({
-    required ICache cache,
+    required Cache cache,
     required Dio dio,
   }) : _cache = cache, _dio = dio;
 

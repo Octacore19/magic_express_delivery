@@ -20,7 +20,7 @@ class LoginException extends AuthException {
   const LoginException([String? message = '']) : super(message);
 }
 
-enum AuthStatus { unknown, loggedIn, registered, loggedOut }
+enum AuthStatus { unknown, loggedIn, loggedOut }
 
 class AuthRepo implements IAuthRepo {
   const AuthRepo._();
@@ -52,7 +52,7 @@ class AuthRepo implements IAuthRepo {
       _authRepo.loginUser(email, password);
 
   @override
-  Future<void> registerUser(
+  Future<String?> registerUser(
     String firstName,
     String lastName,
     String email,

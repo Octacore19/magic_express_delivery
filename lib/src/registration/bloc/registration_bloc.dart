@@ -324,7 +324,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     if (state.status.isValidated) {
       yield state.copyFrom(status: FormzStatus.submissionInProgress);
       try {
-        await _authRepo.registerUser(
+        final res = await _authRepo.registerUser(
           firstName.value,
           lastName.value,
           email.value,
@@ -332,7 +332,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           password.value,
           confirmPassword.value,
         );
-        yield state.copyFrom(status: FormzStatus.submissionSuccess);
+        yield state.copyFrom(status: FormzStatus.submissionSuccess, message: res);
       } on RegistrationException catch (e) {
         log("Exception caught: ${e.message}");
         yield state.copyFrom(

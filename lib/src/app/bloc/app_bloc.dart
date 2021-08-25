@@ -31,8 +31,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   Future<AppState> _mapAuthenticationChangedToState(AuthenticationStatusChanged event) async {
     switch (event.status) {
-      case AuthStatus.registered:
-        return const AppState.registered();
       case AuthStatus.loggedOut:
         return AppState.unauthenticated();
       case AuthStatus.loggedIn:

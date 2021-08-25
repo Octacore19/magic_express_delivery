@@ -1,5 +1,6 @@
 class ApiConstants {
   static const BASE_URL = 'https://medng.herokuapp.com/api';
+  static const GOOGLE_BASE_URL = 'https://maps.googleapis.com/maps/api';
   static const CONNECT_TIMEOUT = 10000;
   static const RECEIVE_TIMEOUT = 5000;
   static const NO_TOKEN = 'no_token';

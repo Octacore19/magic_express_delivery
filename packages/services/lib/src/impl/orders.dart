@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:services/src/commons/commons.dart';
 import 'package:services/src/contracts/orders.dart';
@@ -11,13 +9,11 @@ class OrdersImpl implements IOrdersService {
   OrdersImpl(this._dio);
 
   @override
-  Future<BaseResponse> createOrder(Map<String, dynamic> data) async {
+  Future<DioResponse> createOrder(Map<String, dynamic> data) async {
     final baseResponse = await _dio.post(
       ApiEndpoints.CREATE_ORDER,
       data: FormData.fromMap(data),
     );
-    final response = BaseResponse.fromJson(baseResponse.data);
-    log('Orders service response: $response');
-    return response;
+    return DioResponse.fromJson(baseResponse.data);
   }
 }

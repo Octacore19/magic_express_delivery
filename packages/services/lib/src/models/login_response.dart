@@ -6,19 +6,9 @@ class LoginResponse {
   LoginResponse.fromJson(Map<String, dynamic> json)
       : user = _User.fromJson(json['user']);
 
-  /*static User toUser(_User user) {
-    return User(
-      firstName: user.firstName ?? '',
-      lastName: user.lastName ?? '',
-      email: user.email ?? '',
-      phoneNumber: user.phoneNumber ?? '',
-      role: user.role ?? '',
-    );
-  }*/
-
   @override
   String toString() {
-    return '"user":$user';
+    return '$runtimeType(user: $user)';
   }
 }
 
@@ -46,10 +36,10 @@ class _User {
 
   @override
   String toString() {
-    return '"firstName":$firstName, '
-        '"lastName":$lastName, '
-        '"phoneNumber":$phoneNumber, '
-        '"email":$email, '
-        '"role":$role. ';
+    return '$runtimeType(firstName: $firstName, '
+        'lastName: $lastName, '
+        'phoneNumber: $phoneNumber, '
+        'email: $email, '
+        'role: $role)';
   }
 }

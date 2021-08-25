@@ -1,8 +1,6 @@
-import 'dart:developer';
+import 'package:services/src/contracts/contracts.dart';
 
-import 'package:services/src/local/local.dart';
-
-class CacheImpl implements ICache {
+class CacheImpl implements LocalService {
 
   CacheImpl() : _cache = <String, Object>{};
 
@@ -10,15 +8,23 @@ class CacheImpl implements ICache {
 
   @override
   void write<T extends Object>({required String key, required T value}) async {
-    log('Value saved to cache => $value');
     _cache[key] = value;
   }
 
   @override
   Future<T?> read<T extends Object>({required String key}) async {
     final value = _cache[key];
-    log('Value gotten from cache => $value');
     if (value is T) return value;
     return null;
+  }
+
+  @override
+  void remove({required String key}) {
+    _cache.remove(key);
+  }
+
+  @override
+  void clear() {
+    _cache.clear();
   }
 }

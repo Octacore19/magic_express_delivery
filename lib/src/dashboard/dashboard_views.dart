@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
+import 'package:magic_express_delivery/src/options/options.dart';
 import 'package:repositories/repositories.dart';
 
 class GreetingsView extends StatelessWidget {
@@ -49,16 +50,6 @@ class GreetingsView extends StatelessWidget {
       return 'Good afternoon';
     }
     return 'Good morning';
-    /*final hourOfDay = DateTime.now().hour;
-    DateTime.now().isAfter(DateTime)
-    if (hourOfDay >= 12 && hourOfDay < 18) {
-      return 'Good afternoon';
-    } else if (hourOfDay >= 18 && hourOfDay < 21) {
-      return 'Good evening';
-    } else if (hourOfDay >= 21 || hourOfDay < 3) {
-      return 'Goodnight';
-    } else
-      return 'Good morning';*/
   }
 }
 
@@ -94,7 +85,7 @@ class ErrandCardView extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.pushNamed(context, AppRoutes.DELIVERY_OPTIONS, arguments: 0);
+            Navigator.of(context).push(OptionsPage.route(0));
           },
         ),
       ),
@@ -134,7 +125,7 @@ class DeliveryCardView extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.pushNamed(context, AppRoutes.DELIVERY_OPTIONS, arguments: 1);
+            Navigator.of(context).push(OptionsPage.route(1));
           },
         ),
       ),

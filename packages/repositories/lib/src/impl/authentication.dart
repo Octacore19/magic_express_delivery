@@ -5,6 +5,7 @@ import 'package:repositories/src/api/api.dart';
 import 'package:repositories/src/contracts/contracts.dart';
 import 'package:repositories/src/models/models.dart';
 import 'package:repositories/src/models/user.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:services/services.dart';
 
 class AuthRepoImpl extends IAuthRepo {
@@ -19,7 +20,7 @@ class AuthRepoImpl extends IAuthRepo {
   final Cache _cache;
   final AuthService _auth;
 
-  final _statusController = StreamController<AuthStatus>();
+  final _statusController = BehaviorSubject<AuthStatus>();
 
   @override
   Stream<AuthStatus> get status async* {
@@ -36,16 +37,13 @@ class AuthRepoImpl extends IAuthRepo {
   @override
   Future<void> loginUser(String email, String password) async {
     try {
-      final data = {
-        'email': email,
-        'password': password,
-      };
+      final data = {'email': email, 'password': password};
       final response = await _auth.loginUser(data);
-      log('Login repo response => $response');
       if (response.success) {
-        final data = LoginResponse.fromJson(response.data);
-        _cache.write(key: userCacheKey, value: data.toUser);
-        _statusController.add(AuthStatus.loggedIn);
+        final data = BaseResponse.fromJson(response.data).data;
+        final d = LoginResponse.fromJson(data);
+        _cache.write(key: userCacheKey, value: d.toUser);
+        _statusController.sink.add(AuthStatus.loggedIn);
       } else {
         throw LoginException(response.message);
       }
@@ -55,7 +53,7 @@ class AuthRepoImpl extends IAuthRepo {
   }
 
   @override
-  Future<void> registerUser(
+  Future<String?> registerUser(
     String firstName,
     String lastName,
     String email,
@@ -74,9 +72,8 @@ class AuthRepoImpl extends IAuthRepo {
         'password_confirmation': confirmPassword,
       };
       final response = await _auth.registerUser(data);
-      log('Register repo response => $response');
       if (response.success) {
-        _statusController.add(AuthStatus.registered);
+        return BaseResponse.fromJson(response.data).message;
       } else {
         throw RegistrationException(response.message);
       }

@@ -19,13 +19,13 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _quantityCOntroller = TextEditingController();
+  final _quantityController = TextEditingController();
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
-    _quantityCOntroller.dispose();
+    _quantityController.dispose();
     super.dispose();
   }
 
@@ -179,7 +179,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
             height: 8.0,
           ),
           TextField(
-            controller: _quantityCOntroller,
+            controller: _quantityController,
             decoration: InputDecoration(
               isDense: true,
               labelText: 'Quantity',
@@ -193,7 +193,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
             onPressed: () {
               final name = _titleController.text.trim();
               final description = _descriptionController.text.trim();
-              final quantity = _quantityCOntroller.text.trim();
+              final quantity = _quantityController.text.trim();
               if (name.isNotEmpty && quantity.isNotEmpty) {
                 setState(() {
                   _items.add({
@@ -203,7 +203,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                   });
                   _titleController.clear();
                   _descriptionController.clear();
-                  _quantityCOntroller.clear();
+                  _quantityController.clear();
                 });
               }
             },

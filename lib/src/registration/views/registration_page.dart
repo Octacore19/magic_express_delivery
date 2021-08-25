@@ -9,7 +9,7 @@ import 'package:quiver/async.dart';
 class RegistrationPage extends StatelessWidget {
   const RegistrationPage();
 
-  static Route route() => AppRoutes.buildRoute(RegistrationPage());
+  static Route route() => AppRoutes.generateRoute(RegistrationPage());
 
   @override
   Widget build(BuildContext context) {
@@ -109,10 +109,10 @@ class _RegistrationFormState extends State<_RegistrationForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state.status.isSubmissionFailure) {
           String msg =
-          state.message.isEmpty ? 'Registration failure' : state.message;
+              state.message.isEmpty ? 'Registration failure' : state.message;
           SnackBar snack = SnackBar(content: Text(msg));
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -121,13 +121,12 @@ class _RegistrationFormState extends State<_RegistrationForm> {
           CountdownTimer(Duration(seconds: 3), Duration(seconds: 1))
               .listen((event) {
             if (event.elapsed.inSeconds == 3) {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
+              Navigator.of(context, rootNavigator: true).pop();
             }
           });
-          showDialog(
+          await showDialog(
             context: context,
-            builder: (_context) {
+            builder: (_) {
               return AlertDialog(
                 content: SingleChildScrollView(
                   child: Column(
@@ -135,41 +134,45 @@ class _RegistrationFormState extends State<_RegistrationForm> {
                       Icon(Icons.check_circle_outline, size: 48.0),
                       const SizedBox(height: 16.0),
                       Text(
-                        'Registration Successful! Kindly check your email for a verification link',
+                        state.message,
                         style: Theme.of(context).textTheme.headline6,
                       )
                     ],
                   ),
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24.0)
+                  borderRadius: BorderRadius.circular(24.0),
                 ),
               );
             },
           );
+          Navigator.of(context).pop();
         }
       },
       child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            children: [
-              headerWidget(),
-              SizedBox(height: 16.0),
-              FirstNameInput(_firstNameNode),
-              SizedBox(height: 16.0),
-              LastNameInput(_lastNameNode),
-              SizedBox(height: 16.0),
-              EmailInput(_emailNode),
-              SizedBox(height: 16.0),
-              PhoneNumberInput(_phoneNumberNode),
-              SizedBox(height: 16.0),
-              PasswordInput(_passwordNode, _confirmPasswordNode),
-              SizedBox(height: 16.0),
-              ConfirmPasswordInput(_confirmPasswordNode),
-              SizedBox(height: 32.0),
-              CreateButton(),
-            ],
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            child: Column(
+              children: [
+                headerWidget(),
+                SizedBox(height: 24),
+                FirstNameInput(_firstNameNode),
+                SizedBox(height: 24),
+                LastNameInput(_lastNameNode),
+                SizedBox(height: 24),
+                EmailInput(_emailNode),
+                SizedBox(height: 24),
+                PhoneNumberInput(_phoneNumberNode),
+                SizedBox(height: 24),
+                PasswordInput(_passwordNode, _confirmPasswordNode),
+                SizedBox(height: 24),
+                ConfirmPasswordInput(_confirmPasswordNode),
+                SizedBox(height: 72),
+                CreateButton(),
+              ],
+            ),
           ),
         ),
       ),

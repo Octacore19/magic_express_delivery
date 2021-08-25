@@ -1,16 +1,21 @@
+import 'package:services/src/contracts/contracts.dart';
 import 'package:services/src/impl/impl.dart';
-import 'package:services/src/local/local.dart';
 
-class Cache implements ICache {
+class Cache implements LocalService {
 
   Cache();
 
-  final _c = CacheImpl();
+  final _cache = CacheImpl();
 
   @override
-  Future<T?> read<T extends Object>({required String key}) => _c.read(key: key);
+  Future<T?> read<T extends Object>({required String key}) => _cache.read(key: key);
 
   @override
-  void write<T extends Object>({required String key, required T value}) => _c.write(key: key, value: value);
+  void write<T extends Object>({required String key, required T value}) => _cache.write(key: key, value: value);
 
+  @override
+  void remove({required String key}) => _cache.remove(key: key);
+
+  @override
+  void clear() => _cache.clear();
 }
