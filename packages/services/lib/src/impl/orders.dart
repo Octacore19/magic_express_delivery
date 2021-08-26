@@ -10,10 +10,14 @@ class OrdersImpl implements IOrdersService {
 
   @override
   Future<DioResponse> createOrder(Map<String, dynamic> data) async {
-    final baseResponse = await _dio.post(
-      ApiEndpoints.CREATE_ORDER,
-      data: FormData.fromMap(data),
-    );
-    return DioResponse.fromJson(baseResponse.data);
+    try {
+      final baseResponse = await _dio.post(
+        ApiEndpoints.CREATE_ORDER,
+        data: FormData.fromMap(data),
+      );
+      return DioResponse.fromJson(baseResponse.data);
+    } on Exception catch (e) {
+      throw e;
+    }
   }
 }

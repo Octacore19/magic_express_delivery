@@ -1,12 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
-import 'package:magic_express_delivery/src/login/login.dart';
-import 'package:magic_express_delivery/src/registration/registration.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+part of 'login_page.dart';
 
-class EmailInput extends StatelessWidget {
-  const EmailInput(this.node);
+class _EmailInput extends StatelessWidget {
+  const _EmailInput(this.node);
 
   final FocusNode node;
 
@@ -71,8 +66,8 @@ class EmailInput extends StatelessWidget {
   }
 }
 
-class PasswordInput extends StatelessWidget {
-  const PasswordInput(this.node);
+class _PasswordInput extends StatelessWidget {
+  const _PasswordInput(this.node);
 
   final FocusNode node;
 
@@ -147,7 +142,7 @@ class PasswordInput extends StatelessWidget {
   }
 }
 
-class SubmitButton extends StatelessWidget {
+class _SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
@@ -196,7 +191,7 @@ class SubmitButton extends StatelessWidget {
   }
 }
 
-class RegistrationButton extends StatelessWidget {
+class _RegistrationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {

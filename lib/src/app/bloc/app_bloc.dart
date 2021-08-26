@@ -13,6 +13,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       : _authRepo = authRepo,
         super(AppState.unknown()) {
     _statusSubscription = _authRepo.status.listen(_onStatusChanged);
+    _authRepo.onAppLaunch();
   }
 
   final AuthRepo _authRepo;

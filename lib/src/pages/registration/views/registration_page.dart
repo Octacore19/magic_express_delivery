@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
-import 'package:magic_express_delivery/src/registration/registration.dart';
-import 'package:magic_express_delivery/src/registration/views/registration_views.dart';
+import 'package:magic_express_delivery/src/pages/pages.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:quiver/async.dart';
+
+part 'registration_views.dart';
 
 class RegistrationPage extends StatelessWidget {
   const RegistrationPage();
@@ -158,19 +160,19 @@ class _RegistrationFormState extends State<_RegistrationForm> {
               children: [
                 headerWidget(),
                 SizedBox(height: 24),
-                FirstNameInput(_firstNameNode),
+                _FirstNameInput(_firstNameNode),
                 SizedBox(height: 24),
-                LastNameInput(_lastNameNode),
+                _LastNameInput(_lastNameNode),
                 SizedBox(height: 24),
-                EmailInput(_emailNode),
+                _EmailInput(_emailNode),
                 SizedBox(height: 24),
-                PhoneNumberInput(_phoneNumberNode),
+                _PhoneNumberInput(_phoneNumberNode),
                 SizedBox(height: 24),
-                PasswordInput(_passwordNode, _confirmPasswordNode),
+                _PasswordInput(_passwordNode, _confirmPasswordNode),
                 SizedBox(height: 24),
-                ConfirmPasswordInput(_confirmPasswordNode),
+                _ConfirmPasswordInput(_confirmPasswordNode),
                 SizedBox(height: 72),
-                CreateButton(),
+                _CreateButton(),
               ],
             ),
           ),

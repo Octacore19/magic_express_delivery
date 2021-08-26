@@ -10,22 +10,23 @@ class PreferencesImpl implements LocalService {
 
   @override
   void clear() async {
-    final pref = await _pref;
-    pref.clear();
+    try {
+      final pref = await _pref;
+      pref.clear();
+    } on Exception catch (e) {
+      throw e;
+    }
   }
 
   @override
   Future<T?> read<T extends Object>({required String key}) async {
     try {
-      final pref = await _pref;
-      if (T is String) {
-        return pref.getString(key) as T;
-      } else if (T is int) {
-        return pref.getInt(key) as T;
-      } else if (T is bool) {
-        return pref.getBool(key) as T;
-      }
-    } catch(e) {
+      T? value;
+      await _pref.then((pref) {
+        value = pref.get(key) as T;
+      });
+      return value;
+    } catch (e) {
       throw e;
     }
   }
@@ -35,23 +36,28 @@ class PreferencesImpl implements LocalService {
     try {
       final pref = await _pref;
       pref.remove(key);
-    } catch(e) {
+    } catch (e) {
       throw e;
     }
   }
 
   @override
-  void write<T extends Object>({required String key, required T value}) async {
+  Future<void> write<T extends Object>({
+    required String key,
+    required T value,
+  }) async {
     try {
       final pref = await _pref;
-      if (T is String) {
-        pref.setString(key, value as String);
-      } else if (T is int) {
-        pref.setInt(key, value as int);
-      } else if (T is bool) {
-        pref.setBool(key, value as bool);
+      bool completed = false;
+      if (value is String) {
+        completed = await pref.setString(key, value);
+      } else if (value is int) {
+        completed = await pref.setInt(key, value);
+      } else if (value is bool) {
+        completed = await pref.setBool(key, value);
       }
-    } catch(e) {
+      if (completed) return;
+    } catch (e) {
       throw e;
     }
   }

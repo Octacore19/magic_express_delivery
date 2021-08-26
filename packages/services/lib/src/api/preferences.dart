@@ -15,6 +15,6 @@ class Preferences implements LocalService {
   void remove({required String key}) => _pref.remove(key: key);
 
   @override
-  void write<T extends Object>({required String key, required T value}) =>
+  Future<void> write<T extends Object>({required String key, required T value}) =>
       _pref.write(key: key, value: value);
 }

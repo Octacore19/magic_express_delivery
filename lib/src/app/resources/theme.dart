@@ -18,7 +18,7 @@ class AppTheme {
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         textStyle: Theme.of(context).textTheme.button,
-        primary: Colors.blue[700],
+        primary: Colors.blue[900],
       ),
     ),
     textTheme: GoogleFonts.workSansTextTheme(

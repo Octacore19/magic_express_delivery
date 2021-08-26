@@ -7,8 +7,9 @@ class CacheImpl implements LocalService {
   final Map<String, Object> _cache;
 
   @override
-  void write<T extends Object>({required String key, required T value}) async {
+  Future<void> write<T extends Object>({required String key, required T value}) async {
     _cache[key] = value;
+    return;
   }
 
   @override

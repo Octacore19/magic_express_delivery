@@ -3,13 +3,14 @@ import 'package:services/services.dart';
 import 'package:services/src/commons/commons.dart';
 
 class RequestInterceptor extends Interceptor {
-  final Cache _cache;
-  final Dio _dio;
 
   RequestInterceptor({
-    required Cache cache,
+    required Preferences preference,
     required Dio dio,
-  }) : _cache = cache, _dio = dio;
+  }) : _preference = preference, _dio = dio;
+
+  final Preferences _preference;
+  final Dio _dio;
 
   @override
   void onRequest(
@@ -17,7 +18,7 @@ class RequestInterceptor extends Interceptor {
     if (options.headers.containsKey('no_token')) {
       options.headers.remove(ApiConstants.NO_TOKEN);
     } else {
-      await _cache.read<String>(key: ApiConstants.TOKEN).then((value) {
+      await _preference.read<String>(key: ApiConstants.TOKEN).then((value) {
         if (value != null && value.isNotEmpty) {
           options.headers['Authorization'] = 'Bearer $value';
         }

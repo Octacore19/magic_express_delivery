@@ -14,15 +14,17 @@ void main() async {
       RepositoryProvider(create: (_) => Cache()),
       RepositoryProvider(create: (_) => Preferences()),
       RepositoryProvider(
-        create: (context) => ApiProvider(cache: RepositoryProvider.of(context)),
+        create: (context) => ApiProvider(
+          preference: RepositoryProvider.of(context),
+        ),
       ),
       RepositoryProvider(
         create: (context) => AuthService(api: RepositoryProvider.of(context)),
       ),
       RepositoryProvider(
         create: (context) {
-          final repo = AuthRepo.getInstance(
-            cache: RepositoryProvider.of(context),
+          final repo = AuthRepo(
+            preference: RepositoryProvider.of(context),
             authService: RepositoryProvider.of(context),
           );
           repo.status.first;

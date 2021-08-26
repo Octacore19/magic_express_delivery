@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:magic_express_delivery/src/login/login.dart';
+import 'package:magic_express_delivery/src/pages/login/login.dart';
 import 'package:repositories/repositories.dart';
 
 part 'login_events.dart';

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:magic_express_delivery/src/login/bloc/login_bloc.dart';
-import 'package:magic_express_delivery/src/login/views/login_views.dart';
+import 'package:magic_express_delivery/src/pages/pages.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+part 'login_views.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage();
@@ -78,13 +80,13 @@ class _LoginFormState extends State<_LoginForm> {
               children: [
                 headerWidget(),
                 const SizedBox(height: 24.0),
-                EmailInput(_emailFocusNode),
+                _EmailInput(_emailFocusNode),
                 const SizedBox(height: 24.0),
-                PasswordInput(_passwordFocusNode),
+                _PasswordInput(_passwordFocusNode),
                 const SizedBox(height: 96.0),
-                SubmitButton(),
+                _SubmitButton(),
                 const SizedBox(height: 16.0),
-                RegistrationButton(),
+                _RegistrationButton(),
               ],
             ),
           ),

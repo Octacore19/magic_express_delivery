@@ -11,7 +11,7 @@ class Cache implements LocalService {
   Future<T?> read<T extends Object>({required String key}) => _cache.read(key: key);
 
   @override
-  void write<T extends Object>({required String key, required T value}) => _cache.write(key: key, value: value);
+  Future<void> write<T extends Object>({required String key, required T value}) => _cache.write(key: key, value: value);
 
   @override
   void remove({required String key}) => _cache.remove(key: key);

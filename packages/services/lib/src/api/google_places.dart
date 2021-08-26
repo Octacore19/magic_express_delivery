@@ -7,11 +7,10 @@ class PlacesService implements IPlacesService {
   final IPlacesService _service;
 
   @override
-  Future<DioResponse> fetchPlaceDetail(String id) =>
-      _service.fetchPlaceDetail(id);
+  Future<DioResponse> fetchPlaceDetail(Map<String, dynamic> queryParams) =>
+      _service.fetchPlaceDetail(queryParams);
 
   @override
-  Future<DioResponse> searchForPlace(
-          String keyword, Map<String, dynamic> queryParams) =>
-      _service.searchForPlace(keyword, queryParams);
+  Future<DioResponse> searchForPlace(Map<String, dynamic> queryParams) =>
+      _service.searchForPlace(queryParams);
 }

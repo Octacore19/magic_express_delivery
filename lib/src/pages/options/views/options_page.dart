@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
-import 'package:magic_express_delivery/src/options/options.dart';
+import 'package:magic_express_delivery/src/pages/pages.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import 'options_views.dart';
+part 'options_views.dart';
 
 class OptionsPage extends StatelessWidget {
   final Object? args;
@@ -39,13 +40,13 @@ class _Option extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<OptionsCubit>().setCurrentPosition(args);
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          const SizedBox(height: 16.0),
-          PersonnelOptionsView(),
-          const SizedBox(height: 56.0),
-          ContinueButton(),
+          const SizedBox(height: 16),
+          _PersonnelOptionsView(),
+          const SizedBox(height: 56),
+          _ContinueButton(),
         ],
       ),
     );

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:magic_express_delivery/src/dashboard/dashboard_page.dart';
-import 'package:magic_express_delivery/src/login/login.dart';
-import 'package:magic_express_delivery/src/registration/registration.dart';
+import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:repositories/repositories.dart';
 
 class AppRoutes {

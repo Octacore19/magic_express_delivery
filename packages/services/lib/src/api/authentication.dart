@@ -5,7 +5,7 @@ import 'package:services/src/providers/providers.dart';
 
 class AuthService implements IAuthenticationService {
   AuthService({required ApiProvider api}) {
-    _auth = AuthImpl(api.instance);
+    _auth = AuthImpl(api.mainInstance);
   }
 
   late IAuthenticationService _auth;

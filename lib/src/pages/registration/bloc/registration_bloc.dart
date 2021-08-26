@@ -3,8 +3,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:magic_express_delivery/src/login/login.dart';
-import 'package:magic_express_delivery/src/registration/registration.dart';
+import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:repositories/repositories.dart';
 
 part 'registration_events.dart';

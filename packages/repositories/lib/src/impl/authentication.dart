@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:repositories/src/api/api.dart';
@@ -12,26 +13,40 @@ class AuthRepoImpl extends IAuthRepo {
   static const userCacheKey = '__user_cache_key__';
 
   AuthRepoImpl({
-    required Cache cache,
+    required Preferences preference,
     required AuthService auth,
-  })  : _cache = cache,
+  })  : _preference = preference,
         _auth = auth;
 
-  final Cache _cache;
+  final Preferences _preference;
   final AuthService _auth;
 
   final _statusController = BehaviorSubject<AuthStatus>();
 
   @override
   Stream<AuthStatus> get status async* {
-    yield AuthStatus.loggedOut;
+    yield AuthStatus.unknown;
     yield* _statusController.stream;
   }
 
   @override
   Future<User> get currentUser async {
-    final user = await _cache.read<User>(key: userCacheKey);
+    User? user;
+    final userJson = await _preference.read<String>(key: userCacheKey) ?? '';
+    if (userJson.isNotEmpty) {
+      user = User.fromSerializedJson(jsonDecode(userJson));
+    }
     return user ?? User.empty;
+  }
+
+  @override
+  Future<void> onAppLaunch() async {
+    final userJson = await _preference.read<String>(key: userCacheKey) ?? '';
+    if (userJson.isEmpty) {
+      _statusController.sink.add(AuthStatus.loggedOut);
+    } else {
+      _statusController.sink.add(AuthStatus.loggedIn);
+    }
   }
 
   @override
@@ -41,8 +56,9 @@ class AuthRepoImpl extends IAuthRepo {
       final response = await _auth.loginUser(data);
       if (response.success) {
         final data = BaseResponse.fromJson(response.data).data;
-        final d = LoginResponse.fromJson(data);
-        _cache.write(key: userCacheKey, value: d.toUser);
+        final user = LoginResponse.fromJson(data).toUser;
+        final userString = user.toSerializedJson();
+        _preference.write<String>(key: userCacheKey, value: userString);
         _statusController.sink.add(AuthStatus.loggedIn);
       } else {
         throw LoginException(response.message);
@@ -89,6 +105,7 @@ class AuthRepoImpl extends IAuthRepo {
 
   @override
   void logOut() {
+    _preference.remove(key: userCacheKey);
     _statusController.add(AuthStatus.loggedOut);
   }
 }

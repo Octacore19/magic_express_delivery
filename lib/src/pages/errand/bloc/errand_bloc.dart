@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:magic_express_delivery/src/errand/model/cart_item.dart';
-import 'package:magic_express_delivery/src/options/options.dart';
+import 'package:magic_express_delivery/src/pages/pages.dart';
 
 part 'errand_event.dart';
 part 'errand_state.dart';

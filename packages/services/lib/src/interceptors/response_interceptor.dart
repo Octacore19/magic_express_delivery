@@ -3,11 +3,11 @@ import 'package:services/services.dart';
 import 'package:services/src/commons/commons.dart';
 
 class ResponseInterceptor extends Interceptor {
-  final Cache _cache;
-
   ResponseInterceptor({
-    required Cache cache,
-  }) : _cache = cache;
+    required Preferences preference,
+  }) : _preference = preference;
+
+  final Preferences _preference;
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
@@ -17,9 +17,9 @@ class ResponseInterceptor extends Interceptor {
     if (response.requestOptions.uri
         .toString()
         .contains(ApiEndpoints.LOGIN_USER)) {
-      _cache.write<String>(
+      _preference.write<String>(
           key: ApiConstants.TOKEN, value: data['data'][ApiConstants.TOKEN]);
-      _cache.write<int>(
+      _preference.write<int>(
           key: ApiConstants.TIME_STAMP,
           value: DateTime.now().millisecondsSinceEpoch);
     }

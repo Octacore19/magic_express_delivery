@@ -9,6 +9,8 @@ abstract class IAuthRepo {
 
   Future<User> get currentUser;
 
+  Future<void> onAppLaunch();
+
   Future<void> loginUser(String email, String password);
 
   Future<String?> registerUser(

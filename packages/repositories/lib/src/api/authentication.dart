@@ -23,23 +23,23 @@ class LoginException extends AuthException {
 enum AuthStatus { unknown, loggedIn, loggedOut }
 
 class AuthRepo implements IAuthRepo {
-  const AuthRepo._();
-
-  static late IAuthRepo _authRepo;
-
-  static AuthRepo getInstance({
-    required Cache cache,
+  AuthRepo({
+    required Preferences preference,
     required AuthService authService,
   }) {
-    _authRepo = AuthRepoImpl(cache: cache, auth: authService);
-    return AuthRepo._();
+    _authRepo = AuthRepoImpl(preference: preference, auth: authService);
   }
+
+  late IAuthRepo _authRepo;
 
   @override
   Stream<AuthStatus> get status => _authRepo.status;
 
   @override
   Future<User> get currentUser => _authRepo.currentUser;
+
+  @override
+  Future<void> onAppLaunch() => _authRepo.onAppLaunch();
 
   @override
   void dispose() => _authRepo.dispose();

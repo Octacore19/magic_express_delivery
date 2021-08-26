@@ -1,16 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:magic_express_delivery/src/errand/errand.dart';
-import 'package:magic_express_delivery/src/utils/currency_converter.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+part of 'errand_page.dart';
 
-class StoreNameInput extends StatelessWidget {
+class _StoreNameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
-        isDense: true,
         labelText: 'Store name',
         labelStyle: Theme.of(context).textTheme.bodyText2,
       ),
@@ -18,14 +12,13 @@ class StoreNameInput extends StatelessWidget {
   }
 }
 
-class StoreAddressInput extends StatelessWidget {
+class _StoreAddressInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TypeAheadField(
       textFieldConfiguration: TextFieldConfiguration(
         keyboardType: TextInputType.streetAddress,
         decoration: InputDecoration(
-          isDense: true,
           labelText: 'Store address',
           labelStyle: Theme.of(context).textTheme.bodyText2,
         ),
@@ -39,14 +32,13 @@ class StoreAddressInput extends StatelessWidget {
   }
 }
 
-class DeliveryAddressInput extends StatelessWidget {
+class _DeliveryAddressInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TypeAheadField(
       textFieldConfiguration: TextFieldConfiguration(
         keyboardType: TextInputType.streetAddress,
         decoration: InputDecoration(
-          isDense: true,
           labelText: 'Delivery address',
           labelStyle: Theme.of(context).textTheme.bodyText2,
         ),
@@ -60,7 +52,7 @@ class DeliveryAddressInput extends StatelessWidget {
   }
 }
 
-class ShoppingCartView extends StatelessWidget {
+class _ShoppingCartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -80,24 +72,25 @@ class ShoppingCartView extends StatelessWidget {
                   ?.apply(color: Colors.white),
             ),
           ),
-          CartItemsView(),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: BlocSelector<ErrandBloc, ErrandState, double>(
-              selector: (s) => s.totalPrice,
-              builder: (context, total) {
-                if (total != 0) {
-                  return Text(
+          _CartItemsView(),
+          BlocSelector<ErrandBloc, ErrandState, double>(
+            selector: (s) => s.totalPrice,
+            builder: (context, total) {
+              return Visibility(
+                visible: total != 0,
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: Text(
                     'Total Price: ${convertToNairaAndKobo(total)}',
-                    style: Theme.of(context).textTheme.caption?.apply(
-                      fontFamily: 'Roboto'
-                    ),
-                  );
-                }
-                return Container();
-              },
-            ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .caption
+                        ?.apply(fontFamily: 'Roboto'),
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -105,7 +98,7 @@ class ShoppingCartView extends StatelessWidget {
   }
 }
 
-class CartItemsView extends StatelessWidget {
+class _CartItemsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<ErrandBloc, ErrandState, List<CartItem>>(
@@ -143,8 +136,33 @@ class CartItemsView extends StatelessWidget {
   }
 }
 
-class ItemNameInput extends StatelessWidget {
-  const ItemNameInput(this.controller);
+class _AddOrderButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton.icon(
+        style: TextButton.styleFrom(
+          textStyle: Theme.of(context).textTheme.button,
+        ),
+        onPressed: () {
+          _AddItemDialog()..show(context);
+          /*FocusScope.of(context).unfocus();
+          final event = ErrandEvent(ErrandEvents.OnItemAdded);
+          context.read<ErrandBloc>().add(event);*/
+        },
+        icon: Icon(
+          MdiIcons.plus,
+          size: 16.0,
+        ),
+        label: Text('Add'),
+      ),
+    );
+  }
+}
+
+class _ItemNameInput extends StatelessWidget {
+  const _ItemNameInput(this.controller);
 
   final TextEditingController controller;
 
@@ -157,7 +175,6 @@ class ItemNameInput extends StatelessWidget {
         context.read<ErrandBloc>().add(event);
       },
       decoration: InputDecoration(
-        isDense: true,
         labelText: 'Item name',
         labelStyle: Theme.of(context).textTheme.bodyText2,
       ),
@@ -165,8 +182,8 @@ class ItemNameInput extends StatelessWidget {
   }
 }
 
-class DescriptionInput extends StatelessWidget {
-  const DescriptionInput(this.controller);
+class _DescriptionInput extends StatelessWidget {
+  const _DescriptionInput(this.controller);
 
   final TextEditingController controller;
 
@@ -179,7 +196,6 @@ class DescriptionInput extends StatelessWidget {
         context.read<ErrandBloc>().add(event);
       },
       decoration: InputDecoration(
-        isDense: true,
         labelText: 'Description',
         labelStyle: Theme.of(context).textTheme.bodyText2,
       ),
@@ -187,8 +203,8 @@ class DescriptionInput extends StatelessWidget {
   }
 }
 
-class QuantityInput extends StatelessWidget {
-  const QuantityInput(this.controller);
+class _QuantityInput extends StatelessWidget {
+  const _QuantityInput(this.controller);
 
   final TextEditingController controller;
 
@@ -202,7 +218,6 @@ class QuantityInput extends StatelessWidget {
           context.read<ErrandBloc>().add(event);
         },
         decoration: InputDecoration(
-          isDense: true,
           labelText: 'Quantity',
           labelStyle: Theme.of(context).textTheme.bodyText2,
         ),
@@ -211,8 +226,8 @@ class QuantityInput extends StatelessWidget {
   }
 }
 
-class UnitPriceInput extends StatelessWidget {
-  const UnitPriceInput(this.controller);
+class _UnitPriceInput extends StatelessWidget {
+  const _UnitPriceInput(this.controller);
 
   final TextEditingController controller;
 
@@ -226,7 +241,6 @@ class UnitPriceInput extends StatelessWidget {
           context.read<ErrandBloc>().add(event);
         },
         decoration: InputDecoration(
-          isDense: true,
           labelText: 'Unit Price',
           labelStyle: Theme.of(context).textTheme.bodyText2,
         ),
@@ -235,35 +249,14 @@ class UnitPriceInput extends StatelessWidget {
   }
 }
 
-class AddOrderButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return TextButton.icon(
-      style: TextButton.styleFrom(
-        textStyle: Theme.of(context).textTheme.button,
-      ),
-      onPressed: () {
-        FocusScope.of(context).unfocus();
-        final event = ErrandEvent(ErrandEvents.OnItemAdded);
-        context.read<ErrandBloc>().add(event);
-      },
-      icon: Icon(
-        MdiIcons.plus,
-        size: 16.0,
-      ),
-      label: Text('Add'),
-    );
-  }
-}
-
-class NextToProcessButton extends StatelessWidget {
+class _NextToProcessButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.all(12.0),
+          padding: EdgeInsets.all(16),
           textStyle: Theme.of(context).textTheme.button,
         ),
         onPressed: () {
@@ -279,6 +272,57 @@ class NextToProcessButton extends StatelessWidget {
         },
         icon: Icon(MdiIcons.chevronRight),
         label: Text(''),
+      ),
+    );
+  }
+}
+
+class _AddItemDialog extends StatefulWidget {
+  void show(BuildContext context) {
+    showDialog(context: context, builder: (_) => _AddItemDialog());
+  }
+
+  @override
+  State<StatefulWidget> createState() => _AddItemDialogState();
+}
+
+class _AddItemDialogState extends State<_AddItemDialog> {
+  final _itemNameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _quantityController = TextEditingController();
+  final _priceController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    final state = context.read<ErrandBloc>().state;
+    TextUtil.setText(_itemNameController, state.itemName);
+    TextUtil.setText(_descriptionController, state.description);
+    TextUtil.setText(_quantityController, state.quantity);
+    TextUtil.setText(_priceController, state.unitPrice);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            _ItemNameInput(_itemNameController),
+            const SizedBox(height: 8.0),
+            _DescriptionInput(_descriptionController),
+            const SizedBox(height: 8.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _QuantityInput(_quantityController),
+                const SizedBox(width: 96.0),
+                _UnitPriceInput(_priceController)
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -6,27 +6,32 @@ import 'package:services/src/commons/commons.dart';
 import 'package:services/src/interceptors/interceptors.dart';
 
 class ApiProvider {
-  final Cache _cache;
-  late Dio _dio;
-  // late Dio _tokenDio;
+  final Preferences _preference;
+  late Dio _mainDio;
+  late Dio _googleDio;
 
-  ApiProvider({required Cache cache}) : _cache = cache {
+  ApiProvider({required Preferences preference}) : _preference = preference {
     init();
   }
 
   void init() {
-    var options = BaseOptions(
+    var mainOption = BaseOptions(
       baseUrl: ApiConstants.BASE_URL,
       connectTimeout: ApiConstants.CONNECT_TIMEOUT,
       receiveTimeout: ApiConstants.RECEIVE_TIMEOUT,
     );
-    _dio = Dio(options);
-    _setInterceptors(_dio, _cache);
-
-    // _tokenDio = Dio(options);
+    var googleOption = BaseOptions(
+      baseUrl: ApiConstants.BASE_URL,
+      connectTimeout: ApiConstants.CONNECT_TIMEOUT,
+      receiveTimeout: ApiConstants.RECEIVE_TIMEOUT,
+    );
+    _mainDio = Dio(mainOption);
+    _googleDio = Dio(googleOption);
+    _setInterceptors(_mainDio, _preference);
+    _setInterceptors(_googleDio, _preference);
   }
 
-  void _setInterceptors(Dio dio, Cache cache) {
+  void _setInterceptors(Dio dio, Preferences preference) {
     dio.interceptors.addAll([
       LogInterceptor(
         responseBody: true,
@@ -36,13 +41,14 @@ class ApiProvider {
         },
       ),
       RequestInterceptor(
-        cache: cache,
+        preference: preference,
         dio: dio,
       ),
-      ResponseInterceptor(cache: cache),
+      ResponseInterceptor(preference: preference),
       ErrorInterceptor(),
     ]);
   }
 
-  Dio get instance => _dio;
+  Dio get mainInstance => _mainDio;
+  Dio get googleInstance => _googleDio;
 }

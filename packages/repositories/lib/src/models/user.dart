@@ -21,6 +21,28 @@ class User extends Equatable {
 
   bool get isNotEmpty => this != User.empty;
 
+  factory User.fromSerializedJson(Map<String, dynamic> json) {
+    return User(
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      email: json['email'] ?? '',
+      phoneNumber: json['phoneNumber'] ?? '',
+      role: json['role'],
+    );
+  }
+
+  String toSerializedJson() {
+    final json =
+        '{'
+        '"firstName":"${this.firstName}",'
+        '"lastName":"${this.lastName}",'
+        '"email":"${this.email}",'
+        '"phoneNumber":"${this.phoneNumber}",'
+        '"role": "${this.role}"'
+        '}';
+    return json;
+  }
+
   @override
   List<Object?> get props => [firstName, lastName, email, phoneNumber, role];
 }

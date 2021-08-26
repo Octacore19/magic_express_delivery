@@ -1,12 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
-import 'package:magic_express_delivery/src/login/login.dart';
-import 'package:magic_express_delivery/src/registration/registration.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+part of 'registration_page.dart';
 
-class FirstNameInput extends StatelessWidget {
-  const FirstNameInput(this.node);
+class _FirstNameInput extends StatelessWidget {
+  const _FirstNameInput(this.node);
 
   final FocusNode node;
 
@@ -70,8 +65,8 @@ class FirstNameInput extends StatelessWidget {
   }
 }
 
-class LastNameInput extends StatelessWidget {
-  const LastNameInput(this.node);
+class _LastNameInput extends StatelessWidget {
+  const _LastNameInput(this.node);
 
   final FocusNode node;
 
@@ -136,8 +131,8 @@ class LastNameInput extends StatelessWidget {
   }
 }
 
-class EmailInput extends StatelessWidget {
-  const EmailInput(this.node);
+class _EmailInput extends StatelessWidget {
+  const _EmailInput(this.node);
 
   final FocusNode node;
 
@@ -207,8 +202,8 @@ class EmailInput extends StatelessWidget {
   }
 }
 
-class PhoneNumberInput extends StatelessWidget {
-  const PhoneNumberInput(this.node);
+class _PhoneNumberInput extends StatelessWidget {
+  const _PhoneNumberInput(this.node);
 
   final FocusNode node;
 
@@ -273,8 +268,8 @@ class PhoneNumberInput extends StatelessWidget {
   }
 }
 
-class PasswordInput extends StatelessWidget {
-  const PasswordInput(this.node, [this.next]);
+class _PasswordInput extends StatelessWidget {
+  const _PasswordInput(this.node, [this.next]);
 
   final FocusNode node;
   final FocusNode? next;
@@ -360,8 +355,8 @@ class PasswordInput extends StatelessWidget {
   }
 }
 
-class ConfirmPasswordInput extends StatelessWidget {
-  const ConfirmPasswordInput(this.node);
+class _ConfirmPasswordInput extends StatelessWidget {
+  const _ConfirmPasswordInput(this.node);
 
   final FocusNode node;
 
@@ -445,7 +440,7 @@ class ConfirmPasswordInput extends StatelessWidget {
   }
 }
 
-class CreateButton extends StatelessWidget {
+class _CreateButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
