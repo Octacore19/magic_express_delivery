@@ -19,17 +19,17 @@ void main() async {
         ),
       ),
       RepositoryProvider(
-        create: (context) => AuthService(api: RepositoryProvider.of(context)),
-      ),
-      RepositoryProvider(
         create: (context) {
           final repo = AuthRepo(
             preference: RepositoryProvider.of(context),
-            authService: RepositoryProvider.of(context),
+            api: RepositoryProvider.of(context),
           );
           repo.status.first;
           return repo;
         },
+      ),
+      RepositoryProvider(
+        create: (context) => PlacesRepo(api: RepositoryProvider.of(context)),
       ),
     ],
     child: App(),

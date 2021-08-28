@@ -15,3 +15,18 @@ class App extends StatelessWidget {
     );
   }
 }
+
+class LoadingPage extends StatelessWidget {
+  const LoadingPage();
+
+  static Page route() => const MaterialPage<void>(child: const LoadingPage());
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator.adaptive(),
+      ),
+    );
+  }
+}

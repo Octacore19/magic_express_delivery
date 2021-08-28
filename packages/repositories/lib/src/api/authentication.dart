@@ -25,9 +25,9 @@ enum AuthStatus { unknown, loggedIn, loggedOut }
 class AuthRepo implements IAuthRepo {
   AuthRepo({
     required Preferences preference,
-    required AuthService authService,
+    required ApiProvider api,
   }) {
-    _authRepo = AuthRepoImpl(preference: preference, auth: authService);
+    _authRepo = AuthRepoImpl(preference: preference, api: api);
   }
 
   late IAuthRepo _authRepo;

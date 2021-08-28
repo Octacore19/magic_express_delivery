@@ -1,19 +1,28 @@
 import 'package:repositories/repositories.dart';
 import 'package:repositories/src/contracts/contracts.dart';
+import 'package:repositories/src/models/place_detail.dart';
 import 'package:services/services.dart';
+import 'package:uuid/uuid.dart';
 
-class PlacesImpl implements IPlaces {
-  PlacesImpl(this._service);
+class PlacesRepoImpl implements IPlacesRepo {
+  PlacesRepoImpl(ApiProvider api) {
+    _service = PlacesService(api: api);
+  }
 
-  final PlacesService _service;
+  final Uuid _uuid = Uuid();
+
+  late PlacesService _service;
+  String _sessionToken = '';
 
   @override
   Future<List<Prediction>> searchForPlaces(String keyword) async {
+    if (_sessionToken.isEmpty) _sessionToken = _uuid.v4();
     try {
       final query = {
         'input': keyword,
         'types': 'address',
         'components': 'country:ng',
+        'sessiontoken': _sessionToken,
         'key': ApiConstants.GOOGLE_PLACES_KEY
       };
       final res = await _service.searchForPlace(query);
@@ -29,6 +38,26 @@ class PlacesImpl implements IPlaces {
               ))
           .toList();
     } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<PlaceDetail> fetchDetail(String placeId) async {
+    try {
+      final query = {
+        'place_id': placeId,
+        'fields': 'formatted_address,name,geometry',
+        'sessiontoken': _sessionToken,
+        'key': ApiConstants.GOOGLE_PLACES_KEY
+      };
+      final res = await _service.fetchPlaceDetail(query);
+      if (!res.success) throw Exception(res.message);
+      final data = BaseResponse.fromJson(res.data).data;
+      final placeDetailRes = PlaceDetailResponse.fromJson(data);
+      _sessionToken = '';
+      return PlaceDetail.fromResponse(placeDetailRes);
+    } catch(e) {
       throw e;
     }
   }

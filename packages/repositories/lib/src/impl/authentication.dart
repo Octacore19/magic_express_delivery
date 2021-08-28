@@ -14,14 +14,15 @@ class AuthRepoImpl extends IAuthRepo {
 
   AuthRepoImpl({
     required Preferences preference,
-    required AuthService auth,
-  })  : _preference = preference,
-        _auth = auth;
+    required ApiProvider api,
+  })  : _preference = preference {
+    _auth = AuthService(api: api);
+  }
 
   final Preferences _preference;
-  final AuthService _auth;
 
   final _statusController = BehaviorSubject<AuthStatus>();
+  late AuthService _auth;
 
   @override
   Stream<AuthStatus> get status async* {

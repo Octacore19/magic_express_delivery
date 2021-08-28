@@ -1,19 +1,21 @@
 part of 'errand_bloc.dart';
 
 class ErrandEvent extends Equatable {
-  const ErrandEvent(this.event, [this.args]);
+  const ErrandEvent(this.action, [this.args]);
 
-  final ErrandEvents event;
+  final ErrandAction action;
   final Object? args;
 
   @override
-  List<Object?> get props => [event, args];
+  List<Object?> get props => [action, args];
 }
 
-enum ErrandEvents {
+enum ErrandAction {
   OnStoreNameChanged,
   onStoreAddressChanged,
   OnDeliveryAddressChanged,
+  OnSetStoreAddressDetail,
+  OnSetDeliveryAddressDetail,
   OnItemNameChanged,
   OnItemDescriptionChanged,
   OnItemQuantityChanged,

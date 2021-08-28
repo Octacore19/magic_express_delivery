@@ -1,82 +1,78 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
+import 'package:repositories/repositories.dart';
 
 part 'errand_event.dart';
+
 part 'errand_state.dart';
 
 class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
-
-  ErrandBloc(OptionsCubit optionsCubit): super(ErrandState()){
+  ErrandBloc({
+    required OptionsCubit optionsCubit,
+    required PlacesRepo places,
+  })  : _places = places,
+        super(ErrandState()) {
     optionsCubit.state;
+    _storeAddressSub = places.pickupDetail.listen((detail) {
+      emit(state.copyWith(storeDetail: detail));
+    });
+    _deliveryAddressSub = places.destinationDetail.listen((detail) {
+      emit(state.copyWith(deliveryDetail: detail));
+    });
   }
+
+  final PlacesRepo _places;
+
+  late StreamSubscription _storeAddressSub;
+  late StreamSubscription _deliveryAddressSub;
 
   @override
   Stream<ErrandState> mapEventToState(ErrandEvent event) async* {
-    switch (event.event) {
-      case ErrandEvents.OnStoreNameChanged:
-        yield _mapOnStoreNameChanged(state, event);
+    switch (event.action) {
+      case ErrandAction.OnStoreNameChanged:
+        String? name = event.args as String?;
+        yield state.copyWith(storeName: name);
         break;
-      case ErrandEvents.onStoreAddressChanged:
-        yield _mapOnStoreAddressChanged(state, event);
+      case ErrandAction.onStoreAddressChanged:
+        String? add = event.args as String?;
+        yield state.copyWith(storeAddress: add);
         break;
-      case ErrandEvents.OnDeliveryAddressChanged:
-        yield _mapOnDeliveryAddressChanged(state, event);
+      case ErrandAction.OnDeliveryAddressChanged:
+        String? address = event.args as String?;
+        yield state.copyWith(deliveryAddress: address);
         break;
-      case ErrandEvents.OnItemNameChanged:
-        yield _mapOnItemNameChanged(state, event);
+      case ErrandAction.OnItemNameChanged:
+        String? name = event.args as String?;
+        yield state.copyWith(itemName: name);
         break;
-      case ErrandEvents.OnItemDescriptionChanged:
-        yield _mapOnItemDescriptionChanged(state, event);
+      case ErrandAction.OnItemDescriptionChanged:
+        String? desc = event.args as String?;
+        yield state.copyWith(description: desc);
         break;
-      case ErrandEvents.OnItemQuantityChanged:
-        yield _mapOnItemQuantityChanged(state, event);
+      case ErrandAction.OnItemQuantityChanged:
+        String? quantity = event.args as String?;
+        yield state.copyWith(quantity: quantity);
         break;
-      case ErrandEvents.OnItemPriceChanged:
-        yield _mapOnItemUnitPriceChanged(state, event);
+      case ErrandAction.OnItemPriceChanged:
+        String? price = event.args as String?;
+        yield state.copyWith(unitPrice: price);
         break;
-      case ErrandEvents.OnItemAdded:
+      case ErrandAction.OnItemAdded:
         yield _mapOnItemAdded(state);
         break;
-      case ErrandEvents.OnItemRemoved:
+      case ErrandAction.OnItemRemoved:
         yield _mapOnItemRemoved(state, event);
         break;
+      case ErrandAction.OnSetStoreAddressDetail:
+        _fetchStoreDetail(event);
+        break;
+      case ErrandAction.OnSetDeliveryAddressDetail:
+        _fetchDestinationDetail(event);
+        break;
     }
-  }
-
-  ErrandState _mapOnStoreNameChanged(ErrandState state, ErrandEvent event) {
-    String? name = event.args as String?;
-    return state.copyWith(storeName: name);
-  }
-
-  ErrandState _mapOnStoreAddressChanged(ErrandState state, ErrandEvent event) {
-    String? add = event.args as String?;
-    return state.copyWith(storeAddress: add);
-  }
-
-  ErrandState _mapOnDeliveryAddressChanged(ErrandState state, ErrandEvent event) {
-    String? add = event.args as String?;
-    return state.copyWith(deliveryAddress: add);
-  }
-
-  ErrandState _mapOnItemNameChanged(ErrandState state, ErrandEvent event) {
-    String? name = event.args as String?;
-    return state.copyWith(itemName: name);
-  }
-
-  ErrandState _mapOnItemDescriptionChanged(ErrandState state, ErrandEvent event) {
-    String? desc = event.args as String?;
-    return state.copyWith(description: desc);
-  }
-
-  ErrandState _mapOnItemQuantityChanged(ErrandState state, ErrandEvent event) {
-    String? q = event.args as String?;
-    return state.copyWith(quantity: q);
-  }
-
-  ErrandState _mapOnItemUnitPriceChanged(ErrandState state, ErrandEvent event) {
-    String? q = event.args as String?;
-    return state.copyWith(unitPrice: q);
   }
 
   ErrandState _mapOnItemAdded(ErrandState state) {
@@ -107,6 +103,39 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     );
   }
 
+  void _fetchStoreDetail(ErrandEvent event) async {
+    Prediction? prediction = event.args as Prediction?;
+    if (prediction != null) {
+      try {
+        _places.fetchPickupDetail(prediction.id);
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  void _fetchDestinationDetail(ErrandEvent event) async {
+    Prediction? prediction = event.args as Prediction?;
+    if (prediction != null) {
+      try {
+        _places.fetchDestinationDetail(prediction.id);
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  Future<List<Prediction>> searchPlaces(String keyword) async {
+    List<Prediction> predictions = List.empty(growable: true);
+    try {
+      if (keyword.isNotEmpty)
+        predictions = await _places.searchForPlaces(keyword);
+    } on Exception catch (e) {
+      throw e;
+    }
+    return predictions;
+  }
+
   double _calculateTotalPrice(List<CartItem> items) {
     double p = 0;
     items.forEach((element) {
@@ -116,5 +145,12 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
       p += i;
     });
     return p;
+  }
+
+  @override
+  Future<void> close() {
+    _storeAddressSub.cancel();
+    _deliveryAddressSub.cancel();
+    return super.close();
   }
 }

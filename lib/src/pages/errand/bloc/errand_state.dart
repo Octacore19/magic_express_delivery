@@ -5,6 +5,8 @@ class ErrandState extends Equatable {
     this.storeName = '',
     this.storeAddress = '',
     this.deliveryAddress = '',
+    this.storeDetail = const PlaceDetail.empty(),
+    this.deliveryDetail = const PlaceDetail.empty(),
     this.cartItems = const [],
     this.itemName = '',
     this.description = '',
@@ -16,8 +18,10 @@ class ErrandState extends Equatable {
   final String storeName;
   final String storeAddress;
   final String deliveryAddress;
-  final List<CartItem> cartItems;
+  final PlaceDetail storeDetail;
+  final PlaceDetail deliveryDetail;
 
+  final List<CartItem> cartItems;
   final String itemName;
   final String description;
   final String quantity;
@@ -28,6 +32,8 @@ class ErrandState extends Equatable {
     String? storeName,
     String? storeAddress,
     String? deliveryAddress,
+    PlaceDetail? storeDetail,
+    PlaceDetail? deliveryDetail,
     List<CartItem>? cartItems,
     String? itemName,
     String? description,
@@ -39,6 +45,8 @@ class ErrandState extends Equatable {
       storeName: storeName ?? this.storeName,
       storeAddress: storeAddress ?? this.storeAddress,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
+      storeDetail: storeDetail ?? this.storeDetail,
+      deliveryDetail: deliveryDetail ?? this.deliveryDetail,
       cartItems: cartItems ?? this.cartItems,
       itemName: itemName ?? this.itemName,
       description: description ?? this.description,
@@ -53,6 +61,8 @@ class ErrandState extends Equatable {
         storeName,
         storeAddress,
         deliveryAddress,
+        storeDetail,
+        deliveryDetail,
         cartItems,
         itemName,
         description,

@@ -1,10 +1,13 @@
 import 'package:services/services.dart';
 import 'package:services/src/contracts/contracts.dart';
+import 'package:services/src/impl/google_places.dart';
 
 class PlacesService implements IPlacesService {
-  PlacesService(this._service);
+  PlacesService({required ApiProvider api}) {
+    _service = PlaceServiceImpl(api.googleInstance);
+  }
 
-  final IPlacesService _service;
+  late IPlacesService _service;
 
   @override
   Future<DioResponse> fetchPlaceDetail(Map<String, dynamic> queryParams) =>

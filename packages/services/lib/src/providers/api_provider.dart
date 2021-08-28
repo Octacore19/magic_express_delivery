@@ -21,7 +21,7 @@ class ApiProvider {
       receiveTimeout: ApiConstants.RECEIVE_TIMEOUT,
     );
     var googleOption = BaseOptions(
-      baseUrl: ApiConstants.BASE_URL,
+      baseUrl: ApiConstants.GOOGLE_BASE_URL,
       connectTimeout: ApiConstants.CONNECT_TIMEOUT,
       receiveTimeout: ApiConstants.RECEIVE_TIMEOUT,
     );

@@ -13,7 +13,7 @@ class PlaceServiceImpl implements IPlacesService {
   Future<DioResponse> fetchPlaceDetail(Map<String, dynamic> queryParams) async {
     try {
       final baseResponse = await _dio.get(
-        ApiEndpoints.SEARCH_PLACE,
+        ApiEndpoints.DETAIL_PLACE,
         queryParameters: queryParams,
       );
       return DioResponse.fromJson(baseResponse.data);

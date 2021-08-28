@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:services/services.dart';
 import 'package:services/src/commons/commons.dart';
@@ -27,6 +29,13 @@ class ResponseInterceptor extends Interceptor {
     if (data is Map && data.containsKey('predictions')) {
       newData = {
         'data': {'data': data['predictions']},
+        'message': '',
+        'code': response.statusCode,
+        'success': true,
+      };
+    } else if (data is Map && data.containsKey('result')) {
+      newData = {
+        'data': {'data': data['result']},
         'message': '',
         'code': response.statusCode,
         'success': true,

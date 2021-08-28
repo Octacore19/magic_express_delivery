@@ -1,9 +1,16 @@
 part of 'errand_page.dart';
 
 class _StoreNameInput extends StatelessWidget {
+  _StoreNameInput(this.controller);
+
+  final TextEditingController controller;
+
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
+      maxLines: null,
+      textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: 'Store name',
         labelStyle: Theme.of(context).textTheme.bodyText2,
@@ -13,41 +20,83 @@ class _StoreNameInput extends StatelessWidget {
 }
 
 class _StoreAddressInput extends StatelessWidget {
+  _StoreAddressInput(this.controller);
+
+  final TextEditingController controller;
+
   @override
   Widget build(BuildContext context) {
-    return TypeAheadField(
-      textFieldConfiguration: TextFieldConfiguration(
-        keyboardType: TextInputType.streetAddress,
-        decoration: InputDecoration(
-          labelText: 'Store address',
-          labelStyle: Theme.of(context).textTheme.bodyText2,
-        ),
-      ),
-      suggestionsCallback: (pattern) async {
-        return [];
+    return BlocBuilder<ErrandBloc, ErrandState>(
+      builder: (context, state) {
+        return TypeAheadField(
+          textFieldConfiguration: TextFieldConfiguration(
+            controller: controller,
+            keyboardType: TextInputType.streetAddress,
+            textCapitalization: TextCapitalization.sentences,
+            decoration: InputDecoration(
+              labelText: 'Store address',
+              labelStyle: Theme.of(context).textTheme.bodyText2,
+            ),
+          ),
+          suggestionsCallback: (pattern) async {
+            return context.read<ErrandBloc>().searchPlaces(pattern);
+          },
+          itemBuilder: (_, Prediction prediction) => ListTile(
+            title: Text(prediction.description),
+          ),
+          loadingBuilder: (_) => ListTile(
+            trailing: CircularProgressIndicator.adaptive(),
+          ),
+          hideOnError: true,
+          hideOnEmpty: true,
+          hideSuggestionsOnKeyboardHide: true,
+          onSuggestionSelected: (Prediction data) {
+            TextUtil.setText(controller, data.description);
+            final action = ErrandAction.OnSetStoreAddressDetail;
+            final event = ErrandEvent(action, data);
+            context.read<ErrandBloc>().add(event);
+          },
+        );
       },
-      itemBuilder: (_, __) => ListTile(),
-      onSuggestionSelected: (data) {},
     );
   }
 }
 
 class _DeliveryAddressInput extends StatelessWidget {
+  _DeliveryAddressInput(this.controller);
+
+  final TextEditingController controller;
+
   @override
   Widget build(BuildContext context) {
     return TypeAheadField(
       textFieldConfiguration: TextFieldConfiguration(
+        controller: controller,
         keyboardType: TextInputType.streetAddress,
+        textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
           labelText: 'Delivery address',
           labelStyle: Theme.of(context).textTheme.bodyText2,
         ),
       ),
       suggestionsCallback: (pattern) async {
-        return [];
+        return context.read<ErrandBloc>().searchPlaces(pattern);
       },
-      itemBuilder: (_, __) => ListTile(),
-      onSuggestionSelected: (data) {},
+      itemBuilder: (_, Prediction prediction) => ListTile(
+        title: Text(prediction.description),
+      ),
+      loadingBuilder: (_) => ListTile(
+        trailing: CircularProgressIndicator.adaptive(),
+      ),
+      hideOnError: true,
+      hideOnEmpty: true,
+      hideSuggestionsOnKeyboardHide: true,
+      onSuggestionSelected: (Prediction data) {
+        TextUtil.setText(controller, data.description);
+        final action = ErrandAction.OnSetDeliveryAddressDetail;
+        final event = ErrandEvent(action, data);
+        context.read<ErrandBloc>().add(event);
+      },
     );
   }
 }
@@ -80,7 +129,8 @@ class _ShoppingCartView extends StatelessWidget {
                 visible: total != 0,
                 child: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                   child: Text(
                     'Total Price: ${convertToNairaAndKobo(total)}',
                     style: Theme.of(context)
@@ -120,7 +170,7 @@ class _CartItemsView extends StatelessWidget {
                     size: 16.0,
                   ),
                   onTap: () {
-                    final event = ErrandEvent(ErrandEvents.OnItemRemoved, i);
+                    final event = ErrandEvent(ErrandAction.OnItemRemoved, i);
                     context.read<ErrandBloc>().add(event);
                   },
                 ),
@@ -147,9 +197,6 @@ class _AddOrderButton extends StatelessWidget {
         ),
         onPressed: () {
           _AddItemDialog()..show(context);
-          /*FocusScope.of(context).unfocus();
-          final event = ErrandEvent(ErrandEvents.OnItemAdded);
-          context.read<ErrandBloc>().add(event);*/
         },
         icon: Icon(
           MdiIcons.plus,
@@ -171,7 +218,7 @@ class _ItemNameInput extends StatelessWidget {
     return TextField(
       controller: controller,
       onChanged: (s) {
-        final event = ErrandEvent(ErrandEvents.OnItemNameChanged, s);
+        final event = ErrandEvent(ErrandAction.OnItemNameChanged, s);
         context.read<ErrandBloc>().add(event);
       },
       decoration: InputDecoration(
@@ -192,7 +239,7 @@ class _DescriptionInput extends StatelessWidget {
     return TextField(
       controller: controller,
       onChanged: (s) {
-        final event = ErrandEvent(ErrandEvents.OnItemDescriptionChanged, s);
+        final event = ErrandEvent(ErrandAction.OnItemDescriptionChanged, s);
         context.read<ErrandBloc>().add(event);
       },
       decoration: InputDecoration(
@@ -213,8 +260,9 @@ class _QuantityInput extends StatelessWidget {
     return Flexible(
       child: TextField(
         controller: controller,
+        keyboardType: TextInputType.numberWithOptions(),
         onChanged: (s) {
-          final event = ErrandEvent(ErrandEvents.OnItemQuantityChanged, s);
+          final event = ErrandEvent(ErrandAction.OnItemQuantityChanged, s);
           context.read<ErrandBloc>().add(event);
         },
         decoration: InputDecoration(
@@ -236,8 +284,9 @@ class _UnitPriceInput extends StatelessWidget {
     return Flexible(
       child: TextField(
         controller: controller,
+        keyboardType: TextInputType.numberWithOptions(),
         onChanged: (s) {
-          final event = ErrandEvent(ErrandEvents.OnItemPriceChanged, s);
+          final event = ErrandEvent(ErrandAction.OnItemPriceChanged, s);
           context.read<ErrandBloc>().add(event);
         },
         decoration: InputDecoration(
@@ -279,7 +328,14 @@ class _NextToProcessButton extends StatelessWidget {
 
 class _AddItemDialog extends StatefulWidget {
   void show(BuildContext context) {
-    showDialog(context: context, builder: (_) => _AddItemDialog());
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => BlocProvider.value(
+        value: BlocProvider.of<ErrandBloc>(context),
+        child: _AddItemDialog(),
+      ),
+    );
   }
 
   @override
@@ -305,14 +361,31 @@ class _AddItemDialogState extends State<_AddItemDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      contentPadding: EdgeInsets.all(16),
+      actions: [
+        TextButton(
+          child: Text('Save'),
+          onPressed: () {
+            FocusScope.of(context).unfocus();
+            final event = ErrandEvent(ErrandAction.OnItemAdded);
+            context.read<ErrandBloc>().add(event);
+          },
+        ),
+        TextButton(
+          child: Text('Finish'),
+          onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+        ),
+      ],
       content: SingleChildScrollView(
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text('Add an item', style: Theme.of(context).textTheme.headline6),
+            const SizedBox(height: 16),
             _ItemNameInput(_itemNameController),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 24),
             _DescriptionInput(_descriptionController),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -321,6 +394,7 @@ class _AddItemDialogState extends State<_AddItemDialog> {
                 _UnitPriceInput(_priceController)
               ],
             ),
+            const SizedBox(height: 16),
           ],
         ),
       ),

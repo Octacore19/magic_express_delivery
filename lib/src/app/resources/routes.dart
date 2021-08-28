@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:repositories/repositories.dart';
 
@@ -29,8 +30,9 @@ class AppRoutes {
       case AuthStatus.loggedIn:
         return [DashboardPage.route()];
       case AuthStatus.loggedOut:
-      default:
         return [LoginPage.route()];
+      default:
+        return [LoadingPage.route()];
     }
   }
 

@@ -5,6 +5,7 @@ import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:magic_express_delivery/src/utils/utils.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:repositories/repositories.dart';
 
 part 'errand_views.dart';
 
@@ -30,7 +31,10 @@ class ErrandPage extends StatelessWidget {
         title: Text('Order detail'),
       ),
       body: BlocProvider(
-        create: (context) => ErrandBloc(BlocProvider.of<OptionsCubit>(context)),
+        create: (context) => ErrandBloc(
+          optionsCubit: BlocProvider.of<OptionsCubit>(context),
+          places: RepositoryProvider.of(context),
+        ),
         child: ErrandPageForm(),
       ),
     );
@@ -43,15 +47,31 @@ class ErrandPageForm extends StatefulWidget {
 }
 
 class _ErrandPageFormState extends State<ErrandPageForm> {
+  final _storeNameController = TextEditingController();
+  final _storeAddressController = TextEditingController();
+  final _deliveryAddressController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    final state = context.read<ErrandBloc>().state;
+    TextUtil.setText(_storeNameController, state.storeAddress);
+    TextUtil.setText(_storeAddressController, state.storeAddress);
+    TextUtil.setText(_storeAddressController, state.deliveryAddress);
+  }
+  
+  @override
+  void dispose() {
+    _storeNameController.dispose();
+    _storeAddressController.dispose();
+    _deliveryAddressController.dispose();
+    super.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return BlocListener<ErrandBloc, ErrandState>(
       listener: (_, state) {
-        /*TextUtil.setText(_itemNameController, state.itemName);
-        TextUtil.setText(_descriptionController, state.description);
-        TextUtil.setText(_quantityController, state.quantity);
-        TextUtil.setText(_priceController, state.unitPrice);*/
       },
       child: SingleChildScrollView(
         child: Padding(
@@ -59,11 +79,11 @@ class _ErrandPageFormState extends State<ErrandPageForm> {
           child: Column(
             children: [
               const SizedBox(height: 16),
-              _StoreNameInput(),
+              _StoreNameInput(_storeNameController),
               const SizedBox(height: 16),
-              _StoreAddressInput(),
+              _StoreAddressInput(_storeAddressController),
               const SizedBox(height: 16),
-              _DeliveryAddressInput(),
+              _DeliveryAddressInput(_deliveryAddressController),
               const SizedBox(height: 48),
               _ShoppingCartView(),
               const SizedBox(height: 8),
