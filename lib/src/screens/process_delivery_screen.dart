@@ -247,11 +247,7 @@ class _ProcessDeliveryScreenState extends State<ProcessDeliveryScreen> {
           textStyle: Theme.of(context).textTheme.button,
         ),
         onPressed: () {
-          /* Navigator.pushNamed(
-            context,
-            Routes.PROCESS_DELIVERY,
-            arguments: [widget._vehicleType, widget._deliveryType],
-          ); */
+          
         },
         icon: Icon(MdiIcons.chevronRight),
         label: Text(''),

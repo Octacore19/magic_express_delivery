@@ -16,9 +16,9 @@ class AppRoutes {
   static AppPageRoute generatePageRoute(RouteSettings settings) {
     switch (settings.name) {
       case REGISTRATION:
-        return generateRoute(RegistrationPage(), settings);
+        return generateRoute(RegistrationPage(), settings: settings);
       default:
-        return generateRoute(LoginPage(), settings);
+        return generateRoute(LoginPage(), settings: settings);
     }
   }
 
@@ -30,17 +30,17 @@ class AppRoutes {
       case AuthStatus.loggedIn:
         return [DashboardPage.route()];
       case AuthStatus.loggedOut:
-        return [LoginPage.route()];
       default:
-        return [LoadingPage.route()];
+        return [LoginPage.route()];
     }
   }
 
-  static AppPageRoute generateRoute(Widget builder, [RouteSettings? settings]) {
+  static AppPageRoute generateRoute(Widget builder,
+      {RouteSettings? settings, bool fullScreenDialog = false}) {
     return AppPageRoute(
-      settings: settings,
-      builder: (ctx) => builder,
-    );
+        settings: settings,
+        builder: (ctx) => builder,
+        fullScreenDialog: fullScreenDialog);
   }
 
   static AppPageRoute generateRouteBuilder({
@@ -55,10 +55,15 @@ class AppRoutes {
 }
 
 class AppPageRoute<T> extends MaterialPageRoute<T> {
-  AppPageRoute({
-    required WidgetBuilder builder,
-    RouteSettings? settings,
-  }) : super(builder: builder, settings: settings);
+  AppPageRoute(
+      {required WidgetBuilder builder,
+      RouteSettings? settings,
+      bool fullScreenDialog = false})
+      : super(
+          builder: builder,
+          settings: settings,
+          fullscreenDialog: fullScreenDialog,
+        );
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,

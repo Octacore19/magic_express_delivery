@@ -1,29 +1,43 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:magic_express_delivery/src/app/app.dart';
 
 part 'options_state.dart';
 
 class OptionsCubit extends Cubit<OptionsState> {
-  OptionsCubit()
-      : super(OptionsState());
-
-  void setCurrentPosition(Object? args) {
-    int position = args as int;
-    emit(state.copyWith(position: position));
+  OptionsCubit({required CoordinatorCubit coordinator})
+      : _coordinator = coordinator,
+        super(OptionsState()) {
+    final type = _coordinator.state.taskType;
+    emit(state.copyWith(taskType: type));
   }
 
+  final CoordinatorCubit _coordinator;
+
   void onPersonnelSelected(int i) {
-    int id = state.personnelIndex;
+    DeliveryType type = state.deliveryType;
     List<bool> p = List.from(state.personnelSelection);
     for (int index = 0; index < p.length; index++) {
       if (index == i) {
         p[index] = true;
-        id = index;
+        switch (index) {
+          case 0:
+            type = DeliveryType.Sender;
+            break;
+          case 1:
+            type = DeliveryType.Receiver;
+            break;
+          case 2:
+            type = DeliveryType.ThirdParty;
+            break;
+        }
       } else {
         p[index] = false;
       }
     }
-    bool s = p.contains(true);
-    emit(state.copyWith(personnelIndex: id, personnelSelection: p, personnelSelected: s));
+    _coordinator.setDeliveryType(type);
+    emit(state.copyWith(deliveryType: type, personnelSelection: p));
   }
 }

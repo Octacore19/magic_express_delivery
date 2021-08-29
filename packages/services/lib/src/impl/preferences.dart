@@ -23,7 +23,7 @@ class PreferencesImpl implements LocalService {
     try {
       T? value;
       await _pref.then((pref) {
-        value = pref.get(key) as T;
+        value = pref.get(key) as T?;
       });
       return value;
     } catch (e) {

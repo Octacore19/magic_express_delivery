@@ -121,7 +121,7 @@ class _ContinueButton extends StatelessWidget {
                     .button,
               ),
               onPressed: !s.personnelSelected ? null : () {
-                if (s.position == 0) {
+                if (s.taskType == TaskType.Errand) {
                   Navigator.of(context).push(ErrandPage.route(context));
                 } else {
                   /*Navigator.pushNamed(

@@ -11,11 +11,9 @@ part 'errand_state.dart';
 
 class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
   ErrandBloc({
-    required OptionsCubit optionsCubit,
     required PlacesRepo places,
   })  : _places = places,
         super(ErrandState()) {
-    optionsCubit.state;
     _storeAddressSub = places.pickupDetail.listen((detail) {
       emit(state.copyWith(storeDetail: detail));
     });

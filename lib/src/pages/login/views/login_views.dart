@@ -32,22 +32,10 @@ class _EmailInput extends StatelessWidget {
       hintText: 'Email',
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
+      focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+      enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+      errorBorder: AppTheme.textOutlineErrorBorder(context),
+      focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
     );
   }
 
@@ -108,22 +96,10 @@ class _PasswordInput extends StatelessWidget {
           context.read<LoginBloc>().add(LoginPasswordVisibility());
         },
       ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
+      focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+      enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+      errorBorder: AppTheme.textOutlineErrorBorder(context),
+      focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
     );
   }
 
@@ -192,18 +168,16 @@ class _SubmitButton extends StatelessWidget {
 }
 
 class _RegistrationButton extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      child: Text('Not registered? Click here!'),
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.zero,
-        textStyle: Theme.of(context).textTheme.button,
-      ),
-      onPressed: () {
-        Navigator.of(context).push(RegistrationPage.route());
-      }
-    );
+        child: Text('Not registered? Click here!'),
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          textStyle: Theme.of(context).textTheme.button,
+        ),
+        onPressed: () {
+          Navigator.of(context).push(RegistrationPage.route());
+        });
   }
 }

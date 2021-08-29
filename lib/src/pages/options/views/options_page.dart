@@ -7,15 +7,9 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 part 'options_views.dart';
 
 class OptionsPage extends StatelessWidget {
-  final Object? args;
+  static Page page() => MaterialPage<void>(child: OptionsPage());
 
-  OptionsPage(this.args);
-
-  static Page page([Object? args]) =>
-      MaterialPage<void>(child: OptionsPage(args));
-
-  static Route route([Object? args]) =>
-      AppRoutes.generateRoute(OptionsPage(args));
+  static Route route([Object? args]) => AppRoutes.generateRoute(OptionsPage());
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +18,18 @@ class OptionsPage extends StatelessWidget {
         title: Text('Options'),
       ),
       body: BlocProvider(
-        create: (_) => OptionsCubit(),
-        child: _Option(args),
+        create: (context) => OptionsCubit(
+          coordinator: BlocProvider.of(context),
+        ),
+        child: _Option(),
       ),
     );
   }
 }
 
 class _Option extends StatelessWidget {
-  _Option(this.args);
-
-  final Object? args;
-
   @override
   Widget build(BuildContext context) {
-    context.read<OptionsCubit>().setCurrentPosition(args);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(

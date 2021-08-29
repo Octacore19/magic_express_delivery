@@ -38,22 +38,10 @@ class _FirstNameInput extends StatelessWidget {
       hintText: 'First name',
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
+      focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+      enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+      errorBorder: AppTheme.textOutlineErrorBorder(context),
+      focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
     );
   }
 
@@ -103,22 +91,10 @@ class _LastNameInput extends StatelessWidget {
       hintText: 'Last name',
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
+      focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+      enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+      errorBorder: AppTheme.textOutlineErrorBorder(context),
+      focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
     );
   }
 
@@ -168,22 +144,10 @@ class _EmailInput extends StatelessWidget {
       hintText: 'Email',
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
+      focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+      enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+      errorBorder: AppTheme.textOutlineErrorBorder(context),
+      focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
     );
   }
 
@@ -240,22 +204,10 @@ class _PhoneNumberInput extends StatelessWidget {
       hintText: 'Phone number',
       errorText: getError(error),
       hintStyle: Theme.of(context).textTheme.caption,
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
+      focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+      enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+      errorBorder: AppTheme.textOutlineErrorBorder(context),
+      focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
     );
   }
 
@@ -321,22 +273,10 @@ class _PasswordInput extends StatelessWidget {
           context.read<RegistrationBloc>().add(event);
         },
       ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
+      focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+      enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+      errorBorder: AppTheme.textOutlineErrorBorder(context),
+      focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
     );
   }
 
@@ -406,22 +346,10 @@ class _ConfirmPasswordInput extends StatelessWidget {
           context.read<RegistrationBloc>().add(event);
         },
       ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: primaryColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 2.0, color: errorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
+      focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+      enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+      errorBorder: AppTheme.textOutlineErrorBorder(context),
+      focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
     );
   }
 

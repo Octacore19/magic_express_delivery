@@ -9,9 +9,14 @@ import 'app_view.dart';
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => AppBloc(authRepo: RepositoryProvider.of(context)),
-      child: const AppView(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => AuthBloc(authRepo: RepositoryProvider.of(context)),
+        ),
+        BlocProvider(create: (_) => CoordinatorCubit())
+      ],
+      child: AppView(),
     );
   }
 }

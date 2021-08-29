@@ -10,11 +10,23 @@ class _StoreNameInput extends StatelessWidget {
     return TextField(
       controller: controller,
       maxLines: null,
+      minLines: 2,
       textCapitalization: TextCapitalization.words,
+      keyboardType: TextInputType.multiline,
+      textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         labelText: 'Store name',
         labelStyle: Theme.of(context).textTheme.bodyText2,
+        focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+        enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+        errorBorder: AppTheme.textOutlineErrorBorder(context),
+        focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
       ),
+      onChanged: (val) {
+        final action = ErrandAction.OnStoreNameChanged;
+        final event = ErrandEvent(action, val);
+        context.read<ErrandBloc>().add(event);
+      },
     );
   }
 }
@@ -33,9 +45,14 @@ class _StoreAddressInput extends StatelessWidget {
             controller: controller,
             keyboardType: TextInputType.streetAddress,
             textCapitalization: TextCapitalization.sentences,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Store address',
               labelStyle: Theme.of(context).textTheme.bodyText2,
+              focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+              enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+              errorBorder: AppTheme.textOutlineErrorBorder(context),
+              focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
             ),
           ),
           suggestionsCallback: (pattern) async {
@@ -74,9 +91,14 @@ class _DeliveryAddressInput extends StatelessWidget {
         controller: controller,
         keyboardType: TextInputType.streetAddress,
         textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           labelText: 'Delivery address',
           labelStyle: Theme.of(context).textTheme.bodyText2,
+          focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+          enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+          errorBorder: AppTheme.textOutlineErrorBorder(context),
+          focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
         ),
       ),
       suggestionsCallback: (pattern) async {
@@ -217,13 +239,22 @@ class _ItemNameInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      keyboardType: TextInputType.text,
+      textCapitalization: TextCapitalization.sentences,
+      textInputAction: TextInputAction.next,
+      cursorColor: Colors.grey,
       onChanged: (s) {
         final event = ErrandEvent(ErrandAction.OnItemNameChanged, s);
         context.read<ErrandBloc>().add(event);
       },
       decoration: InputDecoration(
         labelText: 'Item name',
-        labelStyle: Theme.of(context).textTheme.bodyText2,
+        isDense: true,
+        labelStyle: AppTheme.textFieldHeaderStyle(context),
+        focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+        enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+        errorBorder: AppTheme.textOutlineErrorBorder(context),
+        focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
       ),
     );
   }
@@ -238,13 +269,25 @@ class _DescriptionInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      keyboardType: TextInputType.text,
+      cursorColor: Colors.grey,
+      textCapitalization: TextCapitalization.sentences,
+      textInputAction: TextInputAction.next,
+      maxLines: null,
+      minLines: 2,
       onChanged: (s) {
         final event = ErrandEvent(ErrandAction.OnItemDescriptionChanged, s);
         context.read<ErrandBloc>().add(event);
       },
       decoration: InputDecoration(
         labelText: 'Description',
-        labelStyle: Theme.of(context).textTheme.bodyText2,
+        isDense: true,
+        labelStyle: AppTheme.textFieldHeaderStyle(context),
+        border: AppTheme.textOutlineEnabledBorder(context),
+        focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+        enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+        errorBorder: AppTheme.textOutlineErrorBorder(context),
+        focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
       ),
     );
   }
@@ -260,6 +303,7 @@ class _QuantityInput extends StatelessWidget {
     return Flexible(
       child: TextField(
         controller: controller,
+        textInputAction: TextInputAction.next,
         keyboardType: TextInputType.numberWithOptions(),
         onChanged: (s) {
           final event = ErrandEvent(ErrandAction.OnItemQuantityChanged, s);
@@ -267,7 +311,8 @@ class _QuantityInput extends StatelessWidget {
         },
         decoration: InputDecoration(
           labelText: 'Quantity',
-          labelStyle: Theme.of(context).textTheme.bodyText2,
+          isDense: true,
+          labelStyle: AppTheme.textFieldHeaderStyle(context),
         ),
       ),
     );
@@ -291,7 +336,8 @@ class _UnitPriceInput extends StatelessWidget {
         },
         decoration: InputDecoration(
           labelText: 'Unit Price',
-          labelStyle: Theme.of(context).textTheme.bodyText2,
+          isDense: true,
+          labelStyle: AppTheme.textFieldHeaderStyle(context),
         ),
       ),
     );
@@ -301,26 +347,25 @@ class _UnitPriceInput extends StatelessWidget {
 class _NextToProcessButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.all(16),
-          textStyle: Theme.of(context).textTheme.button,
+    return BlocSelector<ErrandBloc, ErrandState, bool>(
+      selector: (s) => s.buttonActive,
+      builder: (_, enabled) => SizedBox(
+        width: double.infinity,
+        child: ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.all(16),
+            textStyle: Theme.of(context).textTheme.button,
+          ),
+          onPressed: () =>
+              Navigator.of(context).push(ProcessDeliveryPage.route()),
+          /*onPressed: enabled
+              ? () {
+                  Navigator.of(context).push(ProcessDeliveryPage.route());
+                }
+              : null,*/
+          icon: Icon(MdiIcons.chevronRight),
+          label: Text(''),
         ),
-        onPressed: () {
-          /*Navigator.pushNamed(
-            context,
-            AppRoutes.PROCESS_DELIVERY,
-            arguments: [
-              widget._taskType,
-              widget._vehicleType,
-              widget._deliveryType
-            ],
-          );*/
-        },
-        icon: Icon(MdiIcons.chevronRight),
-        label: Text(''),
       ),
     );
   }
@@ -381,7 +426,7 @@ class _AddItemDialogState extends State<_AddItemDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Add an item', style: Theme.of(context).textTheme.headline6),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             _ItemNameInput(_itemNameController),
             const SizedBox(height: 24),
             _DescriptionInput(_descriptionController),
@@ -390,7 +435,7 @@ class _AddItemDialogState extends State<_AddItemDialog> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _QuantityInput(_quantityController),
-                const SizedBox(width: 96.0),
+                const SizedBox(width: 72),
                 _UnitPriceInput(_priceController)
               ],
             ),

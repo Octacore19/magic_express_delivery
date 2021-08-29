@@ -2,45 +2,41 @@ part of 'options_cubit.dart';
 
 class OptionsState extends Equatable {
   const OptionsState({
-    this.position = -1,
-    this.personnelIndex = -1,
+    this.taskType = TaskType.Errand,
+    this.deliveryType = DeliveryType.Sender,
     this.personnelSelection = const [false, false, false],
-    this.personnelSelected = false,
   });
 
-  final int position;
-  final int personnelIndex;
+  final TaskType taskType;
+  final DeliveryType deliveryType;
   final List<bool> personnelSelection;
-  final bool personnelSelected;
+
+  bool get personnelSelected => personnelSelection.contains(true);
 
   OptionsState copyWith({
-    int? position,
-    int? personnelIndex,
+    TaskType? taskType,
+    DeliveryType? deliveryType,
     List<bool>? personnelSelection,
-    bool? personnelSelected,
   }) {
     return OptionsState(
-      position: position ?? this.position,
-      personnelIndex: personnelIndex ?? this.personnelIndex,
+      taskType: taskType ?? this.taskType,
+      deliveryType: deliveryType ?? this.deliveryType,
       personnelSelection: personnelSelection ?? this.personnelSelection,
-      personnelSelected: personnelSelected ?? this.personnelSelected,
     );
   }
 
   @override
   List<Object?> get props => [
-        position,
-        personnelIndex,
+        taskType,
+        deliveryType,
         personnelSelection,
-        personnelSelected,
       ];
 
   @override
   String toString() {
-    return 'DeliveryOptionsState(position: $position, '
-        'personnelIndex: $personnelIndex, '
-        'personnelSelection: $personnelSelection, '
-        'personnelSelected: $personnelSelected'
+    return 'DeliveryOptionsState(position: $taskType, '
+        'deliveryType: $deliveryType, '
+        'personnelSelection: $personnelSelection'
         ')';
   }
 }

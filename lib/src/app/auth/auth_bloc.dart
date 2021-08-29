@@ -4,14 +4,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repositories/repositories.dart';
 
-part 'app_events.dart';
+part 'auth_events.dart';
 
-part 'app_states.dart';
+part 'auth_states.dart';
 
-class AppBloc extends Bloc<AppEvent, AppState> {
-  AppBloc({required AuthRepo authRepo})
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  AuthBloc({required AuthRepo authRepo})
       : _authRepo = authRepo,
-        super(AppState.unknown()) {
+        super(AuthState.unknown()) {
     _statusSubscription = _authRepo.status.listen(_onStatusChanged);
     _authRepo.onAppLaunch();
   }
@@ -22,7 +22,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   void _onStatusChanged(AuthStatus status) => add(AuthenticationStatusChanged(status));
 
   @override
-  Stream<AppState> mapEventToState(AppEvent event) async* {
+  Stream<AuthState> mapEventToState(AuthEvent event) async* {
     if (event is AuthenticationStatusChanged) {
       yield await _mapAuthenticationChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
@@ -30,15 +30,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
-  Future<AppState> _mapAuthenticationChangedToState(AuthenticationStatusChanged event) async {
+  Future<AuthState> _mapAuthenticationChangedToState(AuthenticationStatusChanged event) async {
     switch (event.status) {
       case AuthStatus.loggedOut:
-        return AppState.unauthenticated();
+        return AuthState.unauthenticated();
       case AuthStatus.loggedIn:
         final user = await _authRepo.currentUser;
-        return user.isEmpty ? AppState.unauthenticated() : AppState.authenticated(user);
+        return user.isEmpty ? AuthState.unauthenticated() : AuthState.authenticated(user);
       default:
-        return const AppState.unknown();
+        return const AuthState.unknown();
     }
   }
 

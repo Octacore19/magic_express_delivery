@@ -28,6 +28,12 @@ class ErrandState extends Equatable {
   final String unitPrice;
   final double totalPrice;
 
+  bool get buttonActive =>
+      cartItems.isNotEmpty &&
+      storeName.isNotEmpty &&
+      !storeDetail.empty &&
+      !deliveryDetail.empty;
+
   ErrandState copyWith({
     String? storeName,
     String? storeAddress,

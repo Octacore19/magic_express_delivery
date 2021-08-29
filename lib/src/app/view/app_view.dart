@@ -14,7 +14,7 @@ class AppView extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme(context),
       home: FlowBuilder<AuthStatus>(
-        state: context.select((AppBloc bloc) => bloc.state).status,
+        state: context.select((AuthBloc bloc) => bloc.state).status,
         onGeneratePages: AppRoutes.onGenerateAppViewPages,
       ),
     );

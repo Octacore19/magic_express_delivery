@@ -32,7 +32,6 @@ class ErrandPage extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => ErrandBloc(
-          optionsCubit: BlocProvider.of<OptionsCubit>(context),
           places: RepositoryProvider.of(context),
         ),
         child: ErrandPageForm(),

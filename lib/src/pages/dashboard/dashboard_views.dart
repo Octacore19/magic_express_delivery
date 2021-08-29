@@ -11,7 +11,7 @@ class GreetingsView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        BlocSelector<AppBloc, AppState, User>(
+        BlocSelector<AuthBloc, AuthState, User>(
           selector: (s) => s.user,
           builder: (context, user) {
             if (user.isNotEmpty) {
@@ -96,6 +96,7 @@ class ErrandCardView extends StatelessWidget {
           ),
         ),
         onTap: () {
+          context.read<CoordinatorCubit>().setTaskType(TaskType.Errand);
           Navigator.of(context).push(OptionsPage.route(0));
         },
       ),
@@ -143,6 +144,7 @@ class DeliveryCardView extends StatelessWidget {
           ),
         ),
         onTap: () {
+          context.read<CoordinatorCubit>().setTaskType(TaskType.Delivery);
           Navigator.of(context).push(OptionsPage.route(1));
         },
       ),
