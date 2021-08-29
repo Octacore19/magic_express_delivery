@@ -1,10 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:magic_express_delivery/src/app/app.dart';
-import 'package:magic_express_delivery/src/pages/pages.dart';
-import 'package:repositories/repositories.dart';
+part of 'home_page.dart';
 
-class GreetingsView extends StatelessWidget {
+class _GreetingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -54,7 +50,7 @@ class GreetingsView extends StatelessWidget {
   }
 }
 
-class ErrandCardView extends StatelessWidget {
+class _ErrandCardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -86,7 +82,7 @@ class ErrandCardView extends StatelessWidget {
                     const SizedBox(height: 16),
                     Text(
                       "Place an order at your favorite stores through us, "
-                      "and we'll deliver it to your doorstep.",
+                          "and we'll deliver it to your doorstep.",
                       style: Theme.of(context).textTheme.subtitle2,
                     ),
                   ],
@@ -104,7 +100,7 @@ class ErrandCardView extends StatelessWidget {
   }
 }
 
-class DeliveryCardView extends StatelessWidget {
+class _DeliveryCardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(

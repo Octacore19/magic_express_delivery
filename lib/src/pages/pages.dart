@@ -1,9 +1,12 @@
 export 'cart/cart.dart';
-export 'dashboard/dashboard_page.dart';
+export 'dashboard/dashboard.dart';
 export 'delivery/delivery.dart';
 export 'errand/errand.dart';
+export 'history/history.dart';
+export 'home/home_page.dart';
 export 'login/login.dart';
 export 'options/options.dart';
 export 'process/process.dart';
+export 'profile/profile.dart';
 export 'registration/registration.dart';
 export 'splash/splash.dart';
