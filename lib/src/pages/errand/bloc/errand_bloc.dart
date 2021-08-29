@@ -17,14 +17,19 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
         _coordinatorCubit = coordinatorCubit,
         super(ErrandState()) {
     _storeAddressSub = places.pickupDetail.listen((detail) {
-      emit(state.copyWith(storeDetail: detail));
+      final action = ErrandAction.OnStoreDetailChanged;
+      final event = ErrandEvent(action, detail);
+      add(event);
     });
     _deliveryAddressSub = places.destinationDetail.listen((detail) {
-      emit(state.copyWith(deliveryDetail: detail));
+      final action = ErrandAction.OnDeliveryDetailChanged;
+      final event = ErrandEvent(action, detail);
+      add(event);
     });
     _orderItemsSub = coordinatorCubit.stream.listen((s) {
-      final total = _calculateTotalPrice(s.cartItems);
-      emit(state.copyWith(cartItems: s.cartItems, totalPrice: total));
+      final action = ErrandAction.OnOrderItemsAdded;
+      final event = ErrandEvent(action, s.cartItems);
+      add(event);
     });
   }
 
@@ -58,6 +63,23 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
         break;
       case ErrandAction.OnItemRemoved:
         yield _mapOnItemRemoved(state, event);
+        break;
+      case ErrandAction.OnStoreDetailChanged:
+        PlaceDetail? arg = event.args as PlaceDetail?;
+        yield state.copyWith(storeDetail: arg);
+        break;
+      case ErrandAction.OnDeliveryDetailChanged:
+        PlaceDetail? arg = event.args as PlaceDetail?;
+        yield state.copyWith(deliveryDetail: arg);
+        break;
+      case ErrandAction.OnOrderItemsAdded:
+        ErrandState state = this.state;
+        List<CartItem>? arg = event.args as List<CartItem>?;
+        if (arg != null) {
+          final total = _calculateTotalPrice(arg);
+          state = state.copyWith(cartItems: arg, totalPrice: total);
+        }
+        yield state;
         break;
     }
   }

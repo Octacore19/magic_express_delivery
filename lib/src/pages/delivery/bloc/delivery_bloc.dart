@@ -55,6 +55,23 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
       case DeliveryAction.OnItemRemoved:
         yield _mapOnItemRemoved(state, event);
         break;
+      case DeliveryAction.OnPickupDetailChanged:
+        PlaceDetail? arg = event.args as PlaceDetail?;
+        yield state.copyWith(pickupDetail: arg);
+        break;
+      case DeliveryAction.OnDeliveryDetailChanged:
+        PlaceDetail? arg = event.args as PlaceDetail?;
+        yield state.copyWith(deliveryDetail: arg);
+        break;
+      case DeliveryAction.OnOrderItemsAdded:
+        DeliveryState state = this.state;
+        List<CartItem>? arg = event.args as List<CartItem>?;
+        if (arg != null) {
+          final total = _calculateTotalPrice(arg);
+          state = state.copyWith(cartItems: arg, totalPrice: total);
+        }
+        yield state;
+        break;
     }
   }
 

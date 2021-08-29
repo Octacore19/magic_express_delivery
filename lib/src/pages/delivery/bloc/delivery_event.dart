@@ -16,4 +16,7 @@ enum DeliveryAction {
   OnSetPickupAddressDetail,
   OnSetDeliveryAddressDetail,
   OnItemRemoved,
+  OnPickupDetailChanged,
+  OnDeliveryDetailChanged,
+  OnOrderItemsAdded,
 }
