@@ -1,37 +1,7 @@
-part of 'errand_page.dart';
+part of 'delivery_page.dart';
 
-class _StoreNameInput extends StatelessWidget {
-  _StoreNameInput(this.controller);
-
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      maxLines: null,
-      textCapitalization: TextCapitalization.words,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        labelText: 'Store name',
-        labelStyle: Theme.of(context).textTheme.bodyText2,
-        focusedBorder: AppTheme.textOutlineFocusedBorder(context),
-        enabledBorder: AppTheme.textOutlineEnabledBorder(context),
-        errorBorder: AppTheme.textOutlineErrorBorder(context),
-        focusedErrorBorder: AppTheme.textOutlineFocusedBorder(context),
-      ),
-      onChanged: (val) {
-        final action = ErrandAction.OnStoreNameChanged;
-        final event = ErrandEvent(action, val);
-        context.read<ErrandBloc>().add(event);
-      },
-    );
-  }
-}
-
-class _StoreAddressInput extends StatelessWidget {
-  _StoreAddressInput(this.controller);
+class _PickUpAddressInput extends StatelessWidget {
+  _PickUpAddressInput(this.controller);
 
   final TextEditingController controller;
 
@@ -44,7 +14,7 @@ class _StoreAddressInput extends StatelessWidget {
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          labelText: 'Store address',
+          labelText: 'Pickup address',
           labelStyle: Theme.of(context).textTheme.bodyText2,
           focusedBorder: AppTheme.textOutlineFocusedBorder(context),
           enabledBorder: AppTheme.textOutlineEnabledBorder(context),
@@ -53,7 +23,7 @@ class _StoreAddressInput extends StatelessWidget {
         ),
       ),
       suggestionsCallback: (pattern) async {
-        return context.read<ErrandBloc>().searchPlaces(pattern);
+        return context.read<DeliveryBloc>().searchPlaces(pattern);
       },
       itemBuilder: (_, Prediction prediction) => ListTile(
         title: Text(prediction.description),
@@ -66,9 +36,9 @@ class _StoreAddressInput extends StatelessWidget {
       hideSuggestionsOnKeyboardHide: true,
       onSuggestionSelected: (Prediction data) {
         TextUtil.setText(controller, data.description);
-        final action = ErrandAction.OnSetStoreAddressDetail;
-        final event = ErrandEvent(action, data);
-        context.read<ErrandBloc>().add(event);
+        final action = DeliveryAction.OnSetPickupAddressDetail;
+        final event = DeliveryEvent(action, data);
+        context.read<DeliveryBloc>().add(event);
       },
     );
   }
@@ -97,7 +67,7 @@ class _DeliveryAddressInput extends StatelessWidget {
         ),
       ),
       suggestionsCallback: (pattern) async {
-        return context.read<ErrandBloc>().searchPlaces(pattern);
+        return context.read<DeliveryBloc>().searchPlaces(pattern);
       },
       itemBuilder: (_, Prediction prediction) => ListTile(
         title: Text(prediction.description),
@@ -110,9 +80,9 @@ class _DeliveryAddressInput extends StatelessWidget {
       hideSuggestionsOnKeyboardHide: true,
       onSuggestionSelected: (Prediction data) {
         TextUtil.setText(controller, data.description);
-        final action = ErrandAction.OnSetDeliveryAddressDetail;
-        final event = ErrandEvent(action, data);
-        context.read<ErrandBloc>().add(event);
+        final action = DeliveryAction.OnSetDeliveryAddressDetail;
+        final event = DeliveryEvent(action, data);
+        context.read<DeliveryBloc>().add(event);
       },
     );
   }
@@ -131,7 +101,7 @@ class _ShoppingCartView extends StatelessWidget {
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             child: Text(
-              'Shopping cart',
+              'Delivery items',
               style: Theme.of(context)
                   .textTheme
                   .bodyText2
@@ -139,7 +109,7 @@ class _ShoppingCartView extends StatelessWidget {
             ),
           ),
           _CartItemsView(),
-          BlocSelector<ErrandBloc, ErrandState, double>(
+          BlocSelector<DeliveryBloc, DeliveryState, double>(
             selector: (s) => s.totalPrice,
             builder: (context, total) {
               return Visibility(
@@ -168,7 +138,7 @@ class _ShoppingCartView extends StatelessWidget {
 class _CartItemsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<ErrandBloc, ErrandState, List<CartItem>>(
+    return BlocSelector<DeliveryBloc, DeliveryState, List<CartItem>>(
       selector: (s) => s.cartItems,
       builder: (context, items) {
         if (items.isNotEmpty) {
@@ -187,8 +157,9 @@ class _CartItemsView extends StatelessWidget {
                     size: 16.0,
                   ),
                   onTap: () {
-                    final event = ErrandEvent(ErrandAction.OnItemRemoved, i);
-                    context.read<ErrandBloc>().add(event);
+                    final action = DeliveryAction.OnItemRemoved;
+                    final event = DeliveryEvent(action, i);
+                    context.read<DeliveryBloc>().add(event);
                   },
                 ),
               ),
@@ -228,7 +199,7 @@ class _AddOrderButton extends StatelessWidget {
 class _NextToProcessButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<ErrandBloc, ErrandState, bool>(
+    return BlocSelector<DeliveryBloc, DeliveryState, bool>(
       selector: (s) => s.buttonActive,
       builder: (_, enabled) => SizedBox(
         width: double.infinity,

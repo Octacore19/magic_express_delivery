@@ -11,19 +11,16 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   google_fonts: ^2.0.0
-  bloc: ^7.0.0
+  bloc: ^7.1.0
   flutter_bloc: ^7.1.0
+  hydrated_bloc: ^7.0.1
   flutter_typeahead: ^3.1.1
   flutter_simple_dependency_injection: ^2.0.0
   material_design_icons_flutter: ^5.0.5955-rc.1
+  path_provider: ^2.0.2
   equatable: ^2.0.0
   intl: ^0.17.0
-  dartz: ^0.10.0-nullsafety.2
-  dio: ^4.0.0
-  http_parser: ^4.0.0
-  shared_preferences: ^2.0.5
   email_validator: ^2.0.1
-  uuid: ^3.0.4
   quiver: ^3.0.1
   formz: ^0.4.0
   flow_builder: ^0.0.2

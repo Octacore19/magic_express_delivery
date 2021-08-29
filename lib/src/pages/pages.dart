@@ -1,3 +1,4 @@
+export 'cart/cart.dart';
 export 'dashboard/dashboard_page.dart';
 export 'delivery/delivery.dart';
 export 'errand/errand.dart';

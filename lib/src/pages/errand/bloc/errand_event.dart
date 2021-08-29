@@ -16,10 +16,5 @@ enum ErrandAction {
   OnDeliveryAddressChanged,
   OnSetStoreAddressDetail,
   OnSetDeliveryAddressDetail,
-  OnItemNameChanged,
-  OnItemDescriptionChanged,
-  OnItemQuantityChanged,
-  OnItemPriceChanged,
-  OnItemAdded,
   OnItemRemoved,
 }

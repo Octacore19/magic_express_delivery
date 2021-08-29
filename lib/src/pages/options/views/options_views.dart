@@ -122,13 +122,9 @@ class _ContinueButton extends StatelessWidget {
               ),
               onPressed: !s.personnelSelected ? null : () {
                 if (s.taskType == TaskType.Errand) {
-                  Navigator.of(context).push(ErrandPage.route(context));
+                  Navigator.of(context).push(ErrandPage.route());
                 } else {
-                  /*Navigator.pushNamed(
-                context,
-                AppRoutes.DELIVERY,
-                arguments: [widget.position, 0, _personnelIndex],
-              );*/
+                  Navigator.of(context).push(DeliveryPage.route());
                 }
               },
               icon: Icon(MdiIcons.chevronRight),

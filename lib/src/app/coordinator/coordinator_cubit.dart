@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:repositories/repositories.dart';
 
 part 'coordinator_state.dart';
 
@@ -12,5 +13,9 @@ class CoordinatorCubit extends Cubit<CoordinatorState> {
 
   void setDeliveryType(DeliveryType type) {
     emit(state.copyWith(deliveryType: type));
+  }
+
+  void setCartItems(List<CartItem>? items) {
+    emit(state.copyWith(cartItems: items));
   }
 }

@@ -1,25 +1,25 @@
 import 'dart:async';
 
+import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:repositories/repositories.dart';
+import 'package:magic_express_delivery/src/app/app.dart';
 
-part 'errand_event.dart';
+part 'delivery_event.dart';
 
-part 'errand_state.dart';
+part 'delivery_state.dart';
 
-class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
-  ErrandBloc({
+class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
+  DeliveryBloc({
     required CoordinatorCubit coordinatorCubit,
-    required PlacesRepo places,
-  })  : _places = places,
+    required PlacesRepo placesRepo,
+  })  : _placesRepo = placesRepo,
         _coordinatorCubit = coordinatorCubit,
-        super(ErrandState()) {
-    _storeAddressSub = places.pickupDetail.listen((detail) {
-      emit(state.copyWith(storeDetail: detail));
+        super(DeliveryState()) {
+    _storeAddressSub = placesRepo.pickupDetail.listen((detail) {
+      emit(state.copyWith(pickupDetail: detail));
     });
-    _deliveryAddressSub = places.destinationDetail.listen((detail) {
+    _deliveryAddressSub = placesRepo.destinationDetail.listen((detail) {
       emit(state.copyWith(deliveryDetail: detail));
     });
     _orderItemsSub = coordinatorCubit.stream.listen((s) {
@@ -28,7 +28,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     });
   }
 
-  final PlacesRepo _places;
+  final PlacesRepo _placesRepo;
   final CoordinatorCubit _coordinatorCubit;
 
   late StreamSubscription _storeAddressSub;
@@ -36,33 +36,29 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
   late StreamSubscription _orderItemsSub;
 
   @override
-  Stream<ErrandState> mapEventToState(ErrandEvent event) async* {
+  Stream<DeliveryState> mapEventToState(DeliveryEvent event) async* {
     switch (event.action) {
-      case ErrandAction.OnStoreNameChanged:
-        String? name = event.args as String?;
-        yield state.copyWith(storeName: name);
-        break;
-      case ErrandAction.onStoreAddressChanged:
+      case DeliveryAction.onPickupAddressChanged:
         String? add = event.args as String?;
-        yield state.copyWith(storeAddress: add);
+        yield state.copyWith(pickupAddress: add);
         break;
-      case ErrandAction.OnDeliveryAddressChanged:
+      case DeliveryAction.OnDeliveryAddressChanged:
         String? address = event.args as String?;
         yield state.copyWith(deliveryAddress: address);
         break;
-      case ErrandAction.OnSetStoreAddressDetail:
-        _fetchStoreDetail(event);
+      case DeliveryAction.OnSetPickupAddressDetail:
+        _fetchPickupDetail(event);
         break;
-      case ErrandAction.OnSetDeliveryAddressDetail:
+      case DeliveryAction.OnSetDeliveryAddressDetail:
         _fetchDestinationDetail(event);
         break;
-      case ErrandAction.OnItemRemoved:
+      case DeliveryAction.OnItemRemoved:
         yield _mapOnItemRemoved(state, event);
         break;
     }
   }
 
-  ErrandState _mapOnItemRemoved(ErrandState state, ErrandEvent event) {
+  DeliveryState _mapOnItemRemoved(DeliveryState state, DeliveryEvent event) {
     int position = event.args as int;
     List<CartItem> l = List.from(state.cartItems)..removeAt(position);
     _coordinatorCubit.setCartItems(l);
@@ -72,22 +68,22 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     );
   }
 
-  void _fetchStoreDetail(ErrandEvent event) async {
+  void _fetchPickupDetail(DeliveryEvent event) async {
     Prediction? prediction = event.args as Prediction?;
     if (prediction != null) {
       try {
-        _places.fetchPickupDetail(prediction.id);
+        _placesRepo.fetchPickupDetail(prediction.id);
       } catch (e) {
         print(e);
       }
     }
   }
 
-  void _fetchDestinationDetail(ErrandEvent event) async {
+  void _fetchDestinationDetail(DeliveryEvent event) async {
     Prediction? prediction = event.args as Prediction?;
     if (prediction != null) {
       try {
-        _places.fetchDestinationDetail(prediction.id);
+        _placesRepo.fetchDestinationDetail(prediction.id);
       } catch (e) {
         print(e);
       }
@@ -98,7 +94,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     List<Prediction> predictions = List.empty(growable: true);
     try {
       if (keyword.isNotEmpty)
-        predictions = await _places.searchForPlaces(keyword);
+        predictions = await _placesRepo.searchForPlaces(keyword);
     } on Exception catch (e) {
       throw e;
     }
@@ -108,8 +104,8 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
   double _calculateTotalPrice(List<CartItem> items) {
     double p = 0;
     items.forEach((element) {
-      final v = double.parse(element.unitPrice);
-      final q = int.parse(element.quantity);
+      final v = double.tryParse(element.unitPrice) ?? 0;
+      final q = int.tryParse(element.quantity) ?? 0;
       double i = v * q;
       p += i;
     });

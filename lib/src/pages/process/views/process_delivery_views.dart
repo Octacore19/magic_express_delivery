@@ -170,12 +170,13 @@ class _PaymentOptionsView extends StatelessWidget {
           child: Text.rich(
             TextSpan(
               text: 'Cash  ',
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyText1,
               children: [
                 WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
                   child: Icon(
                     MdiIcons.cash,
-                    size: 16.0,
+                    size: 24.0,
                     color: Colors.blue[900],
                   ),
                 )
@@ -188,12 +189,13 @@ class _PaymentOptionsView extends StatelessWidget {
           child: Text.rich(
             TextSpan(
               text: 'Card   ',
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyText1,
               children: [
                 WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
                   child: Icon(
                     MdiIcons.creditCard,
-                    size: 16.0,
+                    size: 24.0,
                     color: Colors.blue[900],
                   ),
                 )
@@ -209,12 +211,13 @@ class _PaymentOptionsView extends StatelessWidget {
           child: Text.rich(
             TextSpan(
               text: 'Cash',
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyText1,
               children: [
                 WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
                   child: Icon(
                     MdiIcons.cash,
-                    size: 16.0,
+                    size: 24.0,
                     color: Colors.blue[900],
                   ),
                 )

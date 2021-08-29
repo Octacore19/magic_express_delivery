@@ -1,45 +1,38 @@
-part of 'errand_bloc.dart';
+part of 'delivery_bloc.dart';
 
-class ErrandState extends Equatable {
-  const ErrandState({
-    this.storeName = '',
-    this.storeAddress = '',
+class DeliveryState extends Equatable {
+  DeliveryState({
+    this.pickupAddress = '',
     this.deliveryAddress = '',
-    this.storeDetail = const PlaceDetail.empty(),
+    this.pickupDetail = const PlaceDetail.empty(),
     this.deliveryDetail = const PlaceDetail.empty(),
     this.cartItems = const [],
     this.totalPrice = 0,
   });
 
-  final String storeName;
-  final String storeAddress;
+  final String pickupAddress;
   final String deliveryAddress;
-  final PlaceDetail storeDetail;
+  final PlaceDetail pickupDetail;
   final PlaceDetail deliveryDetail;
 
   final List<CartItem> cartItems;
   final double totalPrice;
 
   bool get buttonActive =>
-      cartItems.isNotEmpty &&
-      storeName.isNotEmpty &&
-      !storeDetail.empty &&
-      !deliveryDetail.empty;
+      cartItems.isNotEmpty && !pickupDetail.empty && !deliveryDetail.empty;
 
-  ErrandState copyWith({
-    String? storeName,
-    String? storeAddress,
+  DeliveryState copyWith({
+    String? pickupAddress,
     String? deliveryAddress,
-    PlaceDetail? storeDetail,
+    PlaceDetail? pickupDetail,
     PlaceDetail? deliveryDetail,
     List<CartItem>? cartItems,
     double? totalPrice,
   }) {
-    return ErrandState(
-      storeName: storeName ?? this.storeName,
-      storeAddress: storeAddress ?? this.storeAddress,
+    return DeliveryState(
+      pickupAddress: pickupAddress ?? this.pickupAddress,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
-      storeDetail: storeDetail ?? this.storeDetail,
+      pickupDetail: pickupDetail ?? this.pickupDetail,
       deliveryDetail: deliveryDetail ?? this.deliveryDetail,
       cartItems: cartItems ?? this.cartItems,
       totalPrice: totalPrice ?? this.totalPrice,
@@ -48,10 +41,9 @@ class ErrandState extends Equatable {
 
   @override
   List<Object?> get props => [
-        storeName,
-        storeAddress,
+        pickupAddress,
         deliveryAddress,
-        storeDetail,
+        pickupDetail,
         deliveryDetail,
         cartItems,
         totalPrice,

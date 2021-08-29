@@ -4,10 +4,12 @@ class CoordinatorState extends Equatable {
   const CoordinatorState({
     this.taskType = TaskType.Errand,
     this.deliveryType = DeliveryType.Sender,
+    this.cartItems = const [],
   });
 
   final TaskType taskType;
   final DeliveryType deliveryType;
+  final List<CartItem> cartItems;
 
   bool get errand => taskType == TaskType.Errand;
 
@@ -26,15 +28,17 @@ class CoordinatorState extends Equatable {
   CoordinatorState copyWith({
     TaskType? taskType,
     DeliveryType? deliveryType,
+    List<CartItem>? cartItems,
   }) {
     return CoordinatorState(
       taskType: taskType ?? this.taskType,
       deliveryType: deliveryType ?? this.deliveryType,
+      cartItems: cartItems ?? this.cartItems,
     );
   }
 
   @override
-  List<Object?> get props => [taskType, deliveryType];
+  List<Object?> get props => [taskType, deliveryType, cartItems];
 }
 
 enum TaskType { Delivery, Errand }

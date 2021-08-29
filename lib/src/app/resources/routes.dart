@@ -4,23 +4,6 @@ import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:repositories/repositories.dart';
 
 class AppRoutes {
-  static const DEFAULT = '/';
-  static const LOGIN = '/login';
-  static const REGISTRATION = '/registration';
-  static const DASHBOARD = '/dashboard';
-  static const ERRAND = '/errand';
-  static const DELIVERY = '/delivery';
-  static const DELIVERY_OPTIONS = '/options';
-  static const PROCESS_DELIVERY = '/process delivery';
-
-  static AppPageRoute generatePageRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case REGISTRATION:
-        return generateRoute(RegistrationPage(), settings: settings);
-      default:
-        return generateRoute(LoginPage(), settings: settings);
-    }
-  }
 
   static List<Page> onGenerateAppViewPages(
     AuthStatus state,
@@ -35,21 +18,27 @@ class AppRoutes {
     }
   }
 
-  static AppPageRoute generateRoute(Widget builder,
-      {RouteSettings? settings, bool fullScreenDialog = false}) {
+  static AppPageRoute generateRoute(
+    Widget builder, {
+    RouteSettings? settings,
+    bool fullScreenDialog = false,
+  }) {
     return AppPageRoute(
-        settings: settings,
-        builder: (ctx) => builder,
-        fullScreenDialog: fullScreenDialog);
+      settings: settings,
+      builder: (ctx) => builder,
+      fullScreenDialog: fullScreenDialog,
+    );
   }
 
   static AppPageRoute generateRouteBuilder({
     required WidgetBuilder builder,
     RouteSettings? settings,
+    bool fullScreenDialog = false,
   }) {
     return AppPageRoute(
       settings: settings,
       builder: builder,
+      fullScreenDialog: fullScreenDialog,
     );
   }
 }

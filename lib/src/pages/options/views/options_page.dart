@@ -9,7 +9,10 @@ part 'options_views.dart';
 class OptionsPage extends StatelessWidget {
   static Page page() => MaterialPage<void>(child: OptionsPage());
 
-  static Route route([Object? args]) => AppRoutes.generateRoute(OptionsPage());
+  static Route route([Object? args]) => AppRoutes.generateRoute(
+        OptionsPage(),
+        fullScreenDialog: true,
+      );
 
   @override
   Widget build(BuildContext context) {

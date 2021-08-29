@@ -7,14 +7,14 @@ import 'package:magic_express_delivery/src/utils/utils.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:repositories/repositories.dart';
 
-part 'errand_views.dart';
+part 'delivery_views.dart';
 
-class ErrandPage extends StatelessWidget {
-  const ErrandPage();
+class DeliveryPage extends StatelessWidget {
+  const DeliveryPage();
 
   static Route route() {
     return AppRoutes.generateRoute(
-      ErrandPage(),
+      DeliveryPage(),
       fullScreenDialog: true,
     );
   }
@@ -23,41 +23,38 @@ class ErrandPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order detail'),
+        title: Text('Delivery detail'),
       ),
       body: BlocProvider(
-        create: (context) => ErrandBloc(
+        create: (context) => DeliveryBloc(
           coordinatorCubit: BlocProvider.of(context),
-          places: RepositoryProvider.of(context),
+          placesRepo: RepositoryProvider.of(context),
         ),
-        child: _ErrandPageForm(),
+        child: _DeliveryPageForm(),
       ),
     );
   }
 }
 
-class _ErrandPageForm extends StatefulWidget {
+class _DeliveryPageForm extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _ErrandPageFormState();
+  State<StatefulWidget> createState() => _DeliveryPageFormState();
 }
 
-class _ErrandPageFormState extends State<_ErrandPageForm> {
-  final _storeNameController = TextEditingController();
+class _DeliveryPageFormState extends State<_DeliveryPageForm> {
   final _storeAddressController = TextEditingController();
   final _deliveryAddressController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    final state = context.read<ErrandBloc>().state;
-    TextUtil.setText(_storeNameController, state.storeAddress);
-    TextUtil.setText(_storeAddressController, state.storeAddress);
+    final state = context.read<DeliveryBloc>().state;
+    TextUtil.setText(_storeAddressController, state.pickupAddress);
     TextUtil.setText(_storeAddressController, state.deliveryAddress);
   }
 
   @override
   void dispose() {
-    _storeNameController.dispose();
     _storeAddressController.dispose();
     _deliveryAddressController.dispose();
     super.dispose();
@@ -65,7 +62,7 @@ class _ErrandPageFormState extends State<_ErrandPageForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ErrandBloc, ErrandState>(
+    return BlocListener<DeliveryBloc, DeliveryState>(
       listener: (_, state) {},
       child: SingleChildScrollView(
         child: Padding(
@@ -73,9 +70,7 @@ class _ErrandPageFormState extends State<_ErrandPageForm> {
           child: Column(
             children: [
               const SizedBox(height: 16),
-              _StoreNameInput(_storeNameController),
-              const SizedBox(height: 16),
-              _StoreAddressInput(_storeAddressController),
+              _PickUpAddressInput(_storeAddressController),
               const SizedBox(height: 16),
               _DeliveryAddressInput(_deliveryAddressController),
               const SizedBox(height: 48),
