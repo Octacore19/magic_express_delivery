@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
+import 'package:magic_express_delivery/src/utils/utils.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 part 'process_delivery_views.dart';
@@ -40,6 +41,16 @@ class _ProcessDeliveryState extends State<_ProcessDeliveryForm> {
   final _senderPhoneController = TextEditingController();
   final _receiverNameController = TextEditingController();
   final _receiverPhoneController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    final bloc = context.read<ProcessDeliveryCubit>();
+    TextUtil.setText(_senderNameController, bloc.state.senderName);
+    TextUtil.setText(_senderPhoneController, bloc.state.senderPhone);
+    TextUtil.setText(_receiverNameController, bloc.state.receiverName);
+    TextUtil.setText(_receiverPhoneController, bloc.state.receiverPhone);
+  }
 
   @override
   Widget build(BuildContext context) {

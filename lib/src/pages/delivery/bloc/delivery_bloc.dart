@@ -110,7 +110,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
   Future<List<Prediction>> searchPlaces(String keyword) async {
     List<Prediction> predictions = List.empty(growable: true);
     try {
-      if (keyword.isNotEmpty)
+      if (keyword.isNotEmpty && keyword.length > 3)
         predictions = await _placesRepo.searchForPlaces(keyword);
     } on Exception catch (e) {
       throw e;

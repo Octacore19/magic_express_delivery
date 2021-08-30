@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:repositories/repositories.dart';
 

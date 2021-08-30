@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
@@ -22,17 +20,7 @@ class OptionsCubit extends Cubit<OptionsState> {
     for (int index = 0; index < p.length; index++) {
       if (index == i) {
         p[index] = true;
-        switch (index) {
-          case 0:
-            type = DeliveryType.Sender;
-            break;
-          case 1:
-            type = DeliveryType.Receiver;
-            break;
-          case 2:
-            type = DeliveryType.ThirdParty;
-            break;
-        }
+        type = DeliveryType.values[index];
       } else {
         p[index] = false;
       }

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:repositories/src/api/api.dart';
 import 'package:repositories/src/contracts/contracts.dart';

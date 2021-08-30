@@ -24,7 +24,6 @@ class _EmailInput extends StatelessWidget {
 
   InputDecoration setInputDecoration(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColorDark;
-    final errorColor = Theme.of(context).errorColor;
     final error = context.select((LoginBloc b) => b.state.email).error;
     return InputDecoration(
       prefixIcon: Icon(Icons.email, color: primaryColor),
@@ -79,7 +78,6 @@ class _PasswordInput extends StatelessWidget {
   InputDecoration setInputDecoration(
       BuildContext context, bool passwordObscured) {
     final primaryColor = Theme.of(context).primaryColorDark;
-    final errorColor = Theme.of(context).errorColor;
     final error = context.select((LoginBloc b) => b.state.password).error;
     return InputDecoration(
       prefixIcon: Icon(Icons.password, color: primaryColor),

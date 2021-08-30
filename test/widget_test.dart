@@ -5,11 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:magic_express_delivery/main.dart';
 
 void main() {
 

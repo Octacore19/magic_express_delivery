@@ -8,6 +8,7 @@ class _PickUpAddressInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TypeAheadField(
+      debounceDuration: Duration(milliseconds: 1000),
       textFieldConfiguration: TextFieldConfiguration(
         controller: controller,
         keyboardType: TextInputType.streetAddress,
@@ -52,6 +53,7 @@ class _DeliveryAddressInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TypeAheadField(
+      debounceDuration: Duration(milliseconds: 1000),
       textFieldConfiguration: TextFieldConfiguration(
         controller: controller,
         keyboardType: TextInputType.streetAddress,
@@ -208,13 +210,11 @@ class _NextToProcessButton extends StatelessWidget {
             padding: EdgeInsets.all(16),
             textStyle: Theme.of(context).textTheme.button,
           ),
-          onPressed: () =>
-              Navigator.of(context).push(ProcessDeliveryPage.route()),
-          /*onPressed: enabled
+          onPressed: enabled
               ? () {
                   Navigator.of(context).push(ProcessDeliveryPage.route());
                 }
-              : null,*/
+              : null,
           icon: Icon(MdiIcons.chevronRight),
           label: Text(''),
         ),

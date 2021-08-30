@@ -29,7 +29,6 @@ class _FirstNameInput extends StatelessWidget {
 
   InputDecoration setInputDecoration(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColorDark;
-    final errorColor = Theme.of(context).errorColor;
     final error =
         context.select((RegistrationBloc b) => b.state.firstName).error;
     return InputDecoration(
@@ -82,7 +81,6 @@ class _LastNameInput extends StatelessWidget {
 
   InputDecoration setInputDecoration(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColorDark;
-    final errorColor = Theme.of(context).errorColor;
     final error =
         context.select((RegistrationBloc b) => b.state.lastName).error;
     return InputDecoration(
@@ -136,7 +134,6 @@ class _EmailInput extends StatelessWidget {
 
   InputDecoration setInputDecoration(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColorDark;
-    final errorColor = Theme.of(context).errorColor;
     final error = context.select((RegistrationBloc b) => b.state.email).error;
     return InputDecoration(
       prefixIcon: Icon(Icons.email, color: primaryColor),
@@ -195,7 +192,6 @@ class _PhoneNumberInput extends StatelessWidget {
 
   InputDecoration setInputDecoration(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColorDark;
-    final errorColor = Theme.of(context).errorColor;
     final error =
         context.select((RegistrationBloc b) => b.state.phoneNumber).error;
     return InputDecoration(
@@ -252,7 +248,6 @@ class _PasswordInput extends StatelessWidget {
   InputDecoration setInputDecoration(
       BuildContext context, bool passwordObscured) {
     final primaryColor = Theme.of(context).primaryColorDark;
-    final errorColor = Theme.of(context).errorColor;
     final error =
         context.select((RegistrationBloc b) => b.state.password).error;
     return InputDecoration(
@@ -325,7 +320,6 @@ class _ConfirmPasswordInput extends StatelessWidget {
   InputDecoration setInputDecoration(
       BuildContext context, bool passwordObscured) {
     final primaryColor = Theme.of(context).primaryColorDark;
-    final errorColor = Theme.of(context).errorColor;
     final error =
         context.select((RegistrationBloc b) => b.state.confirmPassword).error;
     return InputDecoration(

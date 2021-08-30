@@ -79,31 +79,37 @@ class _DeliveryNoteView extends StatelessWidget {
         showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (_) => AlertDialog(
-            title: Text('Delivery Note'),
-            actions: [
-              TextButton(
-                onPressed: () =>
-                    Navigator.of(context, rootNavigator: true).pop(),
-                child: Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () =>
-                    Navigator.of(context, rootNavigator: true).pop(),
-                child: Text('OK'),
-              )
-            ],
-            content: TextField(
-              maxLines: null,
-              minLines: 3,
-              decoration: InputDecoration(
-                hintText: 'Start typing...',
-                border: AppTheme.textOutlineEnabledBorder(context),
-                enabledBorder: AppTheme.textOutlineEnabledBorder(context),
-                focusedBorder: AppTheme.textOutlineFocusedBorder(context),
-                errorBorder: AppTheme.textOutlineErrorBorder(context),
-                focusedErrorBorder:
-                    AppTheme.textOutlineErrorFocusedBorder(context),
+          builder: (_) => BlocProvider.value(
+            value: BlocProvider.of<ProcessDeliveryCubit>(context),
+            child: AlertDialog(
+              title: Text('Delivery Note'),
+              actions: [
+                TextButton(
+                  onPressed: () =>
+                      Navigator.of(context, rootNavigator: true).pop(),
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () =>
+                      Navigator.of(context, rootNavigator: true).pop(),
+                  child: Text('OK'),
+                )
+              ],
+              content: TextField(
+                maxLines: null,
+                minLines: 3,
+                onChanged: (val) {
+                  context.read<ProcessDeliveryCubit>().onDeliveryNoteChanged(val);
+                },
+                decoration: InputDecoration(
+                  hintText: 'Start typing...',
+                  border: AppTheme.textOutlineEnabledBorder(context),
+                  enabledBorder: AppTheme.textOutlineEnabledBorder(context),
+                  focusedBorder: AppTheme.textOutlineFocusedBorder(context),
+                  errorBorder: AppTheme.textOutlineErrorBorder(context),
+                  focusedErrorBorder:
+                      AppTheme.textOutlineErrorFocusedBorder(context),
+                ),
               ),
             ),
           ),
@@ -140,18 +146,9 @@ class _PaymentOptionsView extends StatelessWidget {
               isSelected: selection,
               children: paymentSelectionWidgets(context),
               onPressed: (i) {
-                /*setState(() {
-                  for (int index = 0;
-                  index < _paymentSelection.length;
-                  index++) {
-                    if (index == i) {
-                      _paymentSelection[index] = true;
-                      _paymentIndex = index;
-                    } else {
-                      _paymentSelection[index] = false;
-                    }
-                  }
-                });*/
+                context
+                    .read<ProcessDeliveryCubit>()
+                    .onSelectionOptionsChanged(i);
               },
             ),
           ),
