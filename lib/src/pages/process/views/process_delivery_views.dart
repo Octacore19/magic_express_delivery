@@ -227,3 +227,28 @@ class _PaymentOptionsView extends StatelessWidget {
     return content;
   }
 }
+
+class _NextToSummaryButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<ErrandBloc, ErrandState, bool>(
+      selector: (s) => s.buttonActive,
+      builder: (_, enabled) => SizedBox(
+        width: double.infinity,
+        child: ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.all(16),
+            textStyle: Theme.of(context).textTheme.button,
+          ),
+          onPressed: enabled
+              ? () {
+            Navigator.of(context).push(ProcessDeliveryPage.route());
+          }
+              : null,
+          icon: Icon(MdiIcons.chevronRight),
+          label: Text(''),
+        ),
+      ),
+    );
+  }
+}

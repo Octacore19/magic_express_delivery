@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:repositories/repositories.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 

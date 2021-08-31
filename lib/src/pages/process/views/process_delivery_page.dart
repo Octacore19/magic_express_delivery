@@ -90,6 +90,8 @@ class _ProcessDeliveryState extends State<_ProcessDeliveryForm> {
               _DeliveryNoteView(),
               const SizedBox(height: 24),
               _PaymentOptionsView(),
+              const SizedBox(height: 56),
+              _NextToSummaryButton(),
             ],
           ),
         ),

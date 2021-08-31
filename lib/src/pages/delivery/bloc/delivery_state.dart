@@ -21,6 +21,20 @@ class DeliveryState extends Equatable {
   bool get buttonActive =>
       cartItems.isNotEmpty && !pickupDetail.empty && !deliveryDetail.empty;
 
+  double get distance {
+    double distance = 0;
+    if (!pickupDetail.empty && !deliveryDetail.empty) {
+      distance = Geolocator.distanceBetween(
+        pickupDetail.latitude,
+        pickupDetail.longitude,
+        deliveryDetail.latitude,
+        deliveryDetail.longitude,
+      );
+      distance = distance / 1000;
+    }
+    return distance;
+  }
+
   DeliveryState copyWith({
     String? pickupAddress,
     String? deliveryAddress,

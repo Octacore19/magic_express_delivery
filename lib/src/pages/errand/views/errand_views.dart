@@ -120,6 +120,25 @@ class _DeliveryAddressInput extends StatelessWidget {
   }
 }
 
+class _DistanceCalculationView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<ErrandBloc, ErrandState, double>(
+      selector: (s) => s.distance,
+      builder: (_, distance) => Visibility(
+        visible: distance != 0,
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            'Distance: ${distance.toStringAsFixed(2)} km',
+            style: Theme.of(context).textTheme.caption,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _ShoppingCartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

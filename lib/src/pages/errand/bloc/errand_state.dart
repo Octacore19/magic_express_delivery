@@ -26,6 +26,20 @@ class ErrandState extends Equatable {
       !storeDetail.empty &&
       !deliveryDetail.empty;
 
+  double get distance {
+    double distance = 0;
+    if (!storeDetail.empty && !deliveryDetail.empty) {
+      distance = Geolocator.distanceBetween(
+        storeDetail.latitude,
+        storeDetail.longitude,
+        deliveryDetail.latitude,
+        deliveryDetail.longitude,
+      );
+      distance = distance / 1000;
+    }
+    return distance;
+  }
+
   ErrandState copyWith({
     String? storeName,
     String? storeAddress,
