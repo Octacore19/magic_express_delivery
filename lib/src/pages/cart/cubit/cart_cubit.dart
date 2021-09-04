@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
@@ -9,11 +11,14 @@ class CartCubit extends HydratedCubit<CartState> {
   CartCubit({required CoordinatorCubit coordinatorCubit})
       : _coordinatorCubit = coordinatorCubit,
         super(CartState()) {
-    _items = coordinatorCubit.state.cartItems;
+    _itemsSub = coordinatorCubit.cartItems.listen((items) {
+      if (items != null) _items = items;
+    });
   }
 
   final CoordinatorCubit _coordinatorCubit;
-  late List<CartItem> _items;
+  late StreamSubscription _itemsSub;
+  List<CartItem> _items = [];
 
   void onItemNameChanged(String? value) {
     emit(state.copyWith(itemName: value));
@@ -52,5 +57,11 @@ class CartCubit extends HydratedCubit<CartState> {
   @override
   Map<String, dynamic>? toJson(CartState state) {
     return state.toJson();
+  }
+
+  @override
+  Future<void> close() {
+    _itemsSub.cancel();
+    return super.close();
   }
 }

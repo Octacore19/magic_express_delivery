@@ -27,9 +27,9 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
       final event = ErrandEvent(action, detail);
       add(event);
     });
-    _orderItemsSub = coordinatorCubit.stream.listen((s) {
+    _orderItemsSub = coordinatorCubit.cartItems.listen((items) {
       final action = ErrandAction.OnOrderItemsAdded;
-      final event = ErrandEvent(action, s.cartItems);
+      final event = ErrandEvent(action, items);
       add(event);
     });
   }

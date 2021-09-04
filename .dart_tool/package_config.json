@@ -242,12 +242,6 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "flutter_simple_dependency_injection",
-      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_simple_dependency_injection-2.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "flutter_test",
       "rootUri": "file:///C:/src/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -716,7 +710,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-08-31T17:45:45.902976Z",
+  "generated": "2021-09-04T19:19:31.613862Z",
   "generator": "pub",
   "generatorVersion": "2.13.4"
 }

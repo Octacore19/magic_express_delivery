@@ -54,7 +54,7 @@ class _ProcessDeliveryState extends State<_ProcessDeliveryForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CoordinatorCubit, CoordinatorState>(
+    return BlocBuilder<ProcessDeliveryCubit, ProcessDeliveryState>(
       builder: (_, state) => SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24),

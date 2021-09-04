@@ -10,7 +10,7 @@ class CoordinatorState extends Equatable {
     this.receiverName = '',
     this.receiverPhone = '',
     this.deliveryNote = '',
-    this.types = PaymentTypes.Cash,
+    this.types = PaymentType.Cash,
   });
 
   final TaskType taskType;
@@ -21,7 +21,7 @@ class CoordinatorState extends Equatable {
   final String receiverName;
   final String receiverPhone;
   final String deliveryNote;
-  final PaymentTypes types;
+  final PaymentType types;
 
   bool get errand => taskType == TaskType.Errand;
 
@@ -46,7 +46,7 @@ class CoordinatorState extends Equatable {
     String? receiverName,
     String? receiverPhone,
     String? deliveryNote,
-    PaymentTypes? types,
+    PaymentType? types,
   }) {
     return CoordinatorState(
       taskType: taskType ?? this.taskType,

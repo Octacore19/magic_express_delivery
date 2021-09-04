@@ -28,39 +28,39 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
       final event = DeliveryEvent(action, detail);
       add(event);
     });
-    _orderItemsSub = coordinatorCubit.stream.listen((s) {
+    _orderItemsSub = coordinatorCubit.cartItems.listen((items) {
       final action = DeliveryAction.OnCartItemsAdded;
-      final event = DeliveryEvent(action, s.cartItems);
+      final event = DeliveryEvent(action, items);
       add(event);
     });
-    _senderNameSub = coordinatorCubit.stream.listen((s) {
+    _senderNameSub = coordinatorCubit.senderName.listen((name) {
       final action = DeliveryAction.OnSenderNameChanged;
-      final event = DeliveryEvent(action, s.senderName);
+      final event = DeliveryEvent(action, name);
       add(event);
     });
-    _senderPhoneSub = coordinatorCubit.stream.listen((s) {
+    _senderPhoneSub = coordinatorCubit.senderPhoneNumber.listen((phone) {
       final action = DeliveryAction.OnSenderPhoneChanged;
-      final event = DeliveryEvent(action, s.senderPhone);
+      final event = DeliveryEvent(action, phone);
       add(event);
     });
-    _receiverNameSub = coordinatorCubit.stream.listen((s) {
+    _receiverNameSub = coordinatorCubit.receiverName.listen((name) {
       final action = DeliveryAction.OnReceiverNameChanged;
-      final event = DeliveryEvent(action, s.receiverName);
+      final event = DeliveryEvent(action, name);
       add(event);
     });
-    _receiverPhoneSub = coordinatorCubit.stream.listen((s) {
+    _receiverPhoneSub = coordinatorCubit.receiverPhoneNumber.listen((phone) {
       final action = DeliveryAction.OnReceiverPhoneChanged;
-      final event = DeliveryEvent(action, s.receiverPhone);
+      final event = DeliveryEvent(action, phone);
       add(event);
     });
-    _deliveryNoteSub = coordinatorCubit.stream.listen((s) {
+    _deliveryNoteSub = coordinatorCubit.deliveryNote.listen((note) {
       final action = DeliveryAction.OnDeliveryNoteChanged;
-      final event = DeliveryEvent(action, s.deliveryNote);
+      final event = DeliveryEvent(action, note);
       add(event);
     });
-    _paymentTypeSub = coordinatorCubit.stream.listen((s) {
+    _paymentTypeSub = coordinatorCubit.paymentType.listen((type) {
       final action = DeliveryAction.OnPaymentTypedChanged;
-      final event = DeliveryEvent(action, s.types);
+      final event = DeliveryEvent(action, type);
       add(event);
     });
   }
@@ -136,7 +136,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
         yield state.copyWith(deliveryNote: value);
         break;
       case DeliveryAction.OnPaymentTypedChanged:
-        PaymentTypes type = event.args as PaymentTypes;
+        PaymentType type = event.args as PaymentType;
         yield state.copyWith(types: type);
         break;
       case DeliveryAction.OnCartItemsAdded:

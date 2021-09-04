@@ -5,42 +5,72 @@ import 'package:repositories/repositories.dart';
 
 part 'coordinator_state.dart';
 
-class CoordinatorCubit extends Cubit<CoordinatorState> {
-  CoordinatorCubit() : super(CoordinatorState());
+class CoordinatorCubit extends Cubit<Null> {
+  CoordinatorCubit() : super(null);
 
-  void setTaskType(TaskType type) {
-    emit(state.copyWith(taskType: type));
-  }
+  final _taskTypeController = BehaviorSubject<TaskType?>();
+  final _deliveryTypeController = BehaviorSubject<DeliveryType?>();
+  final _cartItemsController = BehaviorSubject<List<CartItem>?>();
+  final _senderNameController = BehaviorSubject<String?>();
+  final _senderPhoneController = BehaviorSubject<String?>();
+  final _receiverNameController = BehaviorSubject<String?>();
+  final _receiverPhoneController = BehaviorSubject<String?>();
+  final _deliveryNoteController = BehaviorSubject<String?>();
+  final _storeNameController = BehaviorSubject<String?>();
+  final _paymentTypeController = BehaviorSubject<PaymentType?>();
 
-  void setDeliveryType(DeliveryType type) {
-    emit(state.copyWith(deliveryType: type));
-  }
+  void setTaskType(TaskType type) => _taskTypeController.sink.add(type);
 
-  void setCartItems(List<CartItem>? items) {
-    emit(state.copyWith(cartItems: items));
-  }
+  Stream<TaskType?> get taskType => _taskTypeController.stream;
 
-  void setSenderName(String? value) {
-    emit(state.copyWith(senderName: value));
-  }
+  void setDeliveryType(DeliveryType type) => _deliveryTypeController.sink.add(type);
 
-  void setSenderPhone(String? value) {
-    emit(state.copyWith(senderPhone: value));
-  }
+  Stream<DeliveryType?> get deliveryType => _deliveryTypeController.stream;
 
-  void setReceiverName(String? value) {
-    emit(state.copyWith(receiverName: value));
-  }
+  void setCartItems(List<CartItem> items) => _cartItemsController.sink.add(items);
 
-  void setReceiverPhone(String? value) {
-    emit(state.copyWith(receiverPhone: value));
-  }
+  Stream<List<CartItem>?> get cartItems => _cartItemsController.stream;
 
-  void setDeliveryNote(String? value) {
-    emit(state.copyWith(deliveryNote: value));
-  }
+  void setSenderName(String? value) => _senderNameController.sink.add(value);
 
-  void setPaymentType(PaymentTypes? type) {
-    emit(state.copyWith(types: type));
+  Stream<String?> get senderName => _senderNameController.stream;
+
+  void setSenderPhone(String? value) => _senderPhoneController.sink.add(value);
+
+  Stream<String?> get senderPhoneNumber => _senderPhoneController.stream;
+
+  void setReceiverName(String? value) => _receiverNameController.sink.add(value);
+
+  Stream<String?> get receiverName => _receiverNameController.stream;
+
+  void setReceiverPhone(String? value) => _receiverPhoneController.sink.add(value);
+
+  Stream<String?> get receiverPhoneNumber => _receiverPhoneController.stream;
+
+  void setDeliveryNote(String? value) => _deliveryNoteController.sink.add(value);
+
+  Stream<String?> get deliveryNote => _deliveryNoteController.stream;
+
+  void setPaymentType(PaymentType? type) => _paymentTypeController.sink.add(type);
+
+  Stream<PaymentType?> get paymentType => _paymentTypeController.stream;
+
+  void setStoreName(String? value) => _storeNameController.sink.add(value);
+
+  Stream<String?> get storeName => _storeNameController.stream;
+
+  @override
+  Future<void> close() {
+    _taskTypeController.close();
+    _deliveryTypeController.close();
+    _cartItemsController.close();
+    _senderNameController.close();
+    _senderPhoneController.close();
+    _receiverNameController.close();
+    _receiverPhoneController.close();
+    _deliveryNoteController.close();
+    _storeNameController.close();
+    _paymentTypeController.close();
+    return super.close();
   }
 }

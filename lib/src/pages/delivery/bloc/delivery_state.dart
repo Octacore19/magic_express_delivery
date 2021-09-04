@@ -13,7 +13,7 @@ class DeliveryState extends Equatable {
     this.receiverName = '',
     this.receiverPhone = '',
     this.deliveryNote = '',
-    this.types = PaymentTypes.Cash,
+    this.types = PaymentType.Cash,
   });
 
   final String pickupAddress;
@@ -29,7 +29,7 @@ class DeliveryState extends Equatable {
   final String receiverName;
   final String receiverPhone;
   final String deliveryNote;
-  final PaymentTypes types;
+  final PaymentType types;
 
   bool get buttonActive =>
       cartItems.isNotEmpty && !pickupDetail.empty && !deliveryDetail.empty;
@@ -60,7 +60,7 @@ class DeliveryState extends Equatable {
     String? receiverName,
     String? receiverPhone,
     String? deliveryNote,
-    PaymentTypes? types,
+    PaymentType? types,
   }) {
     return DeliveryState(
       pickupAddress: pickupAddress ?? this.pickupAddress,

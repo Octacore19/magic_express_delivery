@@ -198,7 +198,7 @@ packages:
     source: hosted
     version: "2.0.1"
   equatable:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: equatable
       url: "https://pub.dartlang.org"
@@ -279,13 +279,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  flutter_simple_dependency_injection:
-    dependency: "direct main"
-    description:
-      name: flutter_simple_dependency_injection
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -612,7 +605,7 @@ packages:
     source: hosted
     version: "0.27.1"
   services:
-    dependency: "direct main"
+    dependency: transitive
     description:
       path: "packages/services"
       relative: true
@@ -771,7 +764,7 @@ packages:
     source: hosted
     version: "2.1.0"
   very_good_analysis:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: very_good_analysis
       url: "https://pub.dartlang.org"
