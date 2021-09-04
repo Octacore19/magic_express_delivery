@@ -229,15 +229,18 @@ class _NextToProcessButton extends StatelessWidget {
             padding: EdgeInsets.all(16),
             textStyle: Theme.of(context).textTheme.button,
           ),
-          onPressed: enabled
-              ? () {
-                  Navigator.of(context).push(ProcessDeliveryPage.route());
-                }
-              : null,
+          onPressed: enabled ? () => navigate(context) : null,
           icon: Icon(MdiIcons.chevronRight),
           label: Text(''),
         ),
       ),
     );
+  }
+
+  void navigate(BuildContext context) async {
+    final res = await Navigator.of(context).push(ProcessDeliveryPage.route());
+    if (res != null && res is bool && res) {
+      DeliverySummaryDialog()..show(context);
+    }
   }
 }

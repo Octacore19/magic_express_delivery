@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:repositories/repositories.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 
@@ -17,29 +18,70 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
   })  : _placesRepo = placesRepo,
         _coordinatorCubit = coordinatorCubit,
         super(DeliveryState()) {
-    _storeAddressSub = placesRepo.pickupDetail.listen((detail) {
-      emit(state.copyWith(pickupDetail: detail));
+    _pickupAddressSub = placesRepo.pickupDetail.listen((detail) {
+      final action = DeliveryAction.OnPickupDetailChanged;
+      final event = DeliveryEvent(action, detail);
+      add(event);
     });
     _deliveryAddressSub = placesRepo.destinationDetail.listen((detail) {
-      emit(state.copyWith(deliveryDetail: detail));
+      final action = DeliveryAction.OnDeliveryDetailChanged;
+      final event = DeliveryEvent(action, detail);
+      add(event);
     });
     _orderItemsSub = coordinatorCubit.stream.listen((s) {
-      final total = _calculateTotalPrice(s.cartItems);
-      emit(state.copyWith(cartItems: s.cartItems, totalPrice: total));
+      final action = DeliveryAction.OnCartItemsAdded;
+      final event = DeliveryEvent(action, s.cartItems);
+      add(event);
+    });
+    _senderNameSub = coordinatorCubit.stream.listen((s) {
+      final action = DeliveryAction.OnSenderNameChanged;
+      final event = DeliveryEvent(action, s.senderName);
+      add(event);
+    });
+    _senderPhoneSub = coordinatorCubit.stream.listen((s) {
+      final action = DeliveryAction.OnSenderPhoneChanged;
+      final event = DeliveryEvent(action, s.senderPhone);
+      add(event);
+    });
+    _receiverNameSub = coordinatorCubit.stream.listen((s) {
+      final action = DeliveryAction.OnReceiverNameChanged;
+      final event = DeliveryEvent(action, s.receiverName);
+      add(event);
+    });
+    _receiverPhoneSub = coordinatorCubit.stream.listen((s) {
+      final action = DeliveryAction.OnReceiverPhoneChanged;
+      final event = DeliveryEvent(action, s.receiverPhone);
+      add(event);
+    });
+    _deliveryNoteSub = coordinatorCubit.stream.listen((s) {
+      final action = DeliveryAction.OnDeliveryNoteChanged;
+      final event = DeliveryEvent(action, s.deliveryNote);
+      add(event);
+    });
+    _paymentTypeSub = coordinatorCubit.stream.listen((s) {
+      final action = DeliveryAction.OnPaymentTypedChanged;
+      final event = DeliveryEvent(action, s.types);
+      add(event);
     });
   }
 
   final PlacesRepo _placesRepo;
   final CoordinatorCubit _coordinatorCubit;
 
-  late StreamSubscription _storeAddressSub;
+  late StreamSubscription _pickupAddressSub;
   late StreamSubscription _deliveryAddressSub;
   late StreamSubscription _orderItemsSub;
+  late StreamSubscription _senderNameSub;
+  late StreamSubscription _senderPhoneSub;
+  late StreamSubscription _receiverNameSub;
+  late StreamSubscription _receiverPhoneSub;
+  late StreamSubscription _deliveryNoteSub;
+  late StreamSubscription _paymentTypeSub;
 
   @override
   Stream<DeliveryState> mapEventToState(DeliveryEvent event) async* {
     switch (event.action) {
-      case DeliveryAction.onPickupAddressChanged:
+      case DeliveryAction.OnPickupAddressChanged:
         String? add = event.args as String?;
         yield state.copyWith(pickupAddress: add);
         break;
@@ -72,6 +114,35 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
           state = state.copyWith(cartItems: arg, totalPrice: total);
         }
         yield state;
+        break;
+      case DeliveryAction.OnSenderNameChanged:
+        String value = event.args as String;
+        yield state.copyWith(senderName: value);
+        break;
+      case DeliveryAction.OnSenderPhoneChanged:
+        String value = event.args as String;
+        yield state.copyWith(senderPhone: value);
+        break;
+      case DeliveryAction.OnReceiverNameChanged:
+        String value = event.args as String;
+        yield state.copyWith(receiverName: value);
+        break;
+      case DeliveryAction.OnReceiverPhoneChanged:
+        String value = event.args as String;
+        yield state.copyWith(receiverPhone: value);
+        break;
+      case DeliveryAction.OnDeliveryNoteChanged:
+        String value = event.args as String;
+        yield state.copyWith(deliveryNote: value);
+        break;
+      case DeliveryAction.OnPaymentTypedChanged:
+        PaymentTypes type = event.args as PaymentTypes;
+        yield state.copyWith(types: type);
+        break;
+      case DeliveryAction.OnCartItemsAdded:
+        List<CartItem> items = event.args as List<CartItem>;
+        double total = _calculateTotalPrice(items);
+        yield state.copyWith(cartItems: items, totalPrice: total);
         break;
     }
   }
@@ -132,9 +203,15 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
 
   @override
   Future<void> close() {
-    _storeAddressSub.cancel();
+    _pickupAddressSub.cancel();
     _deliveryAddressSub.cancel();
     _orderItemsSub.cancel();
+    _senderNameSub.cancel();
+    _senderPhoneSub.cancel();
+    _receiverNameSub.cancel();
+    _receiverPhoneSub.cancel();
+    _deliveryNoteSub.cancel();
+    _paymentTypeSub.cancel();
     return super.close();
   }
 }

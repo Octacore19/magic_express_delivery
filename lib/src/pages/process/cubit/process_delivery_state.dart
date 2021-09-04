@@ -19,6 +19,12 @@ class ProcessDeliveryState extends Equatable {
   final String deliveryNote;
   final PaymentTypes types;
 
+  bool get buttonActive =>
+      senderName.isNotEmpty &&
+      senderPhone.isNotEmpty &&
+      receiverName.isNotEmpty &&
+      receiverPhone.isNotEmpty;
+
   ProcessDeliveryState copyWith({
     List<bool>? paymentSelection,
     String? senderName,

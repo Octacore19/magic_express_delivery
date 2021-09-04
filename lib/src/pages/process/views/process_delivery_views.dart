@@ -99,7 +99,9 @@ class _DeliveryNoteView extends StatelessWidget {
                 maxLines: null,
                 minLines: 3,
                 onChanged: (val) {
-                  context.read<ProcessDeliveryCubit>().onDeliveryNoteChanged(val);
+                  context
+                      .read<ProcessDeliveryCubit>()
+                      .onDeliveryNoteChanged(val);
                 },
                 decoration: InputDecoration(
                   hintText: 'Start typing...',
@@ -207,7 +209,7 @@ class _PaymentOptionsView extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Text.rich(
             TextSpan(
-              text: 'Cash',
+              text: 'Cash   ',
               style: Theme.of(context).textTheme.bodyText1,
               children: [
                 WidgetSpan(
@@ -231,7 +233,7 @@ class _PaymentOptionsView extends StatelessWidget {
 class _NextToSummaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<ErrandBloc, ErrandState, bool>(
+    return BlocSelector<ProcessDeliveryCubit, ProcessDeliveryState, bool>(
       selector: (s) => s.buttonActive,
       builder: (_, enabled) => SizedBox(
         width: double.infinity,
@@ -240,11 +242,7 @@ class _NextToSummaryButton extends StatelessWidget {
             padding: EdgeInsets.all(16),
             textStyle: Theme.of(context).textTheme.button,
           ),
-          onPressed: enabled
-              ? () {
-            Navigator.of(context).push(ProcessDeliveryPage.route());
-          }
-              : null,
+          onPressed: () => Navigator.of(context).pop(true),
           icon: Icon(MdiIcons.chevronRight),
           label: Text(''),
         ),

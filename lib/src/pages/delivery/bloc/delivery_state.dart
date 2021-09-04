@@ -8,6 +8,12 @@ class DeliveryState extends Equatable {
     this.deliveryDetail = const PlaceDetail.empty(),
     this.cartItems = const [],
     this.totalPrice = 0,
+    this.senderName = '',
+    this.senderPhone = '',
+    this.receiverName = '',
+    this.receiverPhone = '',
+    this.deliveryNote = '',
+    this.types = PaymentTypes.Cash,
   });
 
   final String pickupAddress;
@@ -17,6 +23,13 @@ class DeliveryState extends Equatable {
 
   final List<CartItem> cartItems;
   final double totalPrice;
+
+  final String senderName;
+  final String senderPhone;
+  final String receiverName;
+  final String receiverPhone;
+  final String deliveryNote;
+  final PaymentTypes types;
 
   bool get buttonActive =>
       cartItems.isNotEmpty && !pickupDetail.empty && !deliveryDetail.empty;
@@ -42,6 +55,12 @@ class DeliveryState extends Equatable {
     PlaceDetail? deliveryDetail,
     List<CartItem>? cartItems,
     double? totalPrice,
+    String? senderName,
+    String? senderPhone,
+    String? receiverName,
+    String? receiverPhone,
+    String? deliveryNote,
+    PaymentTypes? types,
   }) {
     return DeliveryState(
       pickupAddress: pickupAddress ?? this.pickupAddress,
@@ -50,6 +69,12 @@ class DeliveryState extends Equatable {
       deliveryDetail: deliveryDetail ?? this.deliveryDetail,
       cartItems: cartItems ?? this.cartItems,
       totalPrice: totalPrice ?? this.totalPrice,
+      senderName: senderName ?? this.senderName,
+      senderPhone: senderPhone ?? this.senderPhone,
+      receiverName: receiverName ?? this.receiverName,
+      receiverPhone: receiverPhone ?? this.receiverPhone,
+      deliveryNote: deliveryNote ?? this.deliveryNote,
+      types: types ?? this.types,
     );
   }
 
@@ -61,5 +86,11 @@ class DeliveryState extends Equatable {
         deliveryDetail,
         cartItems,
         totalPrice,
+        senderName,
+        senderPhone,
+        receiverName,
+        receiverPhone,
+        deliveryNote,
+        types,
       ];
 }
