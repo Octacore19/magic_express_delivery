@@ -21,12 +21,12 @@ class PlacesRepo implements IPlacesRepo {
   Stream<List<Prediction>> get result => _result;
 
   Stream<PlaceDetail> get destinationDetail async* {
-    yield const PlaceDetail.empty();
+    yield PlaceDetail.empty();
     yield* _destinationController.stream;
   }
 
   Stream<PlaceDetail> get pickupDetail async* {
-    yield const PlaceDetail.empty();
+    yield PlaceDetail.empty();
     yield* _pickupController.stream;
   }
 
@@ -50,7 +50,7 @@ class PlacesRepo implements IPlacesRepo {
     }
   }
 
-  void close() {
+  void dispose() {
     _pickupController.close();
     _destinationController.close();
   }

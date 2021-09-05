@@ -8,9 +8,9 @@ class ProcessDeliveryState extends Equatable {
     this.receiverName = '',
     this.receiverPhone = '',
     this.deliveryNote = '',
-    this.paymentType = PaymentType.Cash,
-    this.deliveryType = DeliveryType.Sender,
-    this.taskType = TaskType.Errand,
+    this.paymentType = PaymentType.unknown,
+    this.personnelType = PersonnelType.unknown,
+    this.orderType = OrderType.unknown,
   });
 
   final List<bool> paymentSelection;
@@ -20,8 +20,8 @@ class ProcessDeliveryState extends Equatable {
   final String receiverPhone;
   final String deliveryNote;
   final PaymentType paymentType;
-  final DeliveryType deliveryType;
-  final TaskType taskType;
+  final PersonnelType personnelType;
+  final OrderType orderType;
 
   bool get buttonActive =>
       senderName.isNotEmpty &&
@@ -29,15 +29,15 @@ class ProcessDeliveryState extends Equatable {
       receiverName.isNotEmpty &&
       receiverPhone.isNotEmpty;
 
-  bool get errand => taskType == TaskType.Errand;
+  bool get errand => orderType == OrderType.errand;
 
-  bool get delivery => taskType == TaskType.Delivery;
+  bool get delivery => orderType == OrderType.delivery;
 
-  bool get sender => deliveryType == DeliveryType.Sender;
+  bool get sender => personnelType == PersonnelType.sender;
 
-  bool get receiver => deliveryType == DeliveryType.Receiver;
+  bool get receiver => personnelType == PersonnelType.receiver;
 
-  bool get thirdParty => deliveryType == DeliveryType.ThirdParty;
+  bool get thirdParty => personnelType == PersonnelType.thirdParty;
 
   bool get senderVisible => sender || thirdParty;
 
@@ -51,8 +51,8 @@ class ProcessDeliveryState extends Equatable {
     String? receiverPhone,
     String? deliveryNote,
     PaymentType? paymentType,
-    TaskType? taskType,
-    DeliveryType? deliveryType,
+    OrderType? orderType,
+    PersonnelType? personnelType,
   }) {
     return ProcessDeliveryState(
       paymentSelection: paymentSelection ?? this.paymentSelection,
@@ -62,8 +62,8 @@ class ProcessDeliveryState extends Equatable {
       receiverPhone: receiverPhone ?? this.receiverPhone,
       deliveryNote: deliveryNote ?? this.deliveryNote,
       paymentType: paymentType ?? this.paymentType,
-      taskType: taskType ?? this.taskType,
-      deliveryType: deliveryType ?? this.deliveryType,
+      orderType: orderType ?? this.orderType,
+      personnelType: personnelType ?? this.personnelType,
     );
   }
 
@@ -76,9 +76,7 @@ class ProcessDeliveryState extends Equatable {
         receiverName,
         deliveryNote,
         paymentType,
-        taskType,
-        deliveryType,
+        orderType,
+        personnelType,
       ];
 }
-
-enum PaymentType { Card, Cash }

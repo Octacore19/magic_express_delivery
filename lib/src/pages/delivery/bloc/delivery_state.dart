@@ -1,20 +1,37 @@
 part of 'delivery_bloc.dart';
 
 class DeliveryState extends Equatable {
-  DeliveryState({
-    this.pickupAddress = '',
-    this.deliveryAddress = '',
-    this.pickupDetail = const PlaceDetail.empty(),
-    this.deliveryDetail = const PlaceDetail.empty(),
-    this.cartItems = const [],
-    this.totalPrice = 0,
-    this.senderName = '',
-    this.senderPhone = '',
-    this.receiverName = '',
-    this.receiverPhone = '',
-    this.deliveryNote = '',
-    this.types = PaymentType.Cash,
+  const DeliveryState._({
+    required this.pickupAddress,
+    required this.deliveryAddress,
+    required this.pickupDetail,
+    required this.deliveryDetail,
+    required this.cartItems,
+    required this.totalPrice,
+    required this.senderName,
+    required this.senderPhone,
+    required this.receiverName,
+    required this.receiverPhone,
+    required this.deliveryNote,
+    required this.paymentType,
   });
+
+  factory DeliveryState.initial() {
+    return DeliveryState._(
+      pickupAddress: '',
+      deliveryAddress: '',
+      pickupDetail: PlaceDetail.empty(),
+      deliveryDetail: PlaceDetail.empty(),
+      cartItems: List.empty(),
+      totalPrice: 0,
+      senderPhone: '',
+      senderName: '',
+      receiverPhone: '',
+      receiverName: '',
+      deliveryNote: '',
+      paymentType: PaymentType.unknown,
+    );
+  }
 
   final String pickupAddress;
   final String deliveryAddress;
@@ -29,7 +46,7 @@ class DeliveryState extends Equatable {
   final String receiverName;
   final String receiverPhone;
   final String deliveryNote;
-  final PaymentType types;
+  final PaymentType paymentType;
 
   bool get buttonActive =>
       cartItems.isNotEmpty && !pickupDetail.empty && !deliveryDetail.empty;
@@ -60,9 +77,9 @@ class DeliveryState extends Equatable {
     String? receiverName,
     String? receiverPhone,
     String? deliveryNote,
-    PaymentType? types,
+    PaymentType? paymentType,
   }) {
-    return DeliveryState(
+    return DeliveryState._(
       pickupAddress: pickupAddress ?? this.pickupAddress,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
       pickupDetail: pickupDetail ?? this.pickupDetail,
@@ -74,7 +91,7 @@ class DeliveryState extends Equatable {
       receiverName: receiverName ?? this.receiverName,
       receiverPhone: receiverPhone ?? this.receiverPhone,
       deliveryNote: deliveryNote ?? this.deliveryNote,
-      types: types ?? this.types,
+      paymentType: paymentType ?? this.paymentType,
     );
   }
 
@@ -91,6 +108,6 @@ class DeliveryState extends Equatable {
         receiverName,
         receiverPhone,
         deliveryNote,
-        types,
+        paymentType,
       ];
 }

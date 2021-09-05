@@ -11,19 +11,11 @@ class DeliveryEvent extends Equatable {
 }
 
 enum DeliveryAction {
-  OnPickupAddressChanged,
-  OnDeliveryAddressChanged,
   OnSetPickupAddressDetail,
   OnSetDeliveryAddressDetail,
-  OnItemRemoved,
   OnPickupDetailChanged,
   OnDeliveryDetailChanged,
-  OnOrderItemsAdded,
-  OnSenderNameChanged,
-  OnSenderPhoneChanged,
-  OnReceiverNameChanged,
-  OnReceiverPhoneChanged,
-  OnDeliveryNoteChanged,
-  OnPaymentTypedChanged,
+  OnDeliveryOrderChanged,
   OnCartItemsAdded,
+  OnItemRemoved,
 }

@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
+import 'package:magic_express_delivery/src/models/models.dart';
 import 'package:repositories/repositories.dart';
 
 part 'errand_event.dart';
@@ -16,7 +17,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     required PlacesRepo places,
   })  : _places = places,
         _coordinatorCubit = coordinatorCubit,
-        super(ErrandState()) {
+        super(ErrandState.initial()) {
     _storeAddressSub = places.pickupDetail.listen((detail) {
       final action = ErrandAction.OnStoreDetailChanged;
       final event = ErrandEvent(action, detail);
@@ -32,6 +33,11 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
       final event = ErrandEvent(action, items);
       add(event);
     });
+    _errandOrderSub = coordinatorCubit.errandOrder.listen((order) {
+      final action = ErrandAction.OnErrandOrderChanged;
+      final event = ErrandEvent(action, order);
+      add(event);
+    });
   }
 
   final PlacesRepo _places;
@@ -40,6 +46,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
   late StreamSubscription _storeAddressSub;
   late StreamSubscription _deliveryAddressSub;
   late StreamSubscription _orderItemsSub;
+  late StreamSubscription _errandOrderSub;
 
   @override
   Stream<ErrandState> mapEventToState(ErrandEvent event) async* {
@@ -47,14 +54,6 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
       case ErrandAction.OnStoreNameChanged:
         String? name = event.args as String?;
         yield state.copyWith(storeName: name);
-        break;
-      case ErrandAction.onStoreAddressChanged:
-        String? add = event.args as String?;
-        yield state.copyWith(storeAddress: add);
-        break;
-      case ErrandAction.OnDeliveryAddressChanged:
-        String? address = event.args as String?;
-        yield state.copyWith(deliveryAddress: address);
         break;
       case ErrandAction.OnSetStoreAddressDetail:
         _fetchStoreDetail(event);
@@ -74,13 +73,20 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
         yield state.copyWith(deliveryDetail: arg);
         break;
       case ErrandAction.OnOrderItemsAdded:
-        ErrandState state = this.state;
-        List<CartItem>? arg = event.args as List<CartItem>?;
-        if (arg != null) {
-          final total = _calculateTotalPrice(arg);
-          state = state.copyWith(cartItems: arg, totalPrice: total);
-        }
-        yield state;
+        List<CartItem> arg = event.args as List<CartItem>;
+        final total = _calculateTotalPrice(arg);
+        yield state.copyWith(cartItems: arg, totalPrice: total);
+        break;
+      case ErrandAction.OnErrandOrderChanged:
+        ErrandOrder order = event.args as ErrandOrder;
+        yield state.copyWith(
+          senderName: order.senderName,
+          senderPhone: order.senderPhone,
+          receiverName: order.receiverName,
+          receiverPhone: order.receiverPhone,
+          deliveryNote: order.deliveryNote,
+          paymentType: order.paymentType,
+        );
         break;
     }
   }
@@ -140,10 +146,19 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
   }
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
+    final order = await _coordinatorCubit.errandOrder.first;
+    _coordinatorCubit.setErrandOrder(order.copyWith(
+      storeName: state.storeName,
+      orderItems: state.cartItems,
+      totalPrice: state.totalPrice,
+      storeLocation: Location.fromPlace(state.storeDetail),
+      destinationLocation: Location.fromPlace(state.deliveryDetail),
+    ));
     _storeAddressSub.cancel();
     _deliveryAddressSub.cancel();
     _orderItemsSub.cancel();
+    _errandOrderSub.cancel();
     return super.close();
   }
 }

@@ -1,8 +1,7 @@
-import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
+import 'package:magic_express_delivery/src/models/models.dart';
 import 'package:repositories/repositories.dart';
 
 part 'cart_state.dart';
@@ -10,15 +9,9 @@ part 'cart_state.dart';
 class CartCubit extends HydratedCubit<CartState> {
   CartCubit({required CoordinatorCubit coordinatorCubit})
       : _coordinatorCubit = coordinatorCubit,
-        super(CartState()) {
-    _itemsSub = coordinatorCubit.cartItems.listen((items) {
-      if (items != null) _items = items;
-    });
-  }
+        super(CartState.initial());
 
   final CoordinatorCubit _coordinatorCubit;
-  late StreamSubscription _itemsSub;
-  List<CartItem> _items = [];
 
   void onItemNameChanged(String? value) {
     emit(state.copyWith(itemName: value));
@@ -36,17 +29,17 @@ class CartCubit extends HydratedCubit<CartState> {
     emit(state.copyWith(unitPrice: value));
   }
 
-  void onItemAdded() {
-    CartState state = this.state;
+  void onItemAdded() async {
     final item = CartItem(
       name: state.itemName,
       description: state.description,
       quantity: state.quantity,
       unitPrice: state.unitPrice,
     );
+    final _items = await _coordinatorCubit.cartItems.first;
     List<CartItem> l = List.from(_items)..add(item);
     _coordinatorCubit.setCartItems(l);
-    emit(CartState());
+    emit(CartState.initial());
   }
 
   @override
@@ -57,11 +50,5 @@ class CartCubit extends HydratedCubit<CartState> {
   @override
   Map<String, dynamic>? toJson(CartState state) {
     return state.toJson();
-  }
-
-  @override
-  Future<void> close() {
-    _itemsSub.cancel();
-    return super.close();
   }
 }

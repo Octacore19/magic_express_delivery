@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/login/login.dart';
 import 'package:repositories/repositories.dart';
 
@@ -11,11 +12,15 @@ part 'login_events.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvents, LoginState> {
-  LoginBloc({required AuthRepo authRepo})
-      : _authRepo = authRepo,
+  LoginBloc({
+    required AuthRepo authRepo,
+    required ErrorHandler errorHandler,
+  })  : _authRepo = authRepo,
+        _handler = errorHandler,
         super(LoginState());
 
   final AuthRepo _authRepo;
+  final ErrorHandler _handler;
 
   @override
   Stream<LoginState> mapEventToState(LoginEvents event) async* {
@@ -107,6 +112,9 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
           status: FormzStatus.submissionFailure,
           message: e.message,
         );
+      } on Exception catch (e) {
+        _handler.handleExceptions(e);
+        yield state.copyWith(status: FormzStatus.submissionFailure);
       }
     }
   }

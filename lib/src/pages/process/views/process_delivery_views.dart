@@ -160,7 +160,7 @@ class _PaymentOptionsView extends StatelessWidget {
   }
 
   List<Widget> paymentSelectionWidgets(BuildContext context) {
-    final state = context.read<CoordinatorCubit>().state;
+    final state = context.read<ProcessDeliveryCubit>().state;
     List<Widget> content = [];
     if (state.errand) {
       content.addAll([

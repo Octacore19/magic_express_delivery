@@ -13,29 +13,85 @@ void main() async {
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getTemporaryDirectory(),
   );
-  runApp(MultiRepositoryProvider(
-    providers: [
-      RepositoryProvider(create: (_) => Cache()),
-      RepositoryProvider(create: (_) => Preferences()),
-      RepositoryProvider(
-        create: (context) => ApiProvider(
-          preference: RepositoryProvider.of(context),
+  runApp(AppWrapper(App()));
+}
+
+class AppWrapper extends StatefulWidget {
+  final Widget child;
+
+  AppWrapper(this.child);
+
+  @override
+  State<StatefulWidget> createState() => AppWrapperState();
+}
+
+class AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
+  AppWrapperState()
+      : _binding = WidgetsBinding.instance!,
+        _cache = Cache(),
+        _preferences = Preferences() {
+    _apiProvider = ApiProvider(preference: _preferences);
+    _authRepo = AuthRepo(preference: _preferences, api: _apiProvider);
+    _placesRepo = PlacesRepo(api: _apiProvider);
+  }
+
+  final WidgetsBinding _binding;
+  final Cache _cache;
+  final Preferences _preferences;
+
+  late ApiProvider _apiProvider;
+  late AuthRepo _authRepo;
+  late PlacesRepo _placesRepo;
+
+  @override
+  void initState() {
+    _binding.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _binding.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (_) => _cache),
+        RepositoryProvider(create: (_) => _preferences),
+        RepositoryProvider(create: (context) => _apiProvider),
+        RepositoryProvider(
+          create: (context) {
+            _authRepo.status.first;
+            return _authRepo;
+          },
         ),
-      ),
-      RepositoryProvider(
-        create: (context) {
-          final repo = AuthRepo(
-            preference: RepositoryProvider.of(context),
-            api: RepositoryProvider.of(context),
-          );
-          repo.status.first;
-          return repo;
-        },
-      ),
-      RepositoryProvider(
-        create: (context) => PlacesRepo(api: RepositoryProvider.of(context)),
-      ),
-    ],
-    child: App(),
-  ));
+        RepositoryProvider(create: (context) => _placesRepo),
+      ],
+      child: widget.child,
+    );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        break;
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.paused:
+        break;
+      case AppLifecycleState.detached:
+        _authRepo.dispose();
+        _placesRepo.dispose();
+        break;
+    }
+  }
+
+  @override
+  Future<bool> didPopRoute() async {
+    return false;
+  }
 }

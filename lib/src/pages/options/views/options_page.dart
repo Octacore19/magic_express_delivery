@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
+import 'package:magic_express_delivery/src/models/models.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 part 'options_views.dart';
 
 class OptionsPage extends StatelessWidget {
-  static Page page() => MaterialPage<void>(child: OptionsPage());
+  OptionsPage(this._orderType);
 
-  static Route route([Object? args]) => AppRoutes.generateRoute(
-        OptionsPage(),
+  static Route route(OrderType args) => AppRoutes.generateRoute(
+        OptionsPage(args),
         fullScreenDialog: true,
       );
+
+  final OrderType _orderType;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +25,7 @@ class OptionsPage extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => OptionsCubit(
+          orderType: _orderType,
           coordinator: BlocProvider.of(context),
         ),
         child: _Option(),

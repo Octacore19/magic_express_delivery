@@ -92,8 +92,7 @@ class _ErrandCardView extends StatelessWidget {
           ),
         ),
         onTap: () {
-          context.read<CoordinatorCubit>().setTaskType(TaskType.Errand);
-          Navigator.of(context).push(OptionsPage.route(0));
+          Navigator.of(context).push(OptionsPage.route(OrderType.errand));
         },
       ),
     );
@@ -140,8 +139,7 @@ class _DeliveryCardView extends StatelessWidget {
           ),
         ),
         onTap: () {
-          context.read<CoordinatorCubit>().setTaskType(TaskType.Delivery);
-          Navigator.of(context).push(OptionsPage.route(1));
+          Navigator.of(context).push(OptionsPage.route(OrderType.delivery));
         },
       ),
     );

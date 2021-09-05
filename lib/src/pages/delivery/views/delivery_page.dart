@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
-import 'package:magic_express_delivery/src/pages/delivery/views/summary.dart';
+import 'package:magic_express_delivery/src/models/models.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:magic_express_delivery/src/utils/utils.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

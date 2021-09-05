@@ -1,76 +1,44 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:magic_express_delivery/src/pages/pages.dart';
+import 'package:magic_express_delivery/src/models/models.dart';
 import 'package:repositories/repositories.dart';
 
 part 'coordinator_state.dart';
 
-class CoordinatorCubit extends Cubit<Null> {
-  CoordinatorCubit() : super(null);
+class CoordinatorCubit extends Cubit<OrderType> {
+  CoordinatorCubit() : super(OrderType.unknown);
 
-  final _taskTypeController = BehaviorSubject<TaskType?>();
-  final _deliveryTypeController = BehaviorSubject<DeliveryType?>();
-  final _cartItemsController = BehaviorSubject<List<CartItem>?>();
-  final _senderNameController = BehaviorSubject<String?>();
-  final _senderPhoneController = BehaviorSubject<String?>();
-  final _receiverNameController = BehaviorSubject<String?>();
-  final _receiverPhoneController = BehaviorSubject<String?>();
-  final _deliveryNoteController = BehaviorSubject<String?>();
-  final _storeNameController = BehaviorSubject<String?>();
-  final _paymentTypeController = BehaviorSubject<PaymentType?>();
+  final _cartItemsController =
+      BehaviorSubject<List<CartItem>>.seeded(List.empty());
+  final _errandOrderController = ReplaySubject<ErrandOrder>(maxSize: 1);
+  final _deliveryOrderController = ReplaySubject<DeliveryOrder>(maxSize: 1);
 
-  void setTaskType(TaskType type) => _taskTypeController.sink.add(type);
+  void setCartItems(List<CartItem> items) =>
+      _cartItemsController.sink.add(items);
 
-  Stream<TaskType?> get taskType => _taskTypeController.stream;
+  Stream<List<CartItem>> get cartItems => _cartItemsController.stream;
 
-  void setDeliveryType(DeliveryType type) => _deliveryTypeController.sink.add(type);
+  void setErrandOrder(ErrandOrder order) =>
+      _errandOrderController.sink.add(order);
 
-  Stream<DeliveryType?> get deliveryType => _deliveryTypeController.stream;
+  Stream<ErrandOrder> get errandOrder => _errandOrderController.stream;
 
-  void setCartItems(List<CartItem> items) => _cartItemsController.sink.add(items);
+  void setDeliveryOrder(DeliveryOrder order) =>
+      _deliveryOrderController.sink.add(order);
 
-  Stream<List<CartItem>?> get cartItems => _cartItemsController.stream;
+  Stream<DeliveryOrder> get deliveryOrder => _deliveryOrderController.stream;
 
-  void setSenderName(String? value) => _senderNameController.sink.add(value);
+  void setCurrentOrderType(OrderType type) {
+    emit(type);
+  }
 
-  Stream<String?> get senderName => _senderNameController.stream;
-
-  void setSenderPhone(String? value) => _senderPhoneController.sink.add(value);
-
-  Stream<String?> get senderPhoneNumber => _senderPhoneController.stream;
-
-  void setReceiverName(String? value) => _receiverNameController.sink.add(value);
-
-  Stream<String?> get receiverName => _receiverNameController.stream;
-
-  void setReceiverPhone(String? value) => _receiverPhoneController.sink.add(value);
-
-  Stream<String?> get receiverPhoneNumber => _receiverPhoneController.stream;
-
-  void setDeliveryNote(String? value) => _deliveryNoteController.sink.add(value);
-
-  Stream<String?> get deliveryNote => _deliveryNoteController.stream;
-
-  void setPaymentType(PaymentType? type) => _paymentTypeController.sink.add(type);
-
-  Stream<PaymentType?> get paymentType => _paymentTypeController.stream;
-
-  void setStoreName(String? value) => _storeNameController.sink.add(value);
-
-  Stream<String?> get storeName => _storeNameController.stream;
+  bool get errand => this.state == OrderType.errand;
 
   @override
   Future<void> close() {
-    _taskTypeController.close();
-    _deliveryTypeController.close();
     _cartItemsController.close();
-    _senderNameController.close();
-    _senderPhoneController.close();
-    _receiverNameController.close();
-    _receiverPhoneController.close();
-    _deliveryNoteController.close();
-    _storeNameController.close();
-    _paymentTypeController.close();
+    _errandOrderController.close();
+    _deliveryOrderController.close();
     return super.close();
   }
 }

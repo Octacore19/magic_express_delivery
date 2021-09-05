@@ -1,12 +1,35 @@
 part of 'cart_cubit.dart';
 
 class CartState extends Equatable {
-  CartState({
-    this.itemName = '',
-    this.description = '',
-    this.quantity = '',
-    this.unitPrice = '',
+  CartState._({
+    required this.itemName,
+    required this.description,
+    required this.quantity,
+    required this.unitPrice,
   });
+
+  factory CartState({
+    String? itemName,
+    String? description,
+    String? quantity,
+    String? unitPrice,
+  }) {
+    return CartState._(
+      itemName: itemName ?? '',
+      description: description ?? '',
+      quantity: quantity ?? '',
+      unitPrice: unitPrice ?? '',
+    );
+  }
+
+  factory CartState.initial() {
+    return CartState._(
+      itemName: '',
+      description: '',
+      quantity: '',
+      unitPrice: '',
+    );
+  }
 
   final String itemName;
   final String description;
@@ -28,18 +51,23 @@ class CartState extends Equatable {
     );
   }
 
-  CartState.fromJson(Map<String, dynamic> json)
-      : itemName = json['itemName'] ?? '',
-        description = json['description'] ?? '',
-        quantity = json['quantity'] ?? '',
-        unitPrice = json['unitPrice'] ?? '';
+  factory CartState.fromJson(Map<String, dynamic> json) {
+    return CartState._(
+      itemName: json['itemName'] ?? '',
+      description: json['description'] ?? '',
+      quantity: json['quantity'] ?? '',
+      unitPrice: json['unitPrice'] ?? '',
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-        'itemName': itemName,
-        'description': description,
-        'quantity': quantity,
-        'unitPrice': unitPrice,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      'itemName': itemName,
+      'description': description,
+      'quantity': quantity,
+      'unitPrice': unitPrice,
+    };
+  }
 
   @override
   List<Object?> get props => [

@@ -36,6 +36,4 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/dispatch_rider.png
-    - assets/shopping_cart.png
-    - assets/banner.png
+    - assets/

@@ -2,19 +2,19 @@ part of 'coordinator_cubit.dart';
 
 class CoordinatorState extends Equatable {
   const CoordinatorState({
-    this.taskType = TaskType.Errand,
-    this.deliveryType = DeliveryType.Sender,
+    this.taskType = OrderType.errand,
+    this.deliveryType = PersonnelType.sender,
     this.cartItems = const [],
     this.senderName = '',
     this.senderPhone = '',
     this.receiverName = '',
     this.receiverPhone = '',
     this.deliveryNote = '',
-    this.types = PaymentType.Cash,
+    this.types = PaymentType.cash,
   });
 
-  final TaskType taskType;
-  final DeliveryType deliveryType;
+  final OrderType taskType;
+  final PersonnelType deliveryType;
   final List<CartItem> cartItems;
   final String senderName;
   final String senderPhone;
@@ -23,23 +23,23 @@ class CoordinatorState extends Equatable {
   final String deliveryNote;
   final PaymentType types;
 
-  bool get errand => taskType == TaskType.Errand;
+  bool get errand => taskType == OrderType.errand;
 
-  bool get delivery => taskType == TaskType.Delivery;
+  bool get delivery => taskType == OrderType.delivery;
 
-  bool get sender => deliveryType == DeliveryType.Sender;
+  bool get sender => deliveryType == PersonnelType.sender;
 
-  bool get receiver => deliveryType == DeliveryType.Receiver;
+  bool get receiver => deliveryType == PersonnelType.receiver;
 
-  bool get thirdParty => deliveryType == DeliveryType.ThirdParty;
+  bool get thirdParty => deliveryType == PersonnelType.thirdParty;
 
   bool get senderVisible => sender || thirdParty;
 
   bool get receiverVisible => receiver || thirdParty;
 
   CoordinatorState copyWith({
-    TaskType? taskType,
-    DeliveryType? deliveryType,
+    OrderType? taskType,
+    PersonnelType? deliveryType,
     List<CartItem>? cartItems,
     String? senderName,
     String? senderPhone,
@@ -73,50 +73,4 @@ class CoordinatorState extends Equatable {
         deliveryNote,
         types,
       ];
-}
-
-enum TaskType { Delivery, Errand }
-
-enum DeliveryType { Sender, Receiver, ThirdParty }
-
-extension TaskTypeExtension on TaskType {
-  int get id {
-    if (this == TaskType.Errand) {
-      return 1;
-    } else {
-      return 2;
-    }
-  }
-
-  String get name {
-    if (this == TaskType.Errand) {
-      return 'Errand';
-    } else {
-      return 'Delivery';
-    }
-  }
-}
-
-extension DeliveryTypeExtension on DeliveryType {
-  int get id {
-    switch (this) {
-      case DeliveryType.Sender:
-        return 1;
-      case DeliveryType.Receiver:
-        return 2;
-      case DeliveryType.ThirdParty:
-        return 3;
-    }
-  }
-
-  String get name {
-    switch(this) {
-      case DeliveryType.Sender:
-        return 'Sender';
-      case DeliveryType.Receiver:
-        return 'Receiver';
-      case DeliveryType.ThirdParty:
-        return 'Third-Party';
-    }
-  }
 }

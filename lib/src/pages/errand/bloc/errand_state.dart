@@ -1,15 +1,39 @@
 part of 'errand_bloc.dart';
 
 class ErrandState extends Equatable {
-  const ErrandState({
-    this.storeName = '',
-    this.storeAddress = '',
-    this.deliveryAddress = '',
-    this.storeDetail = const PlaceDetail.empty(),
-    this.deliveryDetail = const PlaceDetail.empty(),
-    this.cartItems = const [],
-    this.totalPrice = 0,
+  const ErrandState._({
+    required this.storeName,
+    required this.storeAddress,
+    required this.deliveryAddress,
+    required this.storeDetail,
+    required this.deliveryDetail,
+    required this.cartItems,
+    required this.totalPrice,
+    required this.senderName,
+    required this.senderPhone,
+    required this.receiverName,
+    required this.receiverPhone,
+    required this.deliveryNote,
+    required this.paymentType,
   });
+
+  factory ErrandState.initial() {
+    return ErrandState._(
+      storeName: '',
+      storeAddress: '',
+      deliveryAddress: '',
+      storeDetail: PlaceDetail.empty(),
+      deliveryDetail: PlaceDetail.empty(),
+      cartItems: [],
+      totalPrice: 0,
+      senderPhone: '',
+      senderName: '',
+      receiverPhone: '',
+      receiverName: '',
+      deliveryNote: '',
+      paymentType: PaymentType.unknown,
+    );
+  }
 
   final String storeName;
   final String storeAddress;
@@ -19,6 +43,13 @@ class ErrandState extends Equatable {
 
   final List<CartItem> cartItems;
   final double totalPrice;
+
+  final String senderName;
+  final String senderPhone;
+  final String receiverName;
+  final String receiverPhone;
+  final String deliveryNote;
+  final PaymentType paymentType;
 
   bool get buttonActive =>
       cartItems.isNotEmpty &&
@@ -48,8 +79,14 @@ class ErrandState extends Equatable {
     PlaceDetail? deliveryDetail,
     List<CartItem>? cartItems,
     double? totalPrice,
+    String? senderName,
+    String? senderPhone,
+    String? receiverName,
+    String? receiverPhone,
+    String? deliveryNote,
+    PaymentType? paymentType,
   }) {
-    return ErrandState(
+    return ErrandState._(
       storeName: storeName ?? this.storeName,
       storeAddress: storeAddress ?? this.storeAddress,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
@@ -57,6 +94,12 @@ class ErrandState extends Equatable {
       deliveryDetail: deliveryDetail ?? this.deliveryDetail,
       cartItems: cartItems ?? this.cartItems,
       totalPrice: totalPrice ?? this.totalPrice,
+      senderName: senderName ?? this.senderName,
+      senderPhone: senderPhone ?? this.senderPhone,
+      receiverName: receiverName ?? this.receiverName,
+      receiverPhone: receiverPhone ?? this.receiverPhone,
+      deliveryNote: deliveryNote ?? this.deliveryNote,
+      paymentType: paymentType ?? this.paymentType,
     );
   }
 
@@ -69,5 +112,11 @@ class ErrandState extends Equatable {
         deliveryDetail,
         cartItems,
         totalPrice,
+        senderName,
+        senderPhone,
+        receiverName,
+        receiverPhone,
+        deliveryNote,
+        paymentType,
       ];
 }

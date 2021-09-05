@@ -12,12 +12,11 @@ class ErrandEvent extends Equatable {
 
 enum ErrandAction {
   OnStoreNameChanged,
-  onStoreAddressChanged,
-  OnDeliveryAddressChanged,
   OnSetStoreAddressDetail,
   OnSetDeliveryAddressDetail,
-  OnItemRemoved,
   OnStoreDetailChanged,
   OnDeliveryDetailChanged,
+  OnErrandOrderChanged,
+  OnItemRemoved,
   OnOrderItemsAdded,
 }

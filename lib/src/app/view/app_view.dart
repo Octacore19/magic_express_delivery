@@ -15,9 +15,12 @@ class AppView extends StatelessWidget {
       title: 'Magic Express Delivery',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme(context),
-      home: FlowBuilder<AuthStatus>(
-        state: context.select((AuthBloc bloc) => bloc.state).status,
-        onGeneratePages: AppRoutes.onGenerateAppViewPages,
+      home: RepositoryProvider(
+        create: (_) => ErrorHandler(),
+        child: FlowBuilder<AuthStatus>(
+          state: context.select((AuthBloc bloc) => bloc.state).status,
+          onGeneratePages: AppRoutes.onGenerateAppViewPages,
+        ),
       ),
     );
   }

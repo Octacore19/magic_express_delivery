@@ -4,6 +4,8 @@ import 'package:repositories/repositories.dart';
 
 class AppRoutes {
 
+  AppRoutes._();
+
   static List<Page> onGenerateAppViewPages(
     AuthStatus state,
     List<Page<dynamic>> pages,
@@ -13,18 +15,18 @@ class AppRoutes {
         return [DashboardPage.route()];
       case AuthStatus.loggedOut:
       default:
-        return [LoginPage.route()];
+        return [LoginPage.page()];
     }
   }
 
   static AppPageRoute generateRoute(
-    Widget builder, {
+    Widget child, {
     RouteSettings? settings,
     bool fullScreenDialog = false,
   }) {
     return AppPageRoute(
       settings: settings,
-      builder: (ctx) => builder,
+      builder: (ctx) => child,
       fullScreenDialog: fullScreenDialog,
     );
   }

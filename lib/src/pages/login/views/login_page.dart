@@ -10,7 +10,9 @@ part 'login_views.dart';
 class LoginPage extends StatelessWidget {
   const LoginPage();
 
-  static Page route() => const MaterialPage<void>(child: const LoginPage());
+  static Page page() => const MaterialPage<void>(child: const LoginPage());
+
+  static Route route() => AppRoutes.generateRoute(LoginPage());
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,10 @@ class LoginPage extends StatelessWidget {
         elevation: 0,
       ),
       body: BlocProvider(
-        create: (_) => LoginBloc(authRepo: RepositoryProvider.of(context)),
+        create: (_) => LoginBloc(
+          authRepo: RepositoryProvider.of(context),
+          errorHandler: RepositoryProvider.of(context),
+        ),
         child: _LoginForm(),
       ),
     );
@@ -63,10 +68,8 @@ class _LoginFormState extends State<_LoginForm> {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
-        if (state.status.isSubmissionFailure) {
-          String msg =
-          state.message.isEmpty ? 'Login failure' : state.message;
-          SnackBar snack = SnackBar(content: Text(msg));
+        if (state.status.isSubmissionFailure && state.message.isNotEmpty) {
+          SnackBar snack = SnackBar(content: Text(state.message));
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(snack);
