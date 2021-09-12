@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:services/services.dart';
 import 'package:services/src/commons/commons.dart';
@@ -18,11 +17,24 @@ class ResponseInterceptor extends Interceptor {
     if (response.requestOptions.uri
         .toString()
         .contains(ApiEndpoints.LOGIN_USER)) {
+      final now = DateTime.now();
       _preference.write<String>(
-          key: ApiConstants.TOKEN, value: data['data'][ApiConstants.TOKEN]);
-      _preference.write<int>(
-          key: ApiConstants.TIME_STAMP,
-          value: DateTime.now().millisecondsSinceEpoch);
+        key: ApiConstants.TOKEN,
+        value: data['data'][ApiConstants.TOKEN],
+      );
+      String? expires = data['data']['expires_in'];
+      final t = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        now.hour,
+        int.tryParse(expires ?? '') ?? 0,
+      );
+      print('Expires in $t');
+      _preference.write<String>(
+        key: ApiConstants.TIME_STAMP,
+        value: t.toIso8601String(),
+      );
     }
 
     if (data is Map && data.containsKey('predictions')) {

@@ -26,22 +26,9 @@ class AppWrapper extends StatefulWidget {
 }
 
 class AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
-  AppWrapperState()
-      : _binding = WidgetsBinding.instance!,
-        _cache = Cache(),
-        _preferences = Preferences() {
-    _apiProvider = ApiProvider(preference: _preferences);
-    _authRepo = AuthRepo(preference: _preferences, api: _apiProvider);
-    _placesRepo = PlacesRepo(api: _apiProvider);
-  }
+  AppWrapperState() : _binding = WidgetsBinding.instance!;
 
   final WidgetsBinding _binding;
-  final Cache _cache;
-  final Preferences _preferences;
-
-  late ApiProvider _apiProvider;
-  late AuthRepo _authRepo;
-  late PlacesRepo _placesRepo;
 
   @override
   void initState() {
@@ -59,16 +46,33 @@ class AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (_) => _cache),
-        RepositoryProvider(create: (_) => _preferences),
-        RepositoryProvider(create: (context) => _apiProvider),
+        RepositoryProvider(create: (_) => Cache()),
+        RepositoryProvider(create: (context) => ErrorHandler()),
+        RepositoryProvider(create: (_) => Preferences()),
+        RepositoryProvider(
+          create: (context) => ApiProvider(
+            preference: RepositoryProvider.of(context),
+          ),
+        ),
         RepositoryProvider(
           create: (context) {
-            _authRepo.status.first;
-            return _authRepo;
+            // final repo = ;
+            return AuthRepo(
+              preference: RepositoryProvider.of(context),
+              api: RepositoryProvider.of(context),
+            )..onAppLaunch();
           },
         ),
-        RepositoryProvider(create: (context) => _placesRepo),
+        RepositoryProvider(
+          create: (context) => PlacesRepo(
+            api: RepositoryProvider.of(context),
+          ),
+        ),
+        RepositoryProvider(
+          create: (context) => OrdersRepo(
+            api: RepositoryProvider.of(context),
+          ),
+        ),
       ],
       child: widget.child,
     );
@@ -84,14 +88,18 @@ class AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
       case AppLifecycleState.paused:
         break;
       case AppLifecycleState.detached:
-        _authRepo.dispose();
-        _placesRepo.dispose();
+        context.read<AuthRepo>().dispose();
+        context.read<PlacesRepo>().dispose();
+        context.read<OrdersRepo>().dispose();
         break;
     }
   }
 
   @override
   Future<bool> didPopRoute() async {
+    context.read<AuthRepo>().dispose();
+    context.read<PlacesRepo>().dispose();
+    context.read<OrdersRepo>().dispose();
     return false;
   }
 }

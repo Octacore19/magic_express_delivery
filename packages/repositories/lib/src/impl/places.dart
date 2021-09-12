@@ -26,11 +26,12 @@ class PlacesRepoImpl implements IPlacesRepo {
         'key': ApiConstants.GOOGLE_PLACES_KEY
       };
       final res = await _service.searchForPlace(query);
-      if (!res.success) throw Exception(res.message);
+      if (!res.success) throw RequestFailureException(res.message);
       final data = BaseResponse.fromJson(res.data).data;
+      if (data == null) throw NoDataException();
       final placesRes =
           (data as List).map((e) => PredictionResponse.fromJson(e)).toList();
-      if (placesRes.isEmpty) throw Exception('No result found');
+      if (placesRes.isEmpty) throw NoElementException('No result found');
       return placesRes
           .map((e) => Prediction(
                 id: e.placeId ?? '',
@@ -52,8 +53,9 @@ class PlacesRepoImpl implements IPlacesRepo {
         'key': ApiConstants.GOOGLE_PLACES_KEY
       };
       final res = await _service.fetchPlaceDetail(query);
-      if (!res.success) throw Exception(res.message);
+      if (!res.success) throw RequestFailureException(res.message);
       final data = BaseResponse.fromJson(res.data).data;
+      if (data == null) throw NoDataException();
       final placeDetailRes = PlaceDetailResponse.fromJson(data);
       _sessionToken = '';
       return PlaceDetail.fromResponse(placeDetailRes);

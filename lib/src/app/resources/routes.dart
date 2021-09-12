@@ -3,7 +3,6 @@ import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:repositories/repositories.dart';
 
 class AppRoutes {
-
   AppRoutes._();
 
   static List<Page> onGenerateAppViewPages(
@@ -12,15 +11,15 @@ class AppRoutes {
   ) {
     switch (state) {
       case AuthStatus.loggedIn:
-        return [DashboardPage.route()];
+        return [DashboardPage.page()];
       case AuthStatus.loggedOut:
       default:
         return [LoginPage.page()];
     }
   }
 
-  static AppPageRoute generateRoute(
-    Widget child, {
+  static AppPageRoute generateRoute({
+    required Widget child,
     RouteSettings? settings,
     bool fullScreenDialog = false,
   }) {

@@ -11,7 +11,7 @@ part 'registration_views.dart';
 class RegistrationPage extends StatelessWidget {
   const RegistrationPage();
 
-  static Route route() => AppRoutes.generateRoute(RegistrationPage());
+  static Route route() => AppRoutes.generateRoute(child: RegistrationPage());
 
   @override
   Widget build(BuildContext context) {

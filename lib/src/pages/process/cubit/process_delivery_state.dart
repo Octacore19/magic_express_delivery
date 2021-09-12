@@ -8,7 +8,7 @@ class ProcessDeliveryState extends Equatable {
     this.receiverName = '',
     this.receiverPhone = '',
     this.deliveryNote = '',
-    this.paymentType = PaymentType.unknown,
+    this.paymentType = PaymentType.cash,
     this.personnelType = PersonnelType.unknown,
     this.orderType = OrderType.unknown,
   });
@@ -23,12 +23,6 @@ class ProcessDeliveryState extends Equatable {
   final PersonnelType personnelType;
   final OrderType orderType;
 
-  bool get buttonActive =>
-      senderName.isNotEmpty &&
-      senderPhone.isNotEmpty &&
-      receiverName.isNotEmpty &&
-      receiverPhone.isNotEmpty;
-
   bool get errand => orderType == OrderType.errand;
 
   bool get delivery => orderType == OrderType.delivery;
@@ -42,6 +36,12 @@ class ProcessDeliveryState extends Equatable {
   bool get senderVisible => sender || thirdParty;
 
   bool get receiverVisible => receiver || thirdParty;
+
+  bool get _senderButtonActive => sender && senderName.isNotEmpty && senderPhone.isNotEmpty;
+
+  bool get _receiverActive => receiver && receiverName.isNotEmpty && receiverPhone.isNotEmpty;
+
+  bool get buttonActive => _senderButtonActive || _receiverActive;
 
   ProcessDeliveryState copyWith({
     List<bool>? paymentSelection,

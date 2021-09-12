@@ -77,7 +77,7 @@ class ProcessDeliveryCubit extends Cubit<ProcessDeliveryState> {
   @override
   Future<void> close() async {
     if (state.errand) {
-      final order = await _coordinatorCubit.errandOrder.single;
+      final order = await _coordinatorCubit.errandOrder.first;
       _coordinatorCubit.setErrandOrder(order.copyWith(
         senderName: state.senderName,
         senderPhone: state.senderPhone,
@@ -87,7 +87,7 @@ class ProcessDeliveryCubit extends Cubit<ProcessDeliveryState> {
         paymentType: state.paymentType,
       ));
     } else {
-      final order = await _coordinatorCubit.deliveryOrder.single;
+      final order = await _coordinatorCubit.deliveryOrder.first;
       _coordinatorCubit.setDeliveryOrder(order.copyWith(
         senderName: state.senderName,
         senderPhone: state.senderPhone,

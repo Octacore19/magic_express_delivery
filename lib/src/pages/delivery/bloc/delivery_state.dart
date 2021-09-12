@@ -8,12 +8,9 @@ class DeliveryState extends Equatable {
     required this.deliveryDetail,
     required this.cartItems,
     required this.totalPrice,
-    required this.senderName,
-    required this.senderPhone,
-    required this.receiverName,
-    required this.receiverPhone,
-    required this.deliveryNote,
-    required this.paymentType,
+    required this.order,
+    required this.status,
+    required this.message,
   });
 
   factory DeliveryState.initial() {
@@ -24,12 +21,9 @@ class DeliveryState extends Equatable {
       deliveryDetail: PlaceDetail.empty(),
       cartItems: List.empty(),
       totalPrice: 0,
-      senderPhone: '',
-      senderName: '',
-      receiverPhone: '',
-      receiverName: '',
-      deliveryNote: '',
-      paymentType: PaymentType.unknown,
+      order: DeliveryOrder.empty(),
+      status: Status.initial,
+      message: '',
     );
   }
 
@@ -41,15 +35,31 @@ class DeliveryState extends Equatable {
   final List<CartItem> cartItems;
   final double totalPrice;
 
-  final String senderName;
-  final String senderPhone;
-  final String receiverName;
-  final String receiverPhone;
-  final String deliveryNote;
-  final PaymentType paymentType;
+  final DeliveryOrder order;
+  final Status status;
+  final String message;
 
   bool get buttonActive =>
-      cartItems.isNotEmpty && !pickupDetail.empty && !deliveryDetail.empty;
+      !loading &&
+      cartItems.isNotEmpty &&
+      !pickupDetail.empty &&
+      !deliveryDetail.empty;
+
+  bool get sender => order.personnelType == PersonnelType.sender;
+
+  bool get receiver => order.personnelType == PersonnelType.receiver;
+
+  bool get thirdParty => order.personnelType == PersonnelType.thirdParty;
+
+  bool get loading => status == Status.loading;
+
+  int get totalQuantity {
+    int total = 0;
+    cartItems.forEach((e) {
+      total += int.parse(e.quantity);
+    });
+    return total;
+  }
 
   double get distance {
     double distance = 0;
@@ -72,12 +82,9 @@ class DeliveryState extends Equatable {
     PlaceDetail? deliveryDetail,
     List<CartItem>? cartItems,
     double? totalPrice,
-    String? senderName,
-    String? senderPhone,
-    String? receiverName,
-    String? receiverPhone,
-    String? deliveryNote,
-    PaymentType? paymentType,
+    DeliveryOrder? order,
+    Status? status,
+    String? message,
   }) {
     return DeliveryState._(
       pickupAddress: pickupAddress ?? this.pickupAddress,
@@ -86,12 +93,9 @@ class DeliveryState extends Equatable {
       deliveryDetail: deliveryDetail ?? this.deliveryDetail,
       cartItems: cartItems ?? this.cartItems,
       totalPrice: totalPrice ?? this.totalPrice,
-      senderName: senderName ?? this.senderName,
-      senderPhone: senderPhone ?? this.senderPhone,
-      receiverName: receiverName ?? this.receiverName,
-      receiverPhone: receiverPhone ?? this.receiverPhone,
-      deliveryNote: deliveryNote ?? this.deliveryNote,
-      paymentType: paymentType ?? this.paymentType,
+      order: order ?? this.order,
+      status: status ?? this.status,
+      message: message ?? '',
     );
   }
 
@@ -103,11 +107,8 @@ class DeliveryState extends Equatable {
         deliveryDetail,
         cartItems,
         totalPrice,
-        senderName,
-        senderPhone,
-        receiverName,
-        receiverPhone,
-        deliveryNote,
-        paymentType,
+        order,
+        status,
+        message,
       ];
 }

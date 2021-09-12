@@ -9,17 +9,21 @@ part 'auth_events.dart';
 part 'auth_states.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc({required AuthRepo authRepo})
-      : _authRepo = authRepo,
+  AuthBloc({
+    required AuthRepo authRepo,
+    required OrdersRepo ordersRepo,
+  })  : _authRepo = authRepo,
+        _ordersRepo = ordersRepo,
         super(AuthState.unknown()) {
     _statusSubscription = _authRepo.status.listen(_onStatusChanged);
-    _authRepo.onAppLaunch();
   }
 
   final AuthRepo _authRepo;
+  final OrdersRepo _ordersRepo;
   late final StreamSubscription<AuthStatus> _statusSubscription;
 
-  void _onStatusChanged(AuthStatus status) => add(AuthenticationStatusChanged(status));
+  void _onStatusChanged(AuthStatus status) =>
+      add(AuthenticationStatusChanged(status));
 
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
@@ -30,15 +34,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<AuthState> _mapAuthenticationChangedToState(AuthenticationStatusChanged event) async {
+  Future<AuthState> _mapAuthenticationChangedToState(
+      AuthenticationStatusChanged event) async {
     switch (event.status) {
       case AuthStatus.loggedOut:
         return AuthState.unauthenticated();
       case AuthStatus.loggedIn:
         final user = await _authRepo.currentUser;
-        return user.isEmpty ? AuthState.unauthenticated() : AuthState.authenticated(user);
+        if (user.isEmpty) {
+          return AuthState.unauthenticated();
+        }
+        _fetchHistory();
+        return AuthState.authenticated(user);
       default:
         return const AuthState.unknown();
+    }
+  }
+
+  _fetchHistory() async {
+    try {
+      await _ordersRepo.fetchAllHistory();
+    } catch(e) {
+      print(e);
     }
   }
 

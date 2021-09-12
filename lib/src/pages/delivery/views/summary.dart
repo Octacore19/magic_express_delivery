@@ -19,20 +19,37 @@ class DeliverySummaryDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Summary'),
-      actions: [TextButton(onPressed: () {}, child: Text('Proceed'))],
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _PickupDetails(),
-          const SizedBox(height: 24),
-          _DeliveryDetails(),
-          const SizedBox(height: 24),
-          _ItemsDetails(),
-          const SizedBox(height: 16),
-          _DistanceDetails(),
-        ],
+      scrollable: true,
+      title: Text('Delivery Summary'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            final action = DeliveryAction.OnOrderSubmitted;
+            final event = DeliveryEvent(action);
+            context.read<DeliveryBloc>().add(event);
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+          child: Text('Proceed'),
+        )
+      ],
+      content: BlocBuilder<DeliveryBloc, DeliveryState>(
+        builder: (_, state) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _PickupDetails(),
+            const SizedBox(height: 24),
+            _DeliveryDetails(),
+            const SizedBox(height: 24),
+            _ItemsDetails(),
+            const SizedBox(height: 16),
+            _DistanceDetails(),
+            const SizedBox(height: 24),
+            _SenderDetails(),
+            Visibility(child: SizedBox(height: 24), visible: state.thirdParty),
+            _ReceiverDetails(),
+          ],
+        ),
       ),
     );
   }
@@ -108,7 +125,7 @@ class _ItemsDetails extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  state.cartItems.length.toString(),
+                  state.totalQuantity.toString(),
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 Text(
@@ -140,6 +157,90 @@ class _DistanceDetails extends StatelessWidget {
             TextSpan(
               text: '${distance.toStringAsFixed(2)} km',
               style: Theme.of(context).textTheme.bodyText2,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SenderDetails extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<DeliveryBloc, DeliveryState>(
+      builder: (_, state) => Visibility(
+        visible: state.sender || state.thirdParty,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text.rich(
+              TextSpan(
+                text: 'Sender Name: ',
+                style: Theme.of(context).textTheme.bodyText1,
+                children: [
+                  TextSpan(
+                    text: state.order.senderName,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text.rich(
+              TextSpan(
+                text: 'Sender Phone: ',
+                style: Theme.of(context).textTheme.bodyText1,
+                children: [
+                  TextSpan(
+                    text: state.order.senderPhone,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ReceiverDetails extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<DeliveryBloc, DeliveryState>(
+      builder: (_, state) => Visibility(
+        visible: state.receiver || state.thirdParty,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text.rich(
+              TextSpan(
+                text: 'Receiver Name: ',
+                style: Theme.of(context).textTheme.bodyText1,
+                children: [
+                  TextSpan(
+                    text: state.order.receiverName,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text.rich(
+              TextSpan(
+                text: 'Receiver Phone: ',
+                style: Theme.of(context).textTheme.bodyText1,
+                children: [
+                  TextSpan(
+                    text: state.order.receiverPhone,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  )
+                ],
+              ),
             )
           ],
         ),

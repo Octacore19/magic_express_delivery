@@ -10,7 +10,10 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => AuthBloc(authRepo: RepositoryProvider.of(context)),
+          create: (_) => AuthBloc(
+            authRepo: RepositoryProvider.of(context),
+            ordersRepo: RepositoryProvider.of(context),
+          ),
         ),
         BlocProvider(create: (_) => CoordinatorCubit())
       ],

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:repositories/repositories.dart';
 import 'package:repositories/src/api/api.dart';
 import 'package:repositories/src/contracts/contracts.dart';
 import 'package:repositories/src/models/models.dart';
@@ -14,7 +15,7 @@ class AuthRepoImpl extends IAuthRepo {
   AuthRepoImpl({
     required Preferences preference,
     required ApiProvider api,
-  })  : _preference = preference {
+  }) : _preference = preference {
     _auth = AuthService(api: api);
   }
 
@@ -41,28 +42,32 @@ class AuthRepoImpl extends IAuthRepo {
 
   @override
   Future<void> onAppLaunch() async {
-    final userJson = await _preference.read<String>(key: userCacheKey) ?? '';
-    if (userJson.isEmpty) {
-      _statusController.sink.add(AuthStatus.loggedOut);
+    final aboutToExpire = await _tokenAboutToExpire();
+    if (aboutToExpire) {
+      logOut();
     } else {
-      _statusController.sink.add(AuthStatus.loggedIn);
+      final userJson = await _preference.read<String>(key: userCacheKey) ?? '';
+      if (userJson.isEmpty) {
+        logOut();
+      } else {
+        _statusController.sink.add(AuthStatus.loggedIn);
+      }
     }
   }
 
   @override
   Future<void> loginUser(String email, String password) async {
     try {
-      final data = {'email': email, 'password': password};
-      final response = await _auth.loginUser(data);
-      if (response.success) {
-        final data = BaseResponse.fromJson(response.data).data;
-        final user = LoginResponse.fromJson(data).toUser;
-        final userString = user.toSerializedJson();
-        _preference.write<String>(key: userCacheKey, value: userString);
-        _statusController.sink.add(AuthStatus.loggedIn);
-      } else {
-        throw LoginException(response.message);
-      }
+      final payload = {'email': email, 'password': password};
+      final response = await _auth.loginUser(payload);
+      if (!response.success) throw RequestFailureException(response.message);
+      final data = BaseResponse.fromJson(response.data).data;
+      if (data == null) throw AuthenticationException();
+      final user = LoginResponse.fromJson(data).toUser;
+      final userString = user.toSerializedJson();
+      await _preference.write<String>(key: userCacheKey, value: userString);
+      _statusController.sink.add(AuthStatus.loggedIn);
+      return;
     } on Exception catch (e) {
       throw e;
     }
@@ -88,11 +93,10 @@ class AuthRepoImpl extends IAuthRepo {
         'password_confirmation': confirmPassword,
       };
       final response = await _auth.registerUser(data);
-      if (response.success) {
-        return BaseResponse.fromJson(response.data).message;
-      } else {
-        throw RegistrationException(response.message);
-      }
+      if (!response.success) throw RequestFailureException(response.message);
+      final msg = BaseResponse.fromJson(response.data).message;
+      if (msg == null || msg.isEmpty) throw AuthenticationException();
+      return msg;
     } on Exception catch (e) {
       throw e;
     }
@@ -106,7 +110,21 @@ class AuthRepoImpl extends IAuthRepo {
   @override
   void logOut() {
     _preference.remove(key: userCacheKey);
+    _preference.remove(key: ApiConstants.TOKEN);
+    _preference.remove(key: ApiConstants.TIME_STAMP);
     _statusController.add(AuthStatus.loggedOut);
+  }
+
+  Future<bool> _tokenAboutToExpire() async {
+    String timeStamp =
+        await _preference.read<String>(key: ApiConstants.TIME_STAMP) ?? '';
+    if (timeStamp.isNotEmpty) {
+      final DateTime ex = DateTime.parse(timeStamp);
+      final DateTime current = DateTime.now();
+      return current.isAfter(ex) || (current.isAfter(ex.subtract(Duration(hours: 1))) &&
+          current.isBefore(ex));
+    }
+    return true;
   }
 }
 

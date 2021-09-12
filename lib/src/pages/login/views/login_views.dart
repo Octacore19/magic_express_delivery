@@ -131,7 +131,7 @@ class _SubmitButton extends StatelessWidget {
                 if (state.status.isSubmissionInProgress) {
                   return SizedBox.fromSize(
                     child: CircularProgressIndicator.adaptive(
-                      backgroundColor: primaryColor,
+                      valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
                     ),
                     size: Size(22.0, 22.0),
                   );

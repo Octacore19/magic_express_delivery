@@ -24,7 +24,7 @@ class _PickUpAddressInput extends StatelessWidget {
         ),
       ),
       suggestionsCallback: (pattern) async {
-        return context.read<DeliveryBloc>().searchPlaces(pattern);
+        return await context.read<DeliveryBloc>().searchPlaces(pattern);
       },
       itemBuilder: (_, Prediction prediction) => ListTile(
         title: Text(prediction.description),
@@ -69,7 +69,7 @@ class _DeliveryAddressInput extends StatelessWidget {
         ),
       ),
       suggestionsCallback: (pattern) async {
-        return context.read<DeliveryBloc>().searchPlaces(pattern);
+        return await context.read<DeliveryBloc>().searchPlaces(pattern);
       },
       itemBuilder: (_, Prediction prediction) => ListTile(
         title: Text(prediction.description),
@@ -220,18 +220,23 @@ class _AddOrderButton extends StatelessWidget {
 class _NextToProcessButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<DeliveryBloc, DeliveryState, bool>(
-      selector: (s) => s.buttonActive,
-      builder: (_, enabled) => SizedBox(
+    return BlocBuilder<DeliveryBloc, DeliveryState>(
+      builder: (_, s) => SizedBox(
         width: double.infinity,
-        child: ElevatedButton.icon(
+        child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.all(16),
             textStyle: Theme.of(context).textTheme.button,
           ),
-          onPressed: enabled ? () => navigate(context) : null,
-          icon: Icon(MdiIcons.chevronRight),
-          label: Text(''),
+          onPressed: s.buttonActive ? () => navigate(context) : null,
+          child: Builder(
+            builder: (_) {
+              if (s.loading) {
+                return SizedBox(child: CircularProgressIndicator.adaptive());
+              }
+              return Icon(MdiIcons.chevronRight);
+            },
+          ),
         ),
       ),
     );

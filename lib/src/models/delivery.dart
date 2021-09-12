@@ -42,7 +42,7 @@ class DeliveryOrder extends Equatable {
       receiverPhone: receiverPhone ?? '',
       deliveryNote: deliveryNote ?? '',
       orderType: orderType ?? OrderType.unknown,
-      paymentType: paymentType ?? PaymentType.unknown,
+      paymentType: paymentType ?? PaymentType.cash,
       personnelType: personnelType ?? PersonnelType.unknown,
     );
   }
@@ -59,7 +59,7 @@ class DeliveryOrder extends Equatable {
       receiverPhone: '',
       deliveryNote: '',
       orderType: OrderType.unknown,
-      paymentType: PaymentType.unknown,
+      paymentType: PaymentType.cash,
       personnelType: PersonnelType.unknown,
     );
   }

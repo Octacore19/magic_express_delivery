@@ -31,7 +31,7 @@ class ErrandState extends Equatable {
       receiverPhone: '',
       receiverName: '',
       deliveryNote: '',
-      paymentType: PaymentType.unknown,
+      paymentType: PaymentType.cash,
     );
   }
 

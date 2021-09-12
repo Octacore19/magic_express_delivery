@@ -1,4 +1,6 @@
 class ApiConstants {
+  ApiConstants._();
+
   static const BASE_URL = 'https://medng.herokuapp.com/api';
   static const GOOGLE_BASE_URL = 'https://maps.googleapis.com/maps/api';
   static const GOOGLE_PLACES_KEY = 'AIzaSyAHCVtgThmfxuKAb-j6S_s2iqL3sfPrFHA';

@@ -45,7 +45,7 @@ class ErrandOrder extends Equatable {
       receiverPhone: receiverPhone ?? '',
       deliveryNote: deliveryNote ?? '',
       orderType: orderType ?? OrderType.unknown,
-      paymentType: paymentType ?? PaymentType.unknown,
+      paymentType: paymentType ?? PaymentType.cash,
       personnelType: personnelType ?? PersonnelType.unknown,
     );
   }
@@ -63,7 +63,7 @@ class ErrandOrder extends Equatable {
       receiverPhone: '',
       deliveryNote: '',
       orderType: OrderType.unknown,
-      paymentType: PaymentType.unknown,
+      paymentType: PaymentType.cash,
       personnelType: PersonnelType.unknown,
     );
   }
@@ -88,6 +88,7 @@ class ErrandOrder extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
+      'store_name': storeName,
       'orderItems': orderItems.map((e) => e.toJson()).toList(),
       'pickup_location': storeLocation.toJson(),
       'dropoff_location': destinationLocation.toJson(),

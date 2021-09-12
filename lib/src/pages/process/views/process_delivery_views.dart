@@ -242,7 +242,7 @@ class _NextToSummaryButton extends StatelessWidget {
             padding: EdgeInsets.all(16),
             textStyle: Theme.of(context).textTheme.button,
           ),
-          onPressed: () => Navigator.of(context).pop(true),
+          onPressed: enabled ? () => Navigator.of(context).pop(true) : null,
           icon: Icon(MdiIcons.chevronRight),
           label: Text(''),
         ),

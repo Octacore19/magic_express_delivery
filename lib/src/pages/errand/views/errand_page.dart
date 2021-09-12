@@ -15,7 +15,7 @@ class ErrandPage extends StatelessWidget {
 
   static Route route() {
     return AppRoutes.generateRoute(
-      ErrandPage(),
+      child: ErrandPage(),
       fullScreenDialog: true,
     );
   }

@@ -15,8 +15,12 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
   DeliveryBloc({
     required CoordinatorCubit coordinatorCubit,
     required PlacesRepo placesRepo,
+    required OrdersRepo ordersRepo,
+    required ErrorHandler errorHandler,
   })  : _placesRepo = placesRepo,
         _coordinatorCubit = coordinatorCubit,
+        _handler = errorHandler,
+        _ordersRepo = ordersRepo,
         super(DeliveryState.initial()) {
     _pickupAddressSub = placesRepo.pickupDetail.listen((detail) {
       final action = DeliveryAction.OnPickupDetailChanged;
@@ -38,15 +42,21 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
       final event = DeliveryEvent(action, order);
       add(event);
     });
+    _completeOrderSub = ordersRepo.order.listen((order) {
+      print(order);
+    });
   }
 
   final PlacesRepo _placesRepo;
   final CoordinatorCubit _coordinatorCubit;
+  final ErrorHandler _handler;
+  final OrdersRepo _ordersRepo;
 
   late StreamSubscription _pickupAddressSub;
   late StreamSubscription _deliveryAddressSub;
   late StreamSubscription _orderItemsSub;
   late StreamSubscription _deliveryOrderSub;
+  late StreamSubscription _completeOrderSub;
 
   @override
   Stream<DeliveryState> mapEventToState(DeliveryEvent event) async* {
@@ -75,15 +85,33 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
         break;
       case DeliveryAction.OnDeliveryOrderChanged:
         DeliveryOrder order = event.args as DeliveryOrder;
-        yield state.copyWith(
-          senderName: order.senderName,
-          senderPhone: order.senderPhone,
-          receiverName: order.receiverName,
-          receiverPhone: order.receiverPhone,
-          deliveryNote: order.deliveryNote,
-          paymentType: order.paymentType,
-        );
+        yield state.copyWith(order: order);
         break;
+      case DeliveryAction.OnOrderSubmitted:
+        yield* _mapOnOrderSubmitted(state);
+        break;
+    }
+  }
+
+  Stream<DeliveryState> _mapOnOrderSubmitted(DeliveryState state) async* {
+    yield state.copyWith(status: Status.loading);
+    try {
+      final order = state.order.copyWith(
+        orderItems: state.cartItems,
+        pickupLocation: Location.fromPlace(state.pickupDetail),
+        destinationLocation: Location.fromPlace(state.deliveryDetail),
+        totalPrice: state.totalPrice,
+      );
+      await _ordersRepo.createOrder(order.toJson());
+      yield DeliveryState.initial();
+    } on NoElementException {
+      yield state.copyWith(status: Status.error, message: 'No order created');
+    } on Exception catch (e) {
+      _handler.handleExceptionsWithAction(e, () {
+        final action = DeliveryAction.OnOrderSubmitted;
+        final event = DeliveryEvent(action);
+        add(event);
+      });
     }
   }
 
@@ -119,15 +147,13 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     }
   }
 
-  Future<List<Prediction>> searchPlaces(String keyword) async {
-    List<Prediction> predictions = List.empty(growable: true);
+  Future<List<Prediction>> searchPlaces(String keyword) {
     try {
-      if (keyword.isNotEmpty && keyword.length > 3)
-        predictions = await _placesRepo.searchForPlaces(keyword);
+      if (keyword.isEmpty) throw Exception();
+      return _placesRepo.searchForPlaces(keyword);
     } on Exception catch (e) {
       throw e;
     }
-    return predictions;
   }
 
   double _calculateTotalPrice(List<CartItem> items) {
@@ -145,15 +171,15 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
   Future<void> close() async {
     final order = await _coordinatorCubit.deliveryOrder.first;
     _coordinatorCubit.setDeliveryOrder(order.copyWith(
-      orderItems: state.cartItems,
-      totalPrice: state.totalPrice,
-      pickupLocation: Location.fromPlace(state.pickupDetail),
-      destinationLocation: Location.fromPlace(state.deliveryDetail)
-    ));
+        orderItems: state.cartItems,
+        totalPrice: state.totalPrice,
+        pickupLocation: Location.fromPlace(state.pickupDetail),
+        destinationLocation: Location.fromPlace(state.deliveryDetail)));
     _pickupAddressSub.cancel();
     _deliveryAddressSub.cancel();
     _orderItemsSub.cancel();
     _deliveryOrderSub.cancel();
+    _completeOrderSub.cancel();
     return super.close();
   }
 }

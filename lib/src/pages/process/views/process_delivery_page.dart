@@ -11,7 +11,7 @@ class ProcessDeliveryPage extends StatelessWidget {
   const ProcessDeliveryPage();
 
   static Route route() => AppRoutes.generateRoute(
-        ProcessDeliveryPage(),
+        child: ProcessDeliveryPage(),
         fullScreenDialog: true,
       );
 
@@ -50,6 +50,23 @@ class _ProcessDeliveryState extends State<_ProcessDeliveryForm> {
     TextUtil.setText(_senderPhoneController, bloc.state.senderPhone);
     TextUtil.setText(_receiverNameController, bloc.state.receiverName);
     TextUtil.setText(_receiverPhoneController, bloc.state.receiverPhone);
+
+    _senderNameController.addListener(() {
+      final value = _senderNameController.text.trim();
+      bloc.onSenderNameChanged(value);
+    });
+    _senderPhoneController.addListener(() {
+      final value = _senderPhoneController.text.trim();
+      bloc.onSenderPhoneChanged(value);
+    });
+    _receiverNameController.addListener(() {
+      final value = _receiverNameController.text.trim();
+      bloc.onReceiverNameChanged(value);
+    });
+    _receiverPhoneController.addListener(() {
+      final value = _receiverPhoneController.text.trim();
+      bloc.onReceiverPhoneChanged(value);
+    });
   }
 
   @override
@@ -64,25 +81,30 @@ class _ProcessDeliveryState extends State<_ProcessDeliveryForm> {
             children: [
               const SizedBox(height: 24),
               _NameInput(
-                header: "Sender's fullname",
+                header: "Sender's Full Name",
                 controller: _senderNameController,
                 visible: state.senderVisible,
               ),
-              Visibility(child: const SizedBox(height: 24), visible: state.senderVisible),
+              Visibility(
+                  child: const SizedBox(height: 24),
+                  visible: state.senderVisible),
               _PhoneNumberInput(
-                header: "Sender's fullname",
+                header: "Sender's Phone Number",
                 controller: _senderPhoneController,
                 visible: state.senderVisible,
               ),
-              Visibility(child: const SizedBox(height: 24), visible: state.receiverVisible && state.senderVisible),
+              Visibility(
+                  child: const SizedBox(height: 24), visible: state.thirdParty),
               _NameInput(
-                header: "Receiver's fullname",
+                header: "Receiver's Full Name",
                 controller: _receiverNameController,
                 visible: state.receiverVisible,
               ),
-              Visibility(child: const SizedBox(height: 24), visible: state.receiverVisible),
+              Visibility(
+                  child: const SizedBox(height: 24),
+                  visible: state.receiverVisible),
               _PhoneNumberInput(
-                header: "Receiver's fullname",
+                header: "Receiver's Phone Number",
                 controller: _receiverPhoneController,
                 visible: state.receiverVisible,
               ),

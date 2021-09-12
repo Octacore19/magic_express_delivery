@@ -11,7 +11,7 @@ class OptionsPage extends StatelessWidget {
   OptionsPage(this._orderType);
 
   static Route route(OrderType args) => AppRoutes.generateRoute(
-        OptionsPage(args),
+        child: OptionsPage(args),
         fullScreenDialog: true,
       );
 

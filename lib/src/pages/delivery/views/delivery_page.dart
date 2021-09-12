@@ -15,7 +15,7 @@ class DeliveryPage extends StatelessWidget {
 
   static Route route() {
     return AppRoutes.generateRoute(
-      DeliveryPage(),
+      child: DeliveryPage(),
       fullScreenDialog: true,
     );
   }
@@ -30,6 +30,8 @@ class DeliveryPage extends StatelessWidget {
         create: (context) => DeliveryBloc(
           coordinatorCubit: BlocProvider.of(context),
           placesRepo: RepositoryProvider.of(context),
+          errorHandler: RepositoryProvider.of(context),
+          ordersRepo: RepositoryProvider.of(context),
         ),
         child: _DeliveryPageForm(),
       ),

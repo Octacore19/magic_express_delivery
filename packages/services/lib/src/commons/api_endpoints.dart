@@ -7,6 +7,8 @@ class ApiEndpoints {
   static const RESET_PASSWORD = '/auth/password/reset';
 
   static const CREATE_ORDER = '/user/place-order';
+  static const ORDER_LIST = '/user/orders';
+  static const ORDER_DETAIL = '/user/order';
 
   static const SEARCH_PLACE = '/place/autocomplete/json';
   static const DETAIL_PLACE = '/place/details/json';

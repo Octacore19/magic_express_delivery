@@ -4,6 +4,7 @@ import 'package:formz/formz.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:repositories/repositories.dart';
 
 part 'login_views.dart';
 
@@ -12,7 +13,7 @@ class LoginPage extends StatelessWidget {
 
   static Page page() => const MaterialPage<void>(child: const LoginPage());
 
-  static Route route() => AppRoutes.generateRoute(LoginPage());
+  static Route route() => AppRoutes.generateRoute(child: LoginPage());
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,11 @@ class _LoginFormState extends State<_LoginForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
-      listener: (context, state) {
+      listener: (context, state) async {
+        if (state.status.isSubmissionSuccess) {
+          Navigator.of(context).pushReplacement(DashboardPage.route());
+        }
+
         if (state.status.isSubmissionFailure && state.message.isNotEmpty) {
           SnackBar snack = SnackBar(content: Text(state.message));
           ScaffoldMessenger.of(context)

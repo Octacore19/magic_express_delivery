@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
+import 'package:magic_express_delivery/src/utils/utils.dart';
+import 'package:repositories/repositories.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage();
 
-  static Page route() => MaterialPage<void>(
+  static Page page() => MaterialPage<void>(
+        child: BlocProvider(
+          create: (_) => DashBoardCubit(),
+          child: const DashboardPage(),
+        ),
+      );
+
+  static Route route() => AppRoutes.generateRoute(
         child: BlocProvider(
           create: (_) => DashBoardCubit(),
           child: const DashboardPage(),
@@ -21,7 +31,9 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     int position = context.watch<DashBoardCubit>().state.position;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: _actionBars(position),
+      ),
       body: _pages[position],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.shifting,
@@ -50,6 +62,53 @@ class _DashboardPageState extends State<DashboardPage> {
         ],
       ),
     );
+  }
+
+  List<Widget>? _actionBars(int position) {
+    if (position == 0) {
+      return [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.notifications),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        )
+      ];
+    } else if (position == 2) {
+      return [
+        IconButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                title: Text('Do you want to log out?'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      context.read<AuthRepo>().logOut();
+                      AppKeys.navigatorKey.currentState?.pushAndRemoveUntil(
+                        LoginPage.route(),
+                        (route) => false,
+                      );
+                    },
+                    child: Text('Yes'),
+                  ),
+                  TextButton(
+                    onPressed: () =>
+                        Navigator.of(context, rootNavigator: true).pop(),
+                    child: Text('No'),
+                  )
+                ],
+              ),
+            );
+          },
+          icon: Icon(Icons.exit_to_app),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        )
+      ];
+    }
   }
 
   final List<Widget> _pages = [

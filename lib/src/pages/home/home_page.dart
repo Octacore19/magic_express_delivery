@@ -9,10 +9,6 @@ part 'home_views.dart';
 
 class HomePage extends StatelessWidget {
 
-  const HomePage();
-
-  static Page route() => const MaterialPage<void>(child: const HomePage());
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

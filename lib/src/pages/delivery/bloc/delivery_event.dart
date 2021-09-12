@@ -18,4 +18,5 @@ enum DeliveryAction {
   OnDeliveryOrderChanged,
   OnCartItemsAdded,
   OnItemRemoved,
+  OnOrderSubmitted,
 }

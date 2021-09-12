@@ -332,7 +332,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           confirmPassword.value,
         );
         yield state.copyFrom(status: FormzStatus.submissionSuccess, message: res);
-      } on RegistrationException catch (e) {
+      } on AuthenticationException catch (e) {
         log("Exception caught: ${e.message}");
         yield state.copyFrom(
           status: FormzStatus.submissionFailure,

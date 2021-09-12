@@ -3,23 +3,6 @@ import 'package:repositories/src/impl/impl.dart';
 import 'package:repositories/src/models/user.dart';
 import 'package:services/services.dart';
 
-abstract class AuthException implements Exception {
-  const AuthException([this.message = '']);
-
-  final String? message;
-
-  @override
-  String toString() => "${runtimeType.toString()}: $message";
-}
-
-class RegistrationException extends AuthException {
-  const RegistrationException([String? message = '']) : super(message);
-}
-
-class LoginException extends AuthException {
-  const LoginException([String? message = '']) : super(message);
-}
-
 enum AuthStatus { unknown, loggedIn, loggedOut }
 
 class AuthRepo implements IAuthRepo {

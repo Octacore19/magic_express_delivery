@@ -20,4 +20,24 @@ class OrdersImpl implements IOrdersService {
       throw e;
     }
   }
+
+  @override
+  Future<DioResponse> fetchOrders() async {
+    try {
+      final baseResponse = await _dio.get(ApiEndpoints.ORDER_LIST);
+      return DioResponse.fromJson(baseResponse.data);
+    } on Exception catch(e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<DioResponse> fetchOrderDetail(String id) async {
+    try {
+      final baseResponse = await _dio.get(ApiEndpoints.ORDER_DETAIL + '/$id');
+      return DioResponse.fromJson(baseResponse.data);
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
 }

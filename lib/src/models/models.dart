@@ -5,3 +5,4 @@ export 'location.dart';
 export 'order.dart';
 export 'payment.dart';
 export 'personnel.dart';
+export 'status.dart';

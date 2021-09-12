@@ -31,11 +31,6 @@ class AppTheme {
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          textTheme: Theme.of(context).textTheme.apply(
-                displayColor: Colors.blue[900],
-                bodyColor: Colors.blue[900],
-              ),
-          titleTextStyle: Theme.of(context).textTheme.headline1,
           iconTheme: IconThemeData(
             color: Colors.blue[900],
           ),
