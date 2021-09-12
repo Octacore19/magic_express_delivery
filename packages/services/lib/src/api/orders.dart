@@ -17,4 +17,7 @@ class OrdersService implements IOrdersService {
 
   @override
   Future<DioResponse> fetchOrderDetail(String id) => _orders.fetchOrderDetail(id);
+
+  @override
+  Future<DioResponse> getCharges() => _orders.getCharges();
 }

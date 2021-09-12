@@ -4,17 +4,17 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repositories/repositories.dart';
 
-part 'auth_events.dart';
+part 'app_events.dart';
 
-part 'auth_states.dart';
+part 'app_states.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc({
+class AppBloc extends Bloc<AppEvent, AppState> {
+  AppBloc({
     required AuthRepo authRepo,
     required OrdersRepo ordersRepo,
   })  : _authRepo = authRepo,
         _ordersRepo = ordersRepo,
-        super(AuthState.unknown()) {
+        super(AppState.unknown()) {
     _statusSubscription = _authRepo.status.listen(_onStatusChanged);
   }
 
@@ -26,7 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       add(AuthenticationStatusChanged(status));
 
   @override
-  Stream<AuthState> mapEventToState(AuthEvent event) async* {
+  Stream<AppState> mapEventToState(AppEvent event) async* {
     if (event is AuthenticationStatusChanged) {
       yield await _mapAuthenticationChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
@@ -34,26 +34,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<AuthState> _mapAuthenticationChangedToState(
+  Future<AppState> _mapAuthenticationChangedToState(
       AuthenticationStatusChanged event) async {
     switch (event.status) {
       case AuthStatus.loggedOut:
-        return AuthState.unauthenticated();
+        return AppState.unauthenticated();
       case AuthStatus.loggedIn:
         final user = await _authRepo.currentUser;
         if (user.isEmpty) {
-          return AuthState.unauthenticated();
+          return AppState.unauthenticated();
         }
-        _fetchHistory();
-        return AuthState.authenticated(user);
+        _initUserParticles();
+        return AppState.authenticated(user);
       default:
-        return const AuthState.unknown();
+        return const AppState.unknown();
     }
   }
 
-  _fetchHistory() async {
+  _initUserParticles() async {
     try {
       await _ordersRepo.fetchAllHistory();
+      await _ordersRepo.getCharges();
     } catch(e) {
       print(e);
     }

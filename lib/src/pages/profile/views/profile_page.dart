@@ -6,7 +6,7 @@ import 'package:repositories/repositories.dart';
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AuthBloc, AuthState, User>(
+    return BlocSelector<AppBloc, AppState, User>(
       selector: (s) => s.user,
       builder: (_, user) => Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),

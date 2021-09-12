@@ -25,27 +25,26 @@ class ErrorInterceptor extends Interceptor {
                   errorDescription = errors['email'].first;
                 else if (errors.containsKey('password'))
                   errorDescription = errors['password'].first;
-                else
+                else {
                   errorDescription = errorData['message'];
+                }
+                final newData = {
+                  'data': null,
+                  'message': errorDescription,
+                  'code': err.response?.statusCode ?? null,
+                  'success': false,
+                };
+                final newResponse = Response(
+                  data: newData,
+                  requestOptions: err.requestOptions,
+                );
+                handler.resolve(newResponse);
               }
             }
             break;
           default:
             handler.reject(err);
             break;
-        }
-        if(errorDescription.isNotEmpty) {
-          final newData = {
-            'data': null,
-            'message': errorDescription,
-            'code': err.response?.statusCode ?? null,
-            'success': false,
-          };
-          final newResponse = Response(
-            data: newData,
-            requestOptions: err.requestOptions,
-          );
-          handler.resolve(newResponse);
         }
         break;
     }

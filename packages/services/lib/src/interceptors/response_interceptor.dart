@@ -51,6 +51,13 @@ class ResponseInterceptor extends Interceptor {
         'code': response.statusCode,
         'success': true,
       };
+    } else if(data is Map && !data.containsKey('data')) {
+      newData = {
+        'data': {'data': data},
+        'message': '',
+        'code': response.statusCode,
+        'success': true,
+      };
     } else {
       newData = {
         'data': data,

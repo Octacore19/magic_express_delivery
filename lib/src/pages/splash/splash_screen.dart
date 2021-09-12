@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(71, 136, 255, 1.0),
       body: Center(
-        child: BlocListener<AuthBloc, AuthState>(
+        child: BlocListener<AppBloc, AppState>(
           listener: (_, state) async {
             await Future.delayed(Duration(seconds: 5));
             if (state.status == AuthStatus.loggedIn) {

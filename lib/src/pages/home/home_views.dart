@@ -7,7 +7,7 @@ class _GreetingsView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        BlocSelector<AuthBloc, AuthState, User>(
+        BlocSelector<AppBloc, AppState, User>(
           selector: (s) => s.user,
           builder: (context, user) {
             if (user.isNotEmpty) {

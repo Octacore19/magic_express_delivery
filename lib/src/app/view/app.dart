@@ -33,7 +33,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => AuthBloc(
+          create: (_) => AppBloc(
             authRepo: RepositoryProvider.of(context),
             ordersRepo: RepositoryProvider.of(context),
           ),

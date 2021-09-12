@@ -7,7 +7,6 @@ import 'package:magic_express_delivery/src/utils/utils.dart';
 import 'package:repositories/repositories.dart';
 
 class ErrorHandler {
-
   final BuildContext context = AppKeys.navigatorKey.currentContext!;
 
   void handleExceptions(Exception e) {
@@ -15,11 +14,28 @@ class ErrorHandler {
       case DioError:
         _handleDioError(e as DioError);
         break;
-      case SocketException:
-      case HttpException:
+      case AuthenticationException:
+        final snack =
+            SnackBar(content: Text('Authentication Error! Try Again'));
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(snack);
+        break;
+      case RequestFailureException:
         _ErrorDialogBuilder(
-          message: 'Unable to connect to the Internet',
+          message: (e as RequestFailureException).message ?? 'Unable to fetch request',
         )..show(context);
+        break;
+      case NoDataException:
+        _ErrorDialogBuilder(
+          message: 'No data available, try again',
+        )..show(context);
+        break;
+      case NoElementException:
+        _ErrorDialogBuilder(
+          message: 'No data available, try again',
+        )..show(context);
+        break;
     }
   }
 
@@ -27,6 +43,24 @@ class ErrorHandler {
     switch (e.runtimeType) {
       case DioError:
         _handleDioError(e as DioError, onPressed);
+        break;
+      case RequestFailureException:
+        _ErrorDialogBuilder(
+          message: (e as RequestFailureException).message ?? 'Unable to fetch request',
+          onRetry: onPressed,
+        )..show(context);
+        break;
+      case NoDataException:
+        _ErrorDialogBuilder(
+          message: 'No data available, try again',
+          onRetry: onPressed,
+        )..show(context);
+        break;
+      case NoElementException:
+        _ErrorDialogBuilder(
+          message: 'No data available, try again',
+          onRetry: onPressed,
+        )..show(context);
         break;
     }
   }
@@ -115,7 +149,8 @@ class _ErrorDialogBuilder extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 24.0),
                   child: Text(
                     message,
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.subtitle1,
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 const SizedBox(height: 16.0),
@@ -128,7 +163,7 @@ class _ErrorDialogBuilder extends StatelessWidget {
                     child: Text('DISMISS'),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 16.0),
-                      textStyle: Theme.of(context).textTheme.subtitle1,
+                      textStyle: Theme.of(context).textTheme.button,
                     ),
                   ),
                 ),
@@ -148,7 +183,7 @@ class _ErrorDialogBuilder extends StatelessWidget {
                           child: Text('RETRY'),
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.symmetric(vertical: 16.0),
-                            textStyle: Theme.of(context).textTheme.subtitle1,
+                            textStyle: Theme.of(context).textTheme.button,
                           ),
                         ),
                       ),

@@ -66,6 +66,7 @@ class HistoryDetailPage extends StatelessWidget {
                   _CartItemsWidget(detail: detail),
                   const SizedBox(height: 24),
                   _SummaryWidget(detail: detail),
+                  const SizedBox(height: 24),
                 ],
               ),
             );

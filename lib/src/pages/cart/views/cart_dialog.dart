@@ -65,25 +65,33 @@ class _CartFormState extends State<_CartForm> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Add an item', style: Theme.of(context).textTheme.headline6),
-          const SizedBox(height: 24),
-          _ItemNameInput(_itemNameController),
-          const SizedBox(height: 24),
-          _DescriptionInput(_descriptionController),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _QuantityInput(_quantityController),
-              const SizedBox(width: 72),
-              _UnitPriceInput(_priceController)
-            ],
-          ),
-          const SizedBox(height: 16),
-        ],
+      child: BlocListener<CartCubit, CartState>(
+        listener: (_, state) {
+          TextUtil.setText(_itemNameController, state.itemName);
+          TextUtil.setText(_descriptionController, state.description);
+          TextUtil.setText(_quantityController, state.quantity);
+          TextUtil.setText(_priceController, state.unitPrice);
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Add an item', style: Theme.of(context).textTheme.headline6),
+            const SizedBox(height: 24),
+            _ItemNameInput(_itemNameController),
+            const SizedBox(height: 24),
+            _DescriptionInput(_descriptionController),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _QuantityInput(_quantityController),
+                const SizedBox(width: 72),
+                _UnitPriceInput(_priceController)
+              ],
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
       ),
     );
   }

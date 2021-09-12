@@ -40,4 +40,14 @@ class OrdersImpl implements IOrdersService {
       throw e;
     }
   }
+
+  @override
+  Future<DioResponse> getCharges() async {
+    try {
+      final baseResponse = await _dio.get(ApiEndpoints.CHARGES);
+      return DioResponse.fromJson(baseResponse.data);
+    } catch(e) {
+      throw e;
+    }
+  }
 }

@@ -12,5 +12,5 @@ class ApiEndpoints {
 
   static const SEARCH_PLACE = '/place/autocomplete/json';
   static const DETAIL_PLACE = '/place/details/json';
-  static const FETCH_PLACE_DETAIL = '';
+  static const CHARGES = '/charges';
 }

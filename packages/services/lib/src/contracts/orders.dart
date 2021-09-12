@@ -6,4 +6,6 @@ abstract class IOrdersService {
   Future<DioResponse> fetchOrders();
 
   Future<DioResponse> fetchOrderDetail(String id);
+
+  Future<DioResponse> getCharges();
 }

@@ -18,10 +18,16 @@ class OrdersRepo implements IOrdersRepo {
   Future<HistoryDetail> fetchHistoryDetail(String id) => _repo.fetchHistoryDetail(id);
 
   @override
+  Future<void> getCharges() => _repo.getCharges();
+
+  @override
   void dispose() => _repo.dispose();
 
   @override
   Stream<Order> get order => _repo.order;
+
+  @override
+  Stream<Charges> get charges => _repo.charges;
 
   @override
   Stream<List<History>> get history => _repo.history;

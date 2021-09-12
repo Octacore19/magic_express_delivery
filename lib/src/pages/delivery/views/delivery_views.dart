@@ -16,6 +16,10 @@ class _PickUpAddressInput extends StatelessWidget {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           labelText: 'Pickup address',
+          hintText: 'Search and select an address',
+          hintStyle: Theme.of(context).textTheme.caption?.copyWith(
+            color: Colors.grey
+          ),
           labelStyle: Theme.of(context).textTheme.bodyText2,
           focusedBorder: AppTheme.textOutlineFocusedBorder(context),
           enabledBorder: AppTheme.textOutlineEnabledBorder(context),
@@ -30,7 +34,11 @@ class _PickUpAddressInput extends StatelessWidget {
         title: Text(prediction.description),
       ),
       loadingBuilder: (_) => ListTile(
-        trailing: CircularProgressIndicator.adaptive(),
+        trailing: SizedBox(
+          height: 24,
+          width: 24,
+          child: CircularProgressIndicator.adaptive(),
+        ),
       ),
       hideOnError: true,
       hideOnEmpty: true,
@@ -61,6 +69,10 @@ class _DeliveryAddressInput extends StatelessWidget {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           labelText: 'Delivery address',
+          hintText: 'Search and select an address',
+          hintStyle: Theme.of(context).textTheme.caption?.copyWith(
+              color: Colors.grey
+          ),
           labelStyle: Theme.of(context).textTheme.bodyText2,
           focusedBorder: AppTheme.textOutlineFocusedBorder(context),
           enabledBorder: AppTheme.textOutlineEnabledBorder(context),
@@ -75,7 +87,11 @@ class _DeliveryAddressInput extends StatelessWidget {
         title: Text(prediction.description),
       ),
       loadingBuilder: (_) => ListTile(
-        trailing: CircularProgressIndicator.adaptive(),
+        trailing: SizedBox(
+          height: 24,
+          width: 24,
+          child: CircularProgressIndicator.adaptive(),
+        ),
       ),
       hideOnError: true,
       hideOnEmpty: true,

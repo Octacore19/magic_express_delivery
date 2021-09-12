@@ -10,12 +10,16 @@ class OrdersRepoImpl implements IOrdersRepo {
   
   final _orderController = BehaviorSubject<Order>.seeded(Order.empty());
   final _historyController = BehaviorSubject<List<History>>.seeded(List.empty());
+  final _chargesController = BehaviorSubject<Charges>.seeded(Charges.empty());
   
   @override
   Stream<Order> get order => _orderController.stream;
 
   @override
   Stream<List<History>> get history => _historyController.stream;
+
+  @override
+  Stream<Charges> get charges => _chargesController.stream;
 
   @override
   Future<void> createOrder(Map<String, dynamic> data) async {
@@ -27,6 +31,7 @@ class OrdersRepoImpl implements IOrdersRepo {
       final orderResponse = OrderResponse.fromJson(d);
       final order = Order.fromResponse(orderResponse);
       _orderController.sink.add(order);
+      fetchAllHistory();
       return;
     } catch(e) {
       throw e;
@@ -63,10 +68,27 @@ class OrdersRepoImpl implements IOrdersRepo {
       throw e;
     }
   }
+
+  @override
+  Future<void> getCharges() async {
+    try {
+      final res = await _service.getCharges();
+      if (!res.success) throw RequestFailureException(res.message);
+      final data = BaseResponse.fromJson(res.data).data;
+      if (data == null) throw NoDataException();
+      final response = ChargesResponse.fromJson(data);
+      final charges = Charges.fromResponse(response);
+      _chargesController.sink.add(charges);
+      return;
+    } catch(e) {
+      throw e;
+    }
+  }
   
   @override
   void dispose() {
     _orderController.close();
     _historyController.close();
+    _chargesController.close();
   }
 }

@@ -22,6 +22,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
         _handler = errorHandler,
         _ordersRepo = ordersRepo,
         super(DeliveryState.initial()) {
+    _coordinatorCubit.setCartItems(List.empty());
     _pickupAddressSub = placesRepo.pickupDetail.listen((detail) {
       final action = DeliveryAction.OnPickupDetailChanged;
       final event = DeliveryEvent(action, detail);
@@ -88,12 +89,12 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
         yield state.copyWith(order: order);
         break;
       case DeliveryAction.OnOrderSubmitted:
-        yield* _mapOnOrderSubmitted(state);
+        yield* _mapOnOrderSubmitted(event, state);
         break;
     }
   }
 
-  Stream<DeliveryState> _mapOnOrderSubmitted(DeliveryState state) async* {
+  Stream<DeliveryState> _mapOnOrderSubmitted(DeliveryEvent event, DeliveryState state) async* {
     yield state.copyWith(status: Status.loading);
     try {
       final order = state.order.copyWith(
@@ -104,14 +105,11 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
       );
       await _ordersRepo.createOrder(order.toJson());
       yield DeliveryState.initial();
-    } on NoElementException {
+    } on NoDataException {
       yield state.copyWith(status: Status.error, message: 'No order created');
     } on Exception catch (e) {
-      _handler.handleExceptionsWithAction(e, () {
-        final action = DeliveryAction.OnOrderSubmitted;
-        final event = DeliveryEvent(action);
-        add(event);
-      });
+      _handler.handleExceptionsWithAction(e, () => add(event));
+      yield state.copyWith(status: Status.error);
     }
   }
 
