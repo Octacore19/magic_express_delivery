@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
+import 'package:magic_express_delivery/src/widgets/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:repositories/repositories.dart';
 
@@ -22,12 +23,14 @@ class LoginPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: BlocProvider(
-        create: (_) => LoginBloc(
-          authRepo: RepositoryProvider.of(context),
-          errorHandler: RepositoryProvider.of(context),
+      body: DoubleBackToCloseWidget(
+        child: BlocProvider(
+          create: (_) => LoginBloc(
+            authRepo: RepositoryProvider.of(context),
+            errorHandler: RepositoryProvider.of(context),
+          ),
+          child: _LoginForm(),
         ),
-        child: _LoginForm(),
       ),
     );
   }
