@@ -46,6 +46,20 @@ android {
         versionName flutterVersionName
     }
 
+    flavorDimensions "app"
+    productFlavors {
+        user {
+            dimension "app"
+            resValue "string", "app_name", "Magic Express Delivery"
+        }
+        rider {
+            dimension "app"
+            applicationIdSuffix ".rider"
+            resValue "string", "app_name", "Magic Express Rider"
+            versionNameSuffix "-rider"
+        }
+    }
+
     signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
