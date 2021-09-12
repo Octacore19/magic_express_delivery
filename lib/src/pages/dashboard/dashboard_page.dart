@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:magic_express_delivery/src/utils/utils.dart';
+import 'package:magic_express_delivery/src/widgets/widgets.dart';
 import 'package:repositories/repositories.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -34,7 +35,9 @@ class _DashboardPageState extends State<DashboardPage> {
       appBar: AppBar(
         actions: _actionBars(position),
       ),
-      body: _pages[position],
+      body: DoubleBackToCloseWidget(
+        child: _pages[position],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.shifting,
         selectedIconTheme: IconThemeData(color: Colors.blue[900], size: 32),
