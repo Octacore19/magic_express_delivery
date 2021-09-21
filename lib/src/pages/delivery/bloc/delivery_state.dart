@@ -7,23 +7,25 @@ class DeliveryState extends Equatable {
     required this.pickupDetail,
     required this.deliveryDetail,
     required this.cartItems,
-    required this.totalPrice,
+    required this.totalCartPrice,
     required this.order,
     required this.status,
     required this.message,
+    required this.charges,
   });
 
-  factory DeliveryState.initial() {
+  factory DeliveryState.initial({required Charges charges}) {
     return DeliveryState._(
       pickupAddress: '',
       deliveryAddress: '',
       pickupDetail: PlaceDetail.empty(),
       deliveryDetail: PlaceDetail.empty(),
       cartItems: List.empty(),
-      totalPrice: 0,
+      totalCartPrice: 0,
       order: DeliveryOrder.empty(),
       status: Status.initial,
       message: '',
+      charges: charges,
     );
   }
 
@@ -31,9 +33,10 @@ class DeliveryState extends Equatable {
   final String deliveryAddress;
   final PlaceDetail pickupDetail;
   final PlaceDetail deliveryDetail;
+  final Charges charges;
 
   final List<CartItem> cartItems;
-  final double totalPrice;
+  final double totalCartPrice;
 
   final DeliveryOrder order;
   final Status status;
@@ -52,6 +55,8 @@ class DeliveryState extends Equatable {
   bool get thirdParty => order.personnelType == PersonnelType.thirdParty;
 
   bool get loading => status == Status.loading;
+
+  bool get success => status == Status.success;
 
   int get totalQuantity {
     int total = 0;
@@ -75,13 +80,36 @@ class DeliveryState extends Equatable {
     return distance;
   }
 
+  double get deliveryAmount {
+    return charges.basePrice + (distance * charges.pricePerKm);
+  }
+
+  double get totalAmount {
+    return totalCartPrice + deliveryAmount;
+  }
+
+  DeliveryState delivered() {
+    return DeliveryState._(
+      pickupAddress: '',
+      deliveryAddress: '',
+      pickupDetail: PlaceDetail.empty(),
+      deliveryDetail: PlaceDetail.empty(),
+      cartItems: [],
+      totalCartPrice: 0,
+      order: DeliveryOrder.empty(),
+      status: Status.success,
+      message: '',
+      charges: this.charges,
+    );
+  }
+
   DeliveryState copyWith({
     String? pickupAddress,
     String? deliveryAddress,
     PlaceDetail? pickupDetail,
     PlaceDetail? deliveryDetail,
     List<CartItem>? cartItems,
-    double? totalPrice,
+    double? totalCartPrice,
     DeliveryOrder? order,
     Status? status,
     String? message,
@@ -92,10 +120,11 @@ class DeliveryState extends Equatable {
       pickupDetail: pickupDetail ?? this.pickupDetail,
       deliveryDetail: deliveryDetail ?? this.deliveryDetail,
       cartItems: cartItems ?? this.cartItems,
-      totalPrice: totalPrice ?? this.totalPrice,
+      totalCartPrice: totalCartPrice ?? this.totalCartPrice,
       order: order ?? this.order,
       status: status ?? this.status,
       message: message ?? '',
+      charges: this.charges,
     );
   }
 
@@ -106,9 +135,10 @@ class DeliveryState extends Equatable {
         pickupDetail,
         deliveryDetail,
         cartItems,
-        totalPrice,
+        totalCartPrice,
         order,
         status,
         message,
+        charges,
       ];
 }

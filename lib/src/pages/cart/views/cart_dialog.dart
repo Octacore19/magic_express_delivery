@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
@@ -89,7 +90,7 @@ class _CartFormState extends State<_CartForm> {
                 _UnitPriceInput(_priceController)
               ],
             ),
-            const SizedBox(height: 16),
+            _ErrorDisplay(),
           ],
         ),
       ),

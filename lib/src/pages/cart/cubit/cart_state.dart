@@ -6,21 +6,9 @@ class CartState extends Equatable {
     required this.description,
     required this.quantity,
     required this.unitPrice,
+    required this.error,
+    required this.message,
   });
-
-  factory CartState({
-    String? itemName,
-    String? description,
-    String? quantity,
-    String? unitPrice,
-  }) {
-    return CartState._(
-      itemName: itemName ?? '',
-      description: description ?? '',
-      quantity: quantity ?? '',
-      unitPrice: unitPrice ?? '',
-    );
-  }
 
   factory CartState.initial() {
     return CartState._(
@@ -28,6 +16,8 @@ class CartState extends Equatable {
       description: '',
       quantity: '',
       unitPrice: '',
+      error: false,
+      message: '',
     );
   }
 
@@ -35,6 +25,8 @@ class CartState extends Equatable {
   final String description;
   final String quantity;
   final String unitPrice;
+  final bool error;
+  final String message;
 
   CartState copyWith({
     List<CartItem>? cartItems,
@@ -42,22 +34,27 @@ class CartState extends Equatable {
     String? description,
     String? quantity,
     String? unitPrice,
+    bool? error,
+    String? message,
   }) {
-    return CartState(
+    return CartState._(
       itemName: itemName ?? this.itemName,
       description: description ?? this.description,
       quantity: quantity ?? this.quantity,
       unitPrice: unitPrice ?? this.unitPrice,
+      error: error ?? false,
+      message: message ?? '',
     );
   }
 
   factory CartState.fromJson(Map<String, dynamic> json) {
     return CartState._(
-      itemName: json['itemName'] ?? '',
-      description: json['description'] ?? '',
-      quantity: json['quantity'] ?? '',
-      unitPrice: json['unitPrice'] ?? '',
-    );
+        itemName: json['itemName'] ?? '',
+        description: json['description'] ?? '',
+        quantity: json['quantity'] ?? '',
+        unitPrice: json['unitPrice'] ?? '',
+        error: json['error'] ?? false,
+        message: json['message'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
@@ -66,6 +63,8 @@ class CartState extends Equatable {
       'description': description,
       'quantity': quantity,
       'unitPrice': unitPrice,
+      'error': error,
+      'message': message,
     };
   }
 
@@ -75,5 +74,7 @@ class CartState extends Equatable {
         description,
         quantity,
         unitPrice,
+        error,
+        message,
       ];
 }

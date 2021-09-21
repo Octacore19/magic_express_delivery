@@ -47,6 +47,10 @@ class _StoreAddressInput extends StatelessWidget {
         decoration: InputDecoration(
           labelText: 'Store address',
           labelStyle: Theme.of(context).textTheme.bodyText2,
+          hintText: 'Search and select an address',
+          hintStyle: Theme.of(context).textTheme.caption?.copyWith(
+              color: Colors.grey
+          ),
           focusedBorder: AppTheme.textOutlineFocusedBorder(context),
           enabledBorder: AppTheme.textOutlineEnabledBorder(context),
           errorBorder: AppTheme.textOutlineErrorBorder(context),
@@ -54,13 +58,17 @@ class _StoreAddressInput extends StatelessWidget {
         ),
       ),
       suggestionsCallback: (pattern) async {
-        return context.read<ErrandBloc>().searchPlaces(pattern);
+        return await context.read<ErrandBloc>().searchPlaces(pattern);
       },
       itemBuilder: (_, Prediction prediction) => ListTile(
         title: Text(prediction.description),
       ),
       loadingBuilder: (_) => ListTile(
-        trailing: CircularProgressIndicator.adaptive(),
+        trailing: SizedBox(
+          height: 24,
+          width: 24,
+          child: CircularProgressIndicator.adaptive(),
+        ),
       ),
       hideOnError: true,
       hideOnEmpty: true,
@@ -92,6 +100,10 @@ class _DeliveryAddressInput extends StatelessWidget {
         decoration: InputDecoration(
           labelText: 'Delivery address',
           labelStyle: Theme.of(context).textTheme.bodyText2,
+          hintText: 'Search and select an address',
+          hintStyle: Theme.of(context).textTheme.caption?.copyWith(
+              color: Colors.grey
+          ),
           focusedBorder: AppTheme.textOutlineFocusedBorder(context),
           enabledBorder: AppTheme.textOutlineEnabledBorder(context),
           errorBorder: AppTheme.textOutlineErrorBorder(context),
@@ -99,13 +111,17 @@ class _DeliveryAddressInput extends StatelessWidget {
         ),
       ),
       suggestionsCallback: (pattern) async {
-        return context.read<ErrandBloc>().searchPlaces(pattern);
+        return await context.read<ErrandBloc>().searchPlaces(pattern);
       },
       itemBuilder: (_, Prediction prediction) => ListTile(
         title: Text(prediction.description),
       ),
       loadingBuilder: (_) => ListTile(
-        trailing: CircularProgressIndicator.adaptive(),
+        trailing: SizedBox(
+          height: 24,
+          width: 24,
+          child: CircularProgressIndicator.adaptive(),
+        ),
       ),
       hideOnError: true,
       hideOnEmpty: true,
@@ -161,7 +177,7 @@ class _ShoppingCartView extends StatelessWidget {
           ),
           _CartItemsView(),
           BlocSelector<ErrandBloc, ErrandState, double>(
-            selector: (s) => s.totalPrice,
+            selector: (s) => s.totalCartPrice,
             builder: (context, total) {
               return Visibility(
                 visible: total != 0,
@@ -249,24 +265,34 @@ class _AddOrderButton extends StatelessWidget {
 class _NextToProcessButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<ErrandBloc, ErrandState, bool>(
-      selector: (s) => s.buttonActive,
-      builder: (_, enabled) => SizedBox(
+    return BlocBuilder<ErrandBloc, ErrandState>(
+      builder: (_, s) => SizedBox(
         width: double.infinity,
-        child: ElevatedButton.icon(
+        child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.all(16),
             textStyle: Theme.of(context).textTheme.button,
           ),
-          onPressed: enabled
-              ? () {
-                  Navigator.of(context).push(ProcessDeliveryPage.route());
-                }
-              : null,
-          icon: Icon(MdiIcons.chevronRight),
-          label: Text(''),
+          onPressed: s.buttonActive ? () => navigate(context) : null,
+          child: Builder(
+            builder: (_) {
+              if (s.loading) {
+                return SizedBox(child: CircularProgressIndicator.adaptive(
+                  valueColor: AlwaysStoppedAnimation(Colors.blue.shade500),
+                ));
+              }
+              return Icon(MdiIcons.chevronRight);
+            },
+          ),
         ),
       ),
     );
+  }
+
+  void navigate(BuildContext context) async {
+    final res = await Navigator.of(context).push(ProcessDeliveryPage.route());
+    if (res != null && res is bool && res) {
+      ErrandSummaryDialog()..show(context);
+    }
   }
 }

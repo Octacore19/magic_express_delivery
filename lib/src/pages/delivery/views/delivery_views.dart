@@ -147,7 +147,7 @@ class _ShoppingCartView extends StatelessWidget {
           ),
           _CartItemsView(),
           BlocSelector<DeliveryBloc, DeliveryState, double>(
-            selector: (s) => s.totalPrice,
+            selector: (s) => s.totalCartPrice,
             builder: (context, total) {
               return Visibility(
                 visible: total != 0,
@@ -248,7 +248,9 @@ class _NextToProcessButton extends StatelessWidget {
           child: Builder(
             builder: (_) {
               if (s.loading) {
-                return SizedBox(child: CircularProgressIndicator.adaptive());
+                return SizedBox(child: CircularProgressIndicator.adaptive(
+                  valueColor: AlwaysStoppedAnimation(Colors.blue.shade500),
+                ));
               }
               return Icon(MdiIcons.chevronRight);
             },

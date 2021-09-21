@@ -9,14 +9,15 @@ class Charges extends Equatable {
 
   factory Charges.empty() {
     return Charges._(
-      pricePerKm: 0,
+      pricePerKm: 1,
       basePrice: 0,
     );
   }
 
   factory Charges.fromResponse(ChargesResponse response) {
+    final price = response.pricePerKm ?? 1;
     return Charges._(
-      pricePerKm: response.pricePerKm ?? 0,
+      pricePerKm: price == 0 ? 1 : price,
       basePrice: response.basePrice ?? 0,
     );
   }

@@ -71,6 +71,7 @@ class ProcessDeliveryCubit extends Cubit<ProcessDeliveryState> {
         p[i] = false;
       }
     }
+    print('Payment type => $type');
     emit(state.copyWith(paymentSelection: p, paymentType: type));
   }
 

@@ -38,13 +38,13 @@ class _GreetingsView extends StatelessWidget {
     if (now.isAfter(DateTime(now.year, now.month, now.day, 11, 59)) &&
         now.isBefore(DateTime(now.year, now.month, now.day, 18))) {
       return 'Good afternoon';
-    } else if (now.isAfter(DateTime(now.year, now.month, now.day, 17, 59)) &&
+    } else if (now.isAfter(DateTime(now.year, now.month, now.day, 15, 59)) &&
         now.isBefore(DateTime(now.year, now.month, now.day, 21))) {
       return 'Good evening';
     }
-    if (now.isAfter(DateTime(now.year, now.month, now.day, 20, 59)) ||
-        now.isBefore(DateTime(now.year, now.month, now.day, 3))) {
-      return 'Good afternoon';
+    if (now.isAfter(DateTime(now.year, now.month, now.day, 20, 59)) &&
+        now.isBefore(DateTime(now.year, now.month, now.day, 23, 59))) {
+      return 'Good night';
     }
     return 'Good morning';
   }

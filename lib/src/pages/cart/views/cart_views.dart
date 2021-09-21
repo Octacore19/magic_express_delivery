@@ -108,3 +108,25 @@ class _UnitPriceInput extends StatelessWidget {
     );
   }
 }
+
+class _ErrorDisplay extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CartCubit, CartState>(builder: (_, state) {
+      if (!state.error && state.message.isEmpty) return SizedBox.shrink();
+      return Padding(
+        padding: EdgeInsets.only(top: 16),
+        child: Row(
+          children: [
+            Icon(Icons.error, color: Colors.red, size: 16),
+            const SizedBox(width: 8),
+            Text(
+              state.message,
+              style: Theme.of(context).textTheme.caption,
+            )
+          ],
+        ),
+      );
+    });
+  }
+}

@@ -10,7 +10,8 @@ class OrdersRepoImpl implements IOrdersRepo {
   
   final _orderController = BehaviorSubject<Order>.seeded(Order.empty());
   final _historyController = BehaviorSubject<List<History>>.seeded(List.empty());
-  final _chargesController = BehaviorSubject<Charges>.seeded(Charges.empty());
+
+  Charges? _charges;
   
   @override
   Stream<Order> get order => _orderController.stream;
@@ -19,7 +20,7 @@ class OrdersRepoImpl implements IOrdersRepo {
   Stream<List<History>> get history => _historyController.stream;
 
   @override
-  Stream<Charges> get charges => _chargesController.stream;
+  Charges get charges => _charges ?? Charges.empty();
 
   @override
   Future<void> createOrder(Map<String, dynamic> data) async {
@@ -77,8 +78,7 @@ class OrdersRepoImpl implements IOrdersRepo {
       final data = BaseResponse.fromJson(res.data).data;
       if (data == null) throw NoDataException();
       final response = ChargesResponse.fromJson(data);
-      final charges = Charges.fromResponse(response);
-      _chargesController.sink.add(charges);
+      _charges = Charges.fromResponse(response);
       return;
     } catch(e) {
       throw e;
@@ -89,6 +89,5 @@ class OrdersRepoImpl implements IOrdersRepo {
   void dispose() {
     _orderController.close();
     _historyController.close();
-    _chargesController.close();
   }
 }

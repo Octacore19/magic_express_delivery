@@ -24,14 +24,21 @@ class DeliverySummaryDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+          child: Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
             final action = DeliveryAction.OnOrderSubmitted;
             final event = DeliveryEvent(action);
             context.read<DeliveryBloc>().add(event);
             Navigator.of(context, rootNavigator: true).pop();
           },
-          child: Text('Proceed'),
+          child: Text('Place order'),
         )
       ],
+      contentPadding: EdgeInsets.all(32),
       content: BlocBuilder<DeliveryBloc, DeliveryState>(
         builder: (_, state) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,6 +51,8 @@ class DeliverySummaryDialog extends StatelessWidget {
             _ItemsDetails(),
             const SizedBox(height: 16),
             _DistanceDetails(),
+            const SizedBox(height: 24),
+            _TotalAmountDetails(),
             const SizedBox(height: 24),
             _SenderDetails(),
             Visibility(child: SizedBox(height: 24), visible: state.thirdParty),
@@ -113,7 +122,7 @@ class _ItemsDetails extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 Text(
-                  'Total Amount',
+                  'Total Amount in Cart',
                   style: Theme.of(context).textTheme.bodyText1,
                 )
               ],
@@ -129,7 +138,7 @@ class _ItemsDetails extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 Text(
-                  convertToNairaAndKobo(state.totalPrice),
+                  convertToNairaAndKobo(state.totalCartPrice),
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2
@@ -165,6 +174,48 @@ class _DistanceDetails extends StatelessWidget {
   }
 }
 
+class _TotalAmountDetails extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<DeliveryBloc, DeliveryState>(
+      builder: (_, state) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text.rich(
+            TextSpan(
+              text: 'Delivery cost: ',
+              style: Theme.of(context).textTheme.bodyText1,
+              children: [
+                TextSpan(
+                  text: convertToNairaAndKobo(state.deliveryAmount),
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      fontFamily: 'Roboto'
+                  ),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text.rich(
+            TextSpan(
+              text: 'Total cost: ',
+              style: Theme.of(context).textTheme.bodyText1,
+              children: [
+                TextSpan(
+                  text: convertToNairaAndKobo(state.totalAmount),
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      fontFamily: 'Roboto'
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
 class _SenderDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -187,7 +238,7 @@ class _SenderDetails extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             Text.rich(
               TextSpan(
                 text: 'Sender Phone: ',
@@ -229,7 +280,7 @@ class _ReceiverDetails extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             Text.rich(
               TextSpan(
                 text: 'Receiver Phone: ',

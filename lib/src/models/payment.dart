@@ -1,5 +1,5 @@
 
-enum PaymentType { card, cash }
+enum PaymentType { cash, card }
 
 extension PaymentTypeExtension on PaymentType {
   int get id {

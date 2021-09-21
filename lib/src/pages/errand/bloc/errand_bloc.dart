@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_paystack_client/flutter_paystack_client.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/models/models.dart';
@@ -14,22 +15,27 @@ part 'errand_state.dart';
 class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
   ErrandBloc({
     required CoordinatorCubit coordinatorCubit,
-    required PlacesRepo places,
-  })  : _places = places,
+    required PlacesRepo placesRepo,
+    required OrdersRepo ordersRepo,
+    required ErrorHandler errorHandler,
+  })
+      : _placesRepo = placesRepo,
         _coordinatorCubit = coordinatorCubit,
-        super(ErrandState.initial()) {
-    _storeAddressSub = places.pickupDetail.listen((detail) {
+        _ordersRepo = ordersRepo,
+        _handler = errorHandler,
+        super(ErrandState.init(charges: ordersRepo.charges)) {
+    _storeAddressSub = _placesRepo.pickupDetail.listen((detail) {
       final action = ErrandAction.OnStoreDetailChanged;
       final event = ErrandEvent(action, detail);
       add(event);
     });
-    _deliveryAddressSub = places.destinationDetail.listen((detail) {
+    _deliveryAddressSub = _placesRepo.destinationDetail.listen((detail) {
       final action = ErrandAction.OnDeliveryDetailChanged;
       final event = ErrandEvent(action, detail);
       add(event);
     });
     _orderItemsSub = coordinatorCubit.cartItems.listen((items) {
-      final action = ErrandAction.OnOrderItemsAdded;
+      final action = ErrandAction.OnCartItemsAdded;
       final event = ErrandEvent(action, items);
       add(event);
     });
@@ -38,15 +44,23 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
       final event = ErrandEvent(action, order);
       add(event);
     });
+    _completeOrderSub = ordersRepo.order.listen((order) {
+      final action = ErrandAction.OnCompletedOrderPlacement;
+      final event = ErrandEvent(action, order);
+      add(event);
+    });
   }
 
-  final PlacesRepo _places;
+  final PlacesRepo _placesRepo;
   final CoordinatorCubit _coordinatorCubit;
+  final ErrorHandler _handler;
+  final OrdersRepo _ordersRepo;
 
   late StreamSubscription _storeAddressSub;
   late StreamSubscription _deliveryAddressSub;
   late StreamSubscription _orderItemsSub;
   late StreamSubscription _errandOrderSub;
+  late StreamSubscription _completeOrderSub;
 
   @override
   Stream<ErrandState> mapEventToState(ErrandEvent event) async* {
@@ -72,32 +86,54 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
         PlaceDetail? arg = event.args as PlaceDetail?;
         yield state.copyWith(deliveryDetail: arg);
         break;
-      case ErrandAction.OnOrderItemsAdded:
+      case ErrandAction.OnCartItemsAdded:
         List<CartItem> arg = event.args as List<CartItem>;
         final total = _calculateTotalPrice(arg);
-        yield state.copyWith(cartItems: arg, totalPrice: total);
+        yield state.copyWith(cartItems: arg, totalCartPrice: total);
         break;
       case ErrandAction.OnErrandOrderChanged:
         ErrandOrder order = event.args as ErrandOrder;
-        yield state.copyWith(
-          senderName: order.senderName,
-          senderPhone: order.senderPhone,
-          receiverName: order.receiverName,
-          receiverPhone: order.receiverPhone,
-          deliveryNote: order.deliveryNote,
-          paymentType: order.paymentType,
-        );
+        yield state.copyWith(errandOrder: order);
         break;
+      case ErrandAction.OnOrderSubmitted:
+        yield* _mapOnOrderSubmitted(event, state);
+        break;
+      case ErrandAction.OnCompletedOrderPlacement:
+        Order order = event.args as Order;
+        yield state.copyWith(order: order);
+        break;
+    }
+  }
+
+  Stream<ErrandState> _mapOnOrderSubmitted(ErrandEvent event,
+      ErrandState state,) async* {
+    yield state.copyWith(status: Status.loading);
+    try {
+      final order = state.errandOrder.copyWith(
+        storeName: state.storeName,
+        orderItems: state.cartItems,
+        storeLocation: Location.fromPlace(state.storeDetail),
+        destinationLocation: Location.fromPlace(state.deliveryDetail),
+        totalPrice: state.totalCartPrice,
+      );
+      await _ordersRepo.createOrder(order.toJson());
+      yield state.copyWith(status: Status.success);
+    } on NoDataException {
+      yield state.copyWith(status: Status.error, message: 'No order created');
+    } on Exception catch (e) {
+      _handler.handleExceptionsWithAction(e, () => add(event));
+      yield state.copyWith(status: Status.error);
     }
   }
 
   ErrandState _mapOnItemRemoved(ErrandState state, ErrandEvent event) {
     int position = event.args as int;
-    List<CartItem> l = List.from(state.cartItems)..removeAt(position);
+    List<CartItem> l = List.from(state.cartItems)
+      ..removeAt(position);
     _coordinatorCubit.setCartItems(l);
     return state.copyWith(
       cartItems: l,
-      totalPrice: _calculateTotalPrice(l),
+      totalCartPrice: _calculateTotalPrice(l),
     );
   }
 
@@ -105,7 +141,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     Prediction? prediction = event.args as Prediction?;
     if (prediction != null) {
       try {
-        _places.fetchPickupDetail(prediction.id);
+        _placesRepo.fetchPickupDetail(prediction.id);
       } catch (e) {
         print(e);
       }
@@ -116,22 +152,28 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     Prediction? prediction = event.args as Prediction?;
     if (prediction != null) {
       try {
-        _places.fetchDestinationDetail(prediction.id);
+        _placesRepo.fetchDestinationDetail(prediction.id);
       } catch (e) {
         print(e);
       }
     }
   }
 
-  Future<List<Prediction>> searchPlaces(String keyword) async {
-    List<Prediction> predictions = List.empty(growable: true);
+  Charge createCharge() {
+    print('Reference: => ${state.order.reference}');
+    return Charge()
+      ..email = 'test@email.com'
+      ..reference = state.order.reference
+      ..amount = (state.totalAmount * 100).toInt();
+  }
+
+  Future<List<Prediction>> searchPlaces(String keyword) {
     try {
-      if (keyword.isNotEmpty)
-        predictions = await _places.searchForPlaces(keyword);
+      if (keyword.isEmpty) throw Exception();
+      return _placesRepo.searchForPlaces(keyword);
     } on Exception catch (e) {
       throw e;
     }
-    return predictions;
   }
 
   double _calculateTotalPrice(List<CartItem> items) {
@@ -151,7 +193,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     _coordinatorCubit.setErrandOrder(order.copyWith(
       storeName: state.storeName,
       orderItems: state.cartItems,
-      totalPrice: state.totalPrice,
+      totalPrice: state.totalCartPrice,
       storeLocation: Location.fromPlace(state.storeDetail),
       destinationLocation: Location.fromPlace(state.deliveryDetail),
     ));
@@ -159,6 +201,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     _deliveryAddressSub.cancel();
     _orderItemsSub.cancel();
     _errandOrderSub.cancel();
+    _completeOrderSub.cancel();
     return super.close();
   }
 }

@@ -21,7 +21,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
         _coordinatorCubit = coordinatorCubit,
         _handler = errorHandler,
         _ordersRepo = ordersRepo,
-        super(DeliveryState.initial()) {
+        super(DeliveryState.initial(charges: ordersRepo.charges)) {
     _coordinatorCubit.setCartItems(List.empty());
     _pickupAddressSub = placesRepo.pickupDetail.listen((detail) {
       final action = DeliveryAction.OnPickupDetailChanged;
@@ -82,7 +82,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
       case DeliveryAction.OnCartItemsAdded:
         List<CartItem> items = event.args as List<CartItem>;
         double total = _calculateTotalPrice(items);
-        yield state.copyWith(cartItems: items, totalPrice: total);
+        yield state.copyWith(cartItems: items, totalCartPrice: total);
         break;
       case DeliveryAction.OnDeliveryOrderChanged:
         DeliveryOrder order = event.args as DeliveryOrder;
@@ -94,17 +94,18 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     }
   }
 
-  Stream<DeliveryState> _mapOnOrderSubmitted(DeliveryEvent event, DeliveryState state) async* {
+  Stream<DeliveryState> _mapOnOrderSubmitted(
+      DeliveryEvent event, DeliveryState state) async* {
     yield state.copyWith(status: Status.loading);
     try {
       final order = state.order.copyWith(
         orderItems: state.cartItems,
         pickupLocation: Location.fromPlace(state.pickupDetail),
         destinationLocation: Location.fromPlace(state.deliveryDetail),
-        totalPrice: state.totalPrice,
+        totalPrice: state.totalCartPrice,
       );
       await _ordersRepo.createOrder(order.toJson());
-      yield DeliveryState.initial();
+      yield state.delivered();
     } on NoDataException {
       yield state.copyWith(status: Status.error, message: 'No order created');
     } on Exception catch (e) {
@@ -119,7 +120,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     _coordinatorCubit.setCartItems(l);
     return state.copyWith(
       cartItems: l,
-      totalPrice: _calculateTotalPrice(l),
+      totalCartPrice: _calculateTotalPrice(l),
     );
   }
 
@@ -168,11 +169,14 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
   @override
   Future<void> close() async {
     final order = await _coordinatorCubit.deliveryOrder.first;
-    _coordinatorCubit.setDeliveryOrder(order.copyWith(
+    _coordinatorCubit.setDeliveryOrder(
+      order.copyWith(
         orderItems: state.cartItems,
-        totalPrice: state.totalPrice,
+        totalPrice: state.totalCartPrice,
         pickupLocation: Location.fromPlace(state.pickupDetail),
-        destinationLocation: Location.fromPlace(state.deliveryDetail)));
+        destinationLocation: Location.fromPlace(state.deliveryDetail),
+      ),
+    );
     _pickupAddressSub.cancel();
     _deliveryAddressSub.cancel();
     _orderItemsSub.cancel();

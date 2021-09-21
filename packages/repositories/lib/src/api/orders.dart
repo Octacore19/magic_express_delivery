@@ -27,7 +27,7 @@ class OrdersRepo implements IOrdersRepo {
   Stream<Order> get order => _repo.order;
 
   @override
-  Stream<Charges> get charges => _repo.charges;
+  Charges get charges => _repo.charges;
 
   @override
   Stream<List<History>> get history => _repo.history;

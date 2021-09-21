@@ -2,16 +2,22 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:magic_express_delivery/src/pages/pages.dart';
-import 'package:repositories/repositories.dart';
 
-class SplashScreen extends StatefulWidget {
+class FindRiderPage extends StatefulWidget {
+  const FindRiderPage();
+
+  static Route route() {
+    return AppRoutes.generateRoute(
+      child: FindRiderPage(),
+      fullScreenDialog: true,
+    );
+  }
+
   @override
-  State<StatefulWidget> createState() => _SplashScreenState();
+  State<StatefulWidget> createState() => _State();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _State extends State<FindRiderPage> with SingleTickerProviderStateMixin {
   late bool _loadingInProgress;
 
   late Animation<double> _angleAnimation;
@@ -53,26 +59,35 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     });
 
     _controller.forward();
+
+    _loadData();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade300,
-      body: Center(
-        child: BlocListener<AppBloc, AppState>(
-          listener: (_, state) async {
-            await Future.delayed(Duration(seconds: 10));
-            setState(() {
-              _loadingInProgress = false;
-            });
-            if (state.status == AuthStatus.loggedIn) {
-              Navigator.of(context).pushReplacement(DashboardPage.route());
-            } else if (state.status == AuthStatus.loggedOut) {
-              Navigator.of(context).pushReplacement(LoginPage.route());
-            }
-          },
-          child: _buildAnimation(),
+      // appBar: AppBar(),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 32),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildAnimation(),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+              Text(
+                'Please wait while we find a rider for you',
+                style: Theme.of(context).textTheme.headline6,
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -80,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   Widget _buildAnimation() {
     double circleWidth = 10.0 * _scaleAnimation.value;
-    Widget circles = new SizedBox(
+    Widget circles = new Container(
       width: circleWidth * 2.0,
       height: circleWidth * 2.0,
       child: new Column(
@@ -120,5 +135,16 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         shape: BoxShape.circle,
       ),
     );
+  }
+
+  Future _loadData() async {
+    await new Future.delayed(new Duration(seconds: 10));
+    _dataLoaded();
+  }
+
+  void _dataLoaded() {
+    setState(() {
+      _loadingInProgress = false;
+    });
   }
 }

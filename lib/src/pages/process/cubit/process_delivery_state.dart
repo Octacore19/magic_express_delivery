@@ -37,11 +37,20 @@ class ProcessDeliveryState extends Equatable {
 
   bool get receiverVisible => receiver || thirdParty;
 
-  bool get _senderButtonActive => sender && senderName.isNotEmpty && senderPhone.isNotEmpty;
+  bool get _senderButtonActive =>
+      sender && senderName.isNotEmpty && senderPhone.isNotEmpty;
 
-  bool get _receiverActive => receiver && receiverName.isNotEmpty && receiverPhone.isNotEmpty;
+  bool get _receiverActive =>
+      receiver && receiverName.isNotEmpty && receiverPhone.isNotEmpty;
 
-  bool get buttonActive => _senderButtonActive || _receiverActive;
+  bool get _thirdPartyActive =>
+      thirdParty &&
+      senderName.isNotEmpty &&
+      senderPhone.isNotEmpty &&
+      receiverName.isNotEmpty &&
+      receiverPhone.isNotEmpty;
+
+  bool get buttonActive => _senderButtonActive || _receiverActive || _thirdPartyActive;
 
   ProcessDeliveryState copyWith({
     List<bool>? paymentSelection,

@@ -45,20 +45,20 @@ class _DeliveryPageForm extends StatefulWidget {
 }
 
 class _DeliveryPageFormState extends State<_DeliveryPageForm> {
-  final _storeAddressController = TextEditingController();
+  final _pickupAddressController = TextEditingController();
   final _deliveryAddressController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     final state = context.read<DeliveryBloc>().state;
-    TextUtil.setText(_storeAddressController, state.pickupAddress);
-    TextUtil.setText(_storeAddressController, state.deliveryAddress);
+    TextUtil.setText(_pickupAddressController, state.pickupAddress);
+    TextUtil.setText(_deliveryAddressController, state.deliveryAddress);
   }
 
   @override
   void dispose() {
-    _storeAddressController.dispose();
+    _pickupAddressController.dispose();
     _deliveryAddressController.dispose();
     super.dispose();
   }
@@ -66,14 +66,18 @@ class _DeliveryPageFormState extends State<_DeliveryPageForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<DeliveryBloc, DeliveryState>(
-      listener: (_, state) {},
+      listener: (_, state) {
+        if (state.success) {
+          Navigator.of(context).push(FindRiderPage.route());
+        }
+      },
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
               const SizedBox(height: 16),
-              _PickUpAddressInput(_storeAddressController),
+              _PickUpAddressInput(_pickupAddressController),
               const SizedBox(height: 16),
               _DeliveryAddressInput(_deliveryAddressController),
               const SizedBox(height: 8),

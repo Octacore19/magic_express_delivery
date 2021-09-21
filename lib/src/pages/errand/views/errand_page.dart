@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_paystack_client/flutter_paystack_client.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/models/models.dart';
@@ -29,7 +30,9 @@ class ErrandPage extends StatelessWidget {
       body: BlocProvider(
         create: (context) => ErrandBloc(
           coordinatorCubit: BlocProvider.of(context),
-          places: RepositoryProvider.of(context),
+          placesRepo: RepositoryProvider.of(context),
+          ordersRepo: RepositoryProvider.of(context),
+          errorHandler: RepositoryProvider.of(context),
         ),
         child: _ErrandPageForm(),
       ),
@@ -53,7 +56,7 @@ class _ErrandPageFormState extends State<_ErrandPageForm> {
     final state = context.read<ErrandBloc>().state;
     TextUtil.setText(_storeNameController, state.storeAddress);
     TextUtil.setText(_storeAddressController, state.storeAddress);
-    TextUtil.setText(_storeAddressController, state.deliveryAddress);
+    TextUtil.setText(_deliveryAddressController, state.deliveryAddress);
   }
 
   @override
@@ -67,7 +70,16 @@ class _ErrandPageFormState extends State<_ErrandPageForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ErrandBloc, ErrandState>(
-      listener: (_, state) {},
+      listener: (_, state) async {
+        if (state.isPayStackPayment) {
+          Navigator.of(context).push(PaystackPage.route(
+            reference: state.order.reference,
+            amount: state.totalAmount,
+          ));
+        } else if (state.success) {
+          Navigator.of(context).push(FindRiderPage.route());
+        }
+      },
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24),
