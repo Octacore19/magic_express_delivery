@@ -14,13 +14,6 @@ class ErrorHandler {
       case DioError:
         _handleDioError(e as DioError);
         break;
-      case AuthenticationException:
-        final snack =
-            SnackBar(content: Text('Authentication Error! Try Again'));
-        ScaffoldMessenger.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(snack);
-        break;
       case RequestFailureException:
         _ErrorDialogBuilder(
           message: (e as RequestFailureException).message ?? 'Unable to fetch request',
@@ -87,6 +80,12 @@ class ErrorHandler {
           );
         } else if (code == 403) {
           print('no permission');
+        } else if (code == 400) {
+          final msg = e.response?.data['error'];
+          _ErrorDialogBuilder(
+            message: msg ?? 'Unexpected error occurred!',
+            onRetry: onPressed,
+          )..show(context);
         }
         break;
       case DioErrorType.cancel:

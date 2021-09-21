@@ -68,7 +68,7 @@ class AuthRepoImpl extends IAuthRepo {
       await _preference.write<String>(key: userCacheKey, value: userString);
       _statusController.sink.add(AuthStatus.loggedIn);
       return;
-    } on Exception catch (e) {
+    } on DioError catch (e) {
       throw e;
     }
   }
@@ -97,7 +97,7 @@ class AuthRepoImpl extends IAuthRepo {
       final msg = BaseResponse.fromJson(response.data).message;
       if (msg == null || msg.isEmpty) throw AuthenticationException();
       return msg;
-    } on Exception catch (e) {
+    } on DioError catch (e) {
       throw e;
     }
   }

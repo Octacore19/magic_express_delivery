@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:repositories/repositories.dart';
 
@@ -11,11 +12,15 @@ part 'registration_events.dart';
 part 'registration_state.dart';
 
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
-  RegistrationBloc({required AuthRepo authRepo})
-      : _authRepo = authRepo,
+  RegistrationBloc({
+    required AuthRepo authRepo,
+    required ErrorHandler errorHandler,
+  })  : _authRepo = authRepo,
+        _handler = errorHandler,
         super(RegistrationState());
 
   final AuthRepo _authRepo;
+  final ErrorHandler _handler;
 
   @override
   Stream<RegistrationState> mapEventToState(RegistrationEvent event) async* {
@@ -331,13 +336,16 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           password.value,
           confirmPassword.value,
         );
-        yield state.copyFrom(status: FormzStatus.submissionSuccess, message: res);
+        yield state.copyFrom(
+            status: FormzStatus.submissionSuccess, message: res);
       } on AuthenticationException catch (e) {
-        log("Exception caught: ${e.message}");
         yield state.copyFrom(
           status: FormzStatus.submissionFailure,
           message: e.message,
         );
+      } on Exception catch (e) {
+        _handler.handleExceptions(e);
+        yield state.copyFrom(status: FormzStatus.submissionFailure);
       }
     }
   }

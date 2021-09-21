@@ -106,7 +106,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
       try {
         await _authRepo.loginUser(state.email.value, state.password.value);
         yield state.copyWith(status: FormzStatus.submissionSuccess);
-      } on RequestFailureException catch (e) {
+      } on AuthenticationException catch (e) {
         yield state.copyWith(
           status: FormzStatus.submissionFailure,
           message: e.message,

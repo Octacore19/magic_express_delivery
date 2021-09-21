@@ -23,6 +23,7 @@ class RegistrationPage extends StatelessWidget {
       body: BlocProvider(
         create: (_) => RegistrationBloc(
           authRepo: RepositoryProvider.of(context),
+          errorHandler: RepositoryProvider.of(context),
         ),
         child: _RegistrationForm(),
       ),
@@ -112,10 +113,8 @@ class _RegistrationFormState extends State<_RegistrationForm> {
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
       listener: (context, state) async {
-        if (state.status.isSubmissionFailure) {
-          String msg =
-              state.message.isEmpty ? 'Registration failure' : state.message;
-          SnackBar snack = SnackBar(content: Text(msg));
+        if (state.status.isSubmissionFailure && state.message.isNotEmpty) {
+          SnackBar snack = SnackBar(content: Text(state.message));
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(snack);

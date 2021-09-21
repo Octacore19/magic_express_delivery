@@ -13,6 +13,7 @@ class _FirstNameInput extends StatelessWidget {
         initialValue: s.value,
         focusNode: node,
         keyboardType: TextInputType.name,
+        textCapitalization: TextCapitalization.words,
         textInputAction: TextInputAction.next,
         cursorColor: Theme.of(context).primaryColorDark,
         onChanged: (v) {
@@ -66,6 +67,7 @@ class _LastNameInput extends StatelessWidget {
         focusNode: node,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.words,
         cursorColor: Theme.of(context).primaryColorDark,
         onChanged: (v) {
           final event = RegistrationEvent(
