@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
+import 'package:magic_express_delivery/src/pages/pages.dart';
 
 class FindRiderPage extends StatefulWidget {
   const FindRiderPage();
@@ -146,5 +147,9 @@ class _State extends State<FindRiderPage> with SingleTickerProviderStateMixin {
     setState(() {
       _loadingInProgress = false;
     });
+    Navigator.of(context).pushAndRemoveUntil(
+      DashboardPage.route(),
+      (route) => false,
+    );
   }
 }
