@@ -94,9 +94,9 @@ class AuthRepoImpl extends IAuthRepo {
       };
       final response = await _auth.registerUser(data);
       if (!response.success) throw RequestFailureException(response.message);
-      final msg = BaseResponse.fromJson(response.data).message;
-      if (msg == null || msg.isEmpty) throw AuthenticationException();
-      return msg;
+      final res = BaseResponse.fromJson(response.data).data;
+      if (res == null) throw AuthenticationException();
+      return res['message'];
     } on DioError catch (e) {
       throw e;
     }

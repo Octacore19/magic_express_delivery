@@ -129,17 +129,18 @@ class _RegistrationFormState extends State<_RegistrationForm> {
             context: context,
             builder: (_) {
               return AlertDialog(
-                content: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Icon(Icons.check_circle_outline, size: 48.0),
-                      const SizedBox(height: 16.0),
-                      Text(
-                        state.message,
-                        style: Theme.of(context).textTheme.headline6,
-                      )
-                    ],
-                  ),
+                scrollable: true,
+                contentPadding: EdgeInsets.all(48),
+                content: Column(
+                  children: [
+                    Icon(Icons.check_circle_outline, size: 48.0),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      state.message,
+                      style: Theme.of(context).textTheme.headline6,
+                      textAlign: TextAlign.center,
+                    )
+                  ],
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24.0),
