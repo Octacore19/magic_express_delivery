@@ -168,6 +168,8 @@ class _SubmitButton extends StatelessWidget {
 class _RegistrationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isRider = context.read<AppBloc>().state.isRider;
+    if (isRider) return SizedBox.shrink();
     return TextButton(
         child: Text('Not registered? Click here!'),
         style: TextButton.styleFrom(

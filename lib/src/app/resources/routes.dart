@@ -5,19 +5,6 @@ import 'package:repositories/repositories.dart';
 class AppRoutes {
   AppRoutes._();
 
-  static List<Page> onGenerateAppViewPages(
-    AuthStatus state,
-    List<Page<dynamic>> pages,
-  ) {
-    switch (state) {
-      case AuthStatus.loggedIn:
-        return [DashboardPage.page()];
-      case AuthStatus.loggedOut:
-      default:
-        return [LoginPage.page()];
-    }
-  }
-
   static AppPageRoute generateRoute({
     required Widget child,
     RouteSettings? settings,

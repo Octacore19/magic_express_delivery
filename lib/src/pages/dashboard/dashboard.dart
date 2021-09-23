@@ -1,2 +1,2 @@
-export 'dashboard_cubit.dart';
-export 'dashboard_page.dart';
+export 'cubit/cubit.dart';
+export 'views/views.dart';

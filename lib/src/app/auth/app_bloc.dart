@@ -12,9 +12,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc({
     required AuthRepo authRepo,
     required OrdersRepo ordersRepo,
+    required bool isRider
   })  : _authRepo = authRepo,
         _ordersRepo = ordersRepo,
-        super(AppState.unknown()) {
+        super(AppState.unknown(isRider)) {
     _statusSubscription = _authRepo.status.listen(_onStatusChanged);
   }
 
@@ -38,23 +39,27 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       AuthenticationStatusChanged event) async {
     switch (event.status) {
       case AuthStatus.loggedOut:
-        return AppState.unauthenticated();
+        return AppState.unauthenticated(state.isRider);
       case AuthStatus.loggedIn:
         final user = await _authRepo.currentUser;
         if (user.isEmpty) {
-          return AppState.unauthenticated();
+          return AppState.unauthenticated(state.isRider);
         }
         _initUserParticles();
-        return AppState.authenticated(user);
+        return AppState.authenticated(state.isRider, user);
       default:
-        return const AppState.unknown();
+        return AppState.unknown(state.isRider);
     }
   }
 
   _initUserParticles() async {
     try {
-      await _ordersRepo.fetchAllHistory();
-      await _ordersRepo.getCharges();
+      if (state.isRider) {
+
+      } else {
+        await _ordersRepo.fetchAllHistory();
+        await _ordersRepo.getCharges();
+      }
     } catch(e) {
       print(e);
     }

@@ -6,6 +6,10 @@ import 'package:repositories/repositories.dart';
 import 'app_view.dart';
 
 class App extends StatefulWidget {
+  const App([this.isRider = false]);
+
+  final bool isRider;
+
   @override
   State<StatefulWidget> createState() => _AppState();
 }
@@ -36,6 +40,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
           create: (_) => AppBloc(
             authRepo: RepositoryProvider.of(context),
             ordersRepo: RepositoryProvider.of(context),
+            isRider: widget.isRider
           ),
         ),
         BlocProvider(create: (_) => CoordinatorCubit())

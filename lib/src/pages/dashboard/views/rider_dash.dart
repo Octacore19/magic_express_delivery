@@ -1,36 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:magic_express_delivery/src/utils/utils.dart';
 import 'package:magic_express_delivery/src/widgets/widgets.dart';
 import 'package:repositories/repositories.dart';
 
-class DashboardPage extends StatefulWidget {
-  const DashboardPage();
-
-  static Page page() => MaterialPage<void>(
-        child: BlocProvider(
-          create: (_) => DashBoardCubit(),
-          child: const DashboardPage(),
-        ),
-      );
-
-  static Route route() => AppRoutes.generateRoute(
-        child: BlocProvider(
-          create: (_) => DashBoardCubit(),
-          child: const DashboardPage(),
-        ),
-      );
-
+class RiderDash extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _DashboardPageState();
+  State<StatefulWidget> createState() => _State();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _State extends State<RiderDash> {
   @override
   Widget build(BuildContext context) {
-    int position = context.watch<DashBoardCubit>().state.position;
+    int position = context.watch<RiderDashCubit>().state.position;
     return Scaffold(
       appBar: AppBar(
         actions: _actionBars(position),
@@ -46,17 +29,13 @@ class _DashboardPageState extends State<DashboardPage> {
         unselectedItemColor: Colors.grey,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        onTap: (index) => context.read<DashBoardCubit>().setCurrentPage(index),
-        currentIndex: context.read<DashBoardCubit>().state.position,
+        onTap: (index) => context.read<RiderDashCubit>().setCurrentPage(index),
+        currentIndex: context.read<RiderDashCubit>().state.position,
         enableFeedback: true,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_rounded),
-            label: 'History',
+            icon: Icon(Icons.shopping_cart_rounded),
+            label: 'Orders',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_rounded),
@@ -76,7 +55,7 @@ class _DashboardPageState extends State<DashboardPage> {
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         )
       ];
-    } else if (position == 2) {
+    } else if (position == 1) {
       return [
         IconButton(
           onPressed: () {
@@ -93,7 +72,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       context.read<AuthRepo>().logOut();
                       AppKeys.navigatorKey.currentState?.pushAndRemoveUntil(
                         LoginPage.route(),
-                        (route) => false,
+                            (route) => false,
                       );
                     },
                     child: Text('Yes'),
@@ -116,7 +95,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
   final List<Widget> _pages = [
     HomePage(),
-    HistoryPage(),
     ProfilePage(),
   ];
 }

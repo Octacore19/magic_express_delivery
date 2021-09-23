@@ -4,7 +4,7 @@ export 'delivery/delivery.dart';
 export 'errand/errand.dart';
 export 'find_rider/find_rider_page.dart';
 export 'history/history.dart';
-export 'home/home_page.dart';
+export 'home/home.dart';
 export 'login/login.dart';
 export 'options/options.dart';
 export 'paystack_payment/paystack_page.dart';
