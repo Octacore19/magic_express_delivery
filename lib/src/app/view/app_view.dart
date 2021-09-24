@@ -15,7 +15,7 @@ class AppView extends StatelessWidget {
       navigatorKey: AppKeys.navigatorKey,
       title: 'Magic Express Delivery',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.theme(context),
+      theme: AppTheme.userTheme,
       home: SplashScreen(),
     );
   }

@@ -54,9 +54,6 @@ class _ErrandCardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shadowColor: Colors.blue[100],
-      color: Colors.blue[50],
-      elevation: 6.0,
       margin: EdgeInsets.only(top: 36.0),
       child: InkWell(
         child: Padding(
@@ -104,9 +101,6 @@ class _DeliveryCardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shadowColor: Colors.blue[100],
-      color: Colors.blue[50],
-      elevation: 6.0,
       margin: EdgeInsets.only(top: 48),
       child: InkWell(
         child: Padding(

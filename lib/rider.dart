@@ -11,7 +11,6 @@ import 'package:path_provider/path_provider.dart';
 void main() async {
   Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
-  await PaystackClient.initialize('pk_test_2add46e7ac44cc017a6844025e9ccfba75420c35');
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getTemporaryDirectory(),
   );

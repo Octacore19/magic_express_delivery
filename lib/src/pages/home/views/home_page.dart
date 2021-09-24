@@ -11,6 +11,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isRider = context.read<AppBloc>().state.isRider;
+    if (isRider) return BlocProvider(
+      create: (_) => RiderHomeCubit(),
+      child: RiderHome(),
+    );
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24),

@@ -13,28 +13,21 @@ class RiderDash extends StatefulWidget {
 class _State extends State<RiderDash> {
   @override
   Widget build(BuildContext context) {
-    int position = context.watch<RiderDashCubit>().state.position;
+    int position = context.watch<RiderDashCubit>().state.pages.position;
     return Scaffold(
       appBar: AppBar(
+        title: Text(position == 0 ? 'Requests' : ''),
         actions: _actionBars(position),
       ),
       body: DoubleBackToCloseWidget(
         child: _pages[position],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
-        selectedIconTheme: IconThemeData(color: Colors.blue[900], size: 32),
-        selectedItemColor: Colors.blue[900],
-        unselectedIconTheme: IconThemeData(color: Colors.grey, size: 24),
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
         onTap: (index) => context.read<RiderDashCubit>().setCurrentPage(index),
-        currentIndex: context.read<RiderDashCubit>().state.position,
-        enableFeedback: true,
+        currentIndex: context.read<RiderDashCubit>().state.pages.position,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_rounded),
+            icon: Icon(Icons.shopping_bag_rounded),
             label: 'Orders',
           ),
           BottomNavigationBarItem(
@@ -49,6 +42,31 @@ class _State extends State<RiderDash> {
   List<Widget>? _actionBars(int position) {
     if (position == 0) {
       return [
+        BlocBuilder<RiderDashCubit, RiderDashState>(
+          builder: (context, state) {
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Availability:',
+                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                    color: state.riderAvailability ? Colors.blue.shade900 : Colors.grey
+                  ),
+                ),
+                SizedBox(width: 4.0),
+                Switch.adaptive(
+                  value: state.riderAvailability,
+                  activeColor: Colors.white,
+                  activeTrackColor: Colors.green,
+                  inactiveTrackColor: Colors.red,
+                  onChanged: (b) {
+                    context.read<RiderDashCubit>().toggleRiderAvailability(b);
+                  },
+                ),
+              ],
+            );
+          },
+        ),
         IconButton(
           onPressed: () {},
           icon: Icon(Icons.notifications),
@@ -72,7 +90,7 @@ class _State extends State<RiderDash> {
                       context.read<AuthRepo>().logOut();
                       AppKeys.navigatorKey.currentState?.pushAndRemoveUntil(
                         LoginPage.route(),
-                            (route) => false,
+                        (route) => false,
                       );
                     },
                     child: Text('Yes'),
