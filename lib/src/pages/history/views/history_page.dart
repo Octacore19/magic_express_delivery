@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:magic_express_delivery/src/models/models.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:magic_express_delivery/src/utils/currency_converter.dart';
 import 'package:repositories/repositories.dart';
@@ -13,19 +14,41 @@ class HistoryPage extends StatelessWidget {
         errorHandler: RepositoryProvider.of(context),
       ),
       child: Builder(
-        builder: (context) => RefreshIndicator(
-          displacement: 120,
-          onRefresh: () => context.read<HistoryBloc>().refreshHistoryList(),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
+        builder: (context) => Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: RefreshIndicator(
+              displacement: 120,
+              onRefresh: () => context.read<HistoryBloc>().refreshHistoryList(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Order History',
-                    style: Theme.of(context).textTheme.headline4,
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Order History',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      const SizedBox(width: 24),
+                      BlocSelector<HistoryBloc, HistoryState, Status>(
+                        selector: (s) => s.status,
+                        builder: (_, status) {
+                          if (status == Status.loading) {
+                            return SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator.adaptive(
+                                valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.blue.shade900),
+                              ),
+                            );
+                          }
+                          return SizedBox.shrink();
+                        },
+                      )
+                    ],
                   ),
                   const SizedBox(height: 16),
                   Expanded(
@@ -114,20 +137,24 @@ class HistoryPage extends StatelessWidget {
                                           Container(
                                             decoration: BoxDecoration(
                                                 border: Border.all(
-                                                    color: _getStatusColor(
-                                                        d.status)),
+                                                  color: _getStatusColor(
+                                                    d.status,
+                                                  ),
+                                                ),
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(16))),
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 8, vertical: 4),
                                             child: Text(
-                                              d.status,
+                                              d.status.value,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .caption
                                                   ?.copyWith(
-                                                      color: _getStatusColor(
-                                                          d.status)),
+                                                    color: _getStatusColor(
+                                                      d.status,
+                                                    ),
+                                                  ),
                                             ),
                                           )
                                         ],
@@ -156,10 +183,22 @@ class HistoryPage extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),
-                              Text(
+                              TextButton(
+                                onPressed: () {
+                                  final action =
+                                      HistoryActions.onRefreshHistoryList;
+                                  final event = HistoryEvent(action);
+                                  context.read<HistoryBloc>().add(event);
+                                },
+                                child: Text(
+                                  'Click to refresh page',
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                ),
+                              )
+                              /*Text(
                                 'Swipe down to refresh page',
                                 style: Theme.of(context).textTheme.subtitle2,
-                              )
+                              )*/
                             ],
                           ),
                         );
@@ -175,7 +214,7 @@ class HistoryPage extends StatelessWidget {
     );
   }
 
-  Color _getStatusColor(String value) {
+  Color _getStatusColor(OrderStatus status) {
     return Colors.orange;
   }
 }

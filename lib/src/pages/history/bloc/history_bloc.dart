@@ -31,6 +31,9 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
   @override
   Stream<HistoryState> mapEventToState(HistoryEvent event) async* {
     switch (event.actions) {
+      case HistoryActions.onRefreshHistoryList:
+        yield* _mapOnRefreshHistoryList(event, state);
+        break;
       case HistoryActions.fetchHistoryDetail:
         yield* _mapFetchHistoryDetail(event, state);
         break;
@@ -59,10 +62,24 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     }
   }
 
+  Stream<HistoryState> _mapOnRefreshHistoryList(
+    HistoryEvent event,
+    HistoryState state,
+  ) async* {
+    yield state.copyWith(status: Status.loading, detail: HistoryDetail.empty());
+    try {
+      await _ordersRepo.fetchAllHistory();
+      yield state.copyWith(status: Status.success);
+    } on Exception catch (e) {
+      _handler.handleExceptionsWithAction(e, () => add(event));
+      yield state.copyWith(status: Status.error);
+    }
+  }
+
   Stream<HistoryState> _mapRefreshHistoryList(
-      HistoryEvent event,
-      HistoryState state,
-      ) async* {
+    HistoryEvent event,
+    HistoryState state,
+  ) async* {
     try {
       await _ordersRepo.fetchAllHistory();
       yield state.copyWith(status: Status.success);

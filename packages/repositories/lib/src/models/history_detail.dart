@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:repositories/repositories.dart';
 import 'package:services/services.dart';
 
 class HistoryDetail extends Equatable {
@@ -45,7 +46,7 @@ class HistoryDetail extends Equatable {
       deliveryNote: '',
       storeName: '',
       trackingNumber: '',
-      status: '',
+      status: OrderStatus.unknown,
       orderType: '',
       paymentMethod: '',
       personnelOption: '',
@@ -76,7 +77,9 @@ class HistoryDetail extends Equatable {
       deliveryNote: response.deliveryNote ?? '',
       storeName: response.storeName ?? '',
       trackingNumber: response.trackingNumber ?? '',
-      status: response.status ?? 'Unknown',
+      status: response.status != null
+          ? OrderStatusExt.setStatus(response.status)
+          : OrderStatus.unknown,
       orderType: response.orderType ?? '',
       paymentMethod: response.paymentMethod ?? '',
       personnelOption: response.personnelOption ?? '',
@@ -103,7 +106,7 @@ class HistoryDetail extends Equatable {
   final String deliveryNote;
   final String storeName;
   final String trackingNumber;
-  final String status;
+  final OrderStatus status;
   final String orderType;
   final String paymentMethod;
   final String personnelOption;

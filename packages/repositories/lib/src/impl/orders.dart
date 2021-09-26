@@ -7,12 +7,13 @@ class OrdersRepoImpl implements IOrdersRepo {
       : _service = OrdersService(api: api);
 
   final OrdersService _service;
-  
+
   final _orderController = BehaviorSubject<Order>.seeded(Order.empty());
-  final _historyController = BehaviorSubject<List<History>>.seeded(List.empty());
+  final _historyController =
+      BehaviorSubject<List<History>>.seeded(List.empty());
 
   Charges? _charges;
-  
+
   @override
   Stream<Order> get order => _orderController.stream;
 
@@ -34,7 +35,7 @@ class OrdersRepoImpl implements IOrdersRepo {
       _orderController.sink.add(order);
       fetchAllHistory();
       return;
-    } catch(e) {
+    } catch (e) {
       throw e;
     }
   }
@@ -46,12 +47,13 @@ class OrdersRepoImpl implements IOrdersRepo {
       if (!res.success) throw RequestFailureException(res.message);
       final data = BaseResponse.fromJson(res.data).data;
       if (data == null) throw NoDataException();
-      final list = (data as List).map((e) => HistoryResponse.fromJson(e)).toList();
+      final list =
+          (data as List).map((e) => HistoryResponse.fromJson(e)).toList();
       if (list.isEmpty) throw NoElementException();
       final history = list.map((e) => History.fromResponse(e)).toList();
       _historyController.sink.add(history);
       return;
-    } catch(e) {
+    } catch (e) {
       throw e;
     }
   }
@@ -65,7 +67,7 @@ class OrdersRepoImpl implements IOrdersRepo {
       if (data == null) throw NoDataException();
       final response = HistoryDetailResponse.fromJson(data);
       return HistoryDetail.fromResponse(response);
-    } catch(e) {
+    } catch (e) {
       throw e;
     }
   }
@@ -80,11 +82,11 @@ class OrdersRepoImpl implements IOrdersRepo {
       final response = ChargesResponse.fromJson(data);
       _charges = Charges.fromResponse(response);
       return;
-    } catch(e) {
+    } catch (e) {
       throw e;
     }
   }
-  
+
   @override
   void dispose() {
     _orderController.close();

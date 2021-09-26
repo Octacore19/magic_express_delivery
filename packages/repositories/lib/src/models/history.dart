@@ -13,46 +13,45 @@ class History extends Equatable {
 
   factory History({
     int? id,
-    String? status,
+    OrderStatus? status,
     double? amount,
     String? reference,
     String? startAddress,
     String? endAddress,
   }) {
     return History._(
-      id: id ?? -1,
-      status: status ?? 'Unknown',
-      amount: amount ?? 0,
-      reference: reference ?? '',
-      startAddress: startAddress ?? '',
-      endAddress: endAddress ?? ''
-    );
+        id: id ?? -1,
+        status: status ?? OrderStatus.unknown,
+        amount: amount ?? 0,
+        reference: reference ?? '',
+        startAddress: startAddress ?? '',
+        endAddress: endAddress ?? '');
   }
 
   factory History.empty() {
     return History._(
-      id: -1,
-      status: 'Unknown',
-      amount: 0,
-      reference: '',
-      startAddress: '',
-      endAddress: ''
-    );
+        id: -1,
+        status: OrderStatus.unknown,
+        amount: 0,
+        reference: '',
+        startAddress: '',
+        endAddress: '');
   }
 
   factory History.fromResponse(HistoryResponse response) {
     return History._(
-      id: response.id ?? -1,
-      status: response.status ?? 'Unknown',
-      amount: double.tryParse(response.amount ?? '') ?? 0,
-      reference: response.reference ?? '',
-      startAddress: response.startAddress ?? '',
-      endAddress: response.endAddress ?? ''
-    );
+        id: response.id ?? -1,
+        status: response.status != null
+            ? OrderStatusExt.setStatus(response.status)
+            : OrderStatus.unknown,
+        amount: double.tryParse(response.amount ?? '') ?? 0,
+        reference: response.reference ?? '',
+        startAddress: response.startAddress ?? '',
+        endAddress: response.endAddress ?? '');
   }
 
   final int id;
-  final String status;
+  final OrderStatus status;
   final double amount;
   final String reference;
   final String startAddress;
@@ -60,7 +59,7 @@ class History extends Equatable {
 
   History copyWith({
     int? id,
-    String? status,
+    OrderStatus? status,
     double? amount,
     String? reference,
     String? startAddress,
@@ -77,7 +76,8 @@ class History extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, status, amount, reference, startAddress, endAddress];
+  List<Object?> get props =>
+      [id, status, amount, reference, startAddress, endAddress];
 
   @override
   String toString() {
