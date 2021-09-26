@@ -12,6 +12,8 @@ class DeliveryState extends Equatable {
     required this.status,
     required this.message,
     required this.charges,
+    required this.estimatedDistance,
+    required this.estimatedDuration,
   });
 
   factory DeliveryState.initial({required Charges charges}) {
@@ -26,6 +28,8 @@ class DeliveryState extends Equatable {
       status: Status.initial,
       message: '',
       charges: charges,
+      estimatedDistance: TextValueObject.empty(),
+      estimatedDuration: TextValueObject.empty(),
     );
   }
 
@@ -41,6 +45,9 @@ class DeliveryState extends Equatable {
   final DeliveryOrder order;
   final Status status;
   final String message;
+
+  final TextValueObject estimatedDistance;
+  final TextValueObject estimatedDuration;
 
   bool get buttonActive =>
       !loading &&
@@ -66,22 +73,9 @@ class DeliveryState extends Equatable {
     return total;
   }
 
-  double get distance {
-    double distance = 0;
-    if (!pickupDetail.empty && !deliveryDetail.empty) {
-      distance = Geolocator.distanceBetween(
-        pickupDetail.latitude,
-        pickupDetail.longitude,
-        deliveryDetail.latitude,
-        deliveryDetail.longitude,
-      );
-      distance = distance / 1000;
-    }
-    return distance;
-  }
-
   double get deliveryAmount {
-    return charges.basePrice + (distance * charges.pricePerKm);
+    final dis = estimatedDistance.value / 1000;
+    return charges.basePrice + (dis * charges.pricePerKm).toDouble();
   }
 
   double get totalAmount {
@@ -100,6 +94,8 @@ class DeliveryState extends Equatable {
       status: Status.success,
       message: '',
       charges: this.charges,
+      estimatedDistance: TextValueObject.empty(),
+      estimatedDuration: TextValueObject.empty(),
     );
   }
 
@@ -113,6 +109,8 @@ class DeliveryState extends Equatable {
     DeliveryOrder? order,
     Status? status,
     String? message,
+    TextValueObject? distance,
+    TextValueObject? duration,
   }) {
     return DeliveryState._(
       pickupAddress: pickupAddress ?? this.pickupAddress,
@@ -125,6 +123,8 @@ class DeliveryState extends Equatable {
       status: status ?? this.status,
       message: message ?? '',
       charges: this.charges,
+      estimatedDuration: duration ?? this.estimatedDuration,
+      estimatedDistance: distance ?? this.estimatedDistance,
     );
   }
 
@@ -140,5 +140,7 @@ class DeliveryState extends Equatable {
         status,
         message,
         charges,
+        estimatedDuration,
+        estimatedDistance,
       ];
 }

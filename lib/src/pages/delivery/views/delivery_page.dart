@@ -80,7 +80,6 @@ class _DeliveryPageFormState extends State<_DeliveryPageForm> {
               _PickUpAddressInput(_pickupAddressController),
               const SizedBox(height: 16),
               _DeliveryAddressInput(_deliveryAddressController),
-              const SizedBox(height: 8),
               _DistanceCalculationView(),
               const SizedBox(height: 48),
               _ShoppingCartView(),

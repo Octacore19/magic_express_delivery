@@ -23,8 +23,8 @@ class UsersRepo implements IUsersRepo {
   Future<void> getCharges() => _repo.getCharges();
 
   @override
-  Future<Object> verifyPayment(String reference) =>
-      _repo.verifyPayment(reference);
+  Future<void> verifyPayment(String reference, String orderId) =>
+      _repo.verifyPayment(reference, orderId);
 
   @override
   void dispose() => _repo.dispose();

@@ -66,9 +66,9 @@ class OrdersImpl implements IOrdersService {
   @override
   Future<DioResponse> verifyPaymentStatus(Map<String, String> query) async {
     try {
-      final baseResponse = await _dio.get(
+      final baseResponse = await _dio.post(
         ApiEndpoints.VERIFY_PAYMENT,
-        queryParameters: query,
+        data: FormData.fromMap(query),
       );
       return DioResponse.fromJson(baseResponse.data);
     } catch (e) {

@@ -73,6 +73,7 @@ class _ErrandPageFormState extends State<_ErrandPageForm> {
       listener: (_, state) async {
         if (state.isPayStackPayment) {
           Navigator.of(context).push(PaystackPage.route(
+            orderId: state.order.id.toString(),
             reference: state.order.reference,
             amount: state.totalAmount,
           ));

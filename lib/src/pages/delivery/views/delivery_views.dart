@@ -17,9 +17,8 @@ class _PickUpAddressInput extends StatelessWidget {
         decoration: InputDecoration(
           labelText: 'Pickup address',
           hintText: 'Search and select an address',
-          hintStyle: Theme.of(context).textTheme.caption?.copyWith(
-            color: Colors.grey
-          ),
+          hintStyle:
+              Theme.of(context).textTheme.caption?.copyWith(color: Colors.grey),
           labelStyle: Theme.of(context).textTheme.bodyText2,
           focusedBorder: AppTheme.textOutlineFocusedBorder(context),
           enabledBorder: AppTheme.textOutlineEnabledBorder(context),
@@ -70,9 +69,8 @@ class _DeliveryAddressInput extends StatelessWidget {
         decoration: InputDecoration(
           labelText: 'Delivery address',
           hintText: 'Search and select an address',
-          hintStyle: Theme.of(context).textTheme.caption?.copyWith(
-              color: Colors.grey
-          ),
+          hintStyle:
+              Theme.of(context).textTheme.caption?.copyWith(color: Colors.grey),
           labelStyle: Theme.of(context).textTheme.bodyText2,
           focusedBorder: AppTheme.textOutlineFocusedBorder(context),
           enabledBorder: AppTheme.textOutlineEnabledBorder(context),
@@ -109,15 +107,26 @@ class _DeliveryAddressInput extends StatelessWidget {
 class _DistanceCalculationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<DeliveryBloc, DeliveryState, double>(
-      selector: (s) => s.distance,
-      builder: (_, distance) => Visibility(
-        visible: distance != 0,
+    return BlocBuilder<DeliveryBloc, DeliveryState>(
+      builder: (_, state) => Visibility(
+        visible: state.estimatedDistance.isNotEmpty,
         child: Align(
           alignment: Alignment.topLeft,
-          child: Text(
-            'Distance: ${distance.toStringAsFixed(2)} km',
-            style: Theme.of(context).textTheme.caption,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 24),
+              Text(
+                'Distance: ${state.estimatedDistance.text}',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Estimated Time: ${state.estimatedDuration.text}',
+                style: Theme.of(context).textTheme.bodyText2,
+              )
+            ],
           ),
         ),
       ),
@@ -248,7 +257,8 @@ class _NextToProcessButton extends StatelessWidget {
           child: Builder(
             builder: (_) {
               if (s.loading) {
-                return SizedBox(child: CircularProgressIndicator.adaptive(
+                return SizedBox(
+                    child: CircularProgressIndicator.adaptive(
                   valueColor: AlwaysStoppedAnimation(Colors.blue.shade500),
                 ));
               }

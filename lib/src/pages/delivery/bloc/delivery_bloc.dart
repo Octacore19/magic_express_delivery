@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:magic_express_delivery/src/models/models.dart';
 import 'package:repositories/repositories.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
@@ -74,10 +73,20 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
       case DeliveryAction.OnPickupDetailChanged:
         PlaceDetail? arg = event.args as PlaceDetail?;
         yield state.copyWith(pickupDetail: arg);
+        if (state.deliveryDetail.notEmpty) {
+          final action = DeliveryAction.CalculateDistanceAndTime;
+          final event = DeliveryEvent(action);
+          add(event);
+        }
         break;
       case DeliveryAction.OnDeliveryDetailChanged:
         PlaceDetail? arg = event.args as PlaceDetail?;
         yield state.copyWith(deliveryDetail: arg);
+        if (state.pickupDetail.notEmpty) {
+          final action = DeliveryAction.CalculateDistanceAndTime;
+          final event = DeliveryEvent(action);
+          add(event);
+        }
         break;
       case DeliveryAction.OnCartItemsAdded:
         List<CartItem> items = event.args as List<CartItem>;
@@ -91,6 +100,28 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
       case DeliveryAction.OnOrderSubmitted:
         yield* _mapOnOrderSubmitted(event, state);
         break;
+      case DeliveryAction.CalculateDistanceAndTime:
+        yield* _mapCalculateDistanceAndTime(event, state);
+        break;
+    }
+  }
+
+  String _startPlaceId = '';
+  String _endPlaceId = '';
+
+  Stream<DeliveryState> _mapCalculateDistanceAndTime(
+      DeliveryEvent event,
+      DeliveryState state,
+      ) async* {
+    try {
+      final res = await _placesRepo.getDistanceCalc(_startPlaceId, _endPlaceId);
+      yield state.copyWith(
+        distance: res.element.distance,
+        duration: res.element.duration,
+      );
+    } on Exception catch (e) {
+      _handler.handleExceptionsWithAction(e, () => add(event));
+      yield state.copyWith(status: Status.error);
     }
   }
 
@@ -128,6 +159,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     Prediction? prediction = event.args as Prediction?;
     if (prediction != null) {
       try {
+        _startPlaceId = prediction.id;
         _placesRepo.fetchPickupDetail(prediction.id);
       } catch (e) {
         print(e);
@@ -139,6 +171,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     Prediction? prediction = event.args as Prediction?;
     if (prediction != null) {
       try {
+        _endPlaceId = prediction.id;
         _placesRepo.fetchDestinationDetail(prediction.id);
       } catch (e) {
         print(e);

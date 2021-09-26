@@ -73,14 +73,14 @@ class UsersRepoImpl implements IUsersRepo {
   }
 
   @override
-  Future<Object> verifyPayment(String reference) async {
+  Future<void> verifyPayment(String reference, String orderId) async {
     try {
-      final query = {'reference': reference};
+      final query = {'reference': reference, 'order_id': orderId};
       final res = await _service.verifyPaymentStatus(query);
       if (!res.success) throw RequestFailureException(res.message);
-      final data = BaseResponse.fromJson(res.data).data;
-      if (data == null) throw NoDataException();
-      return data;
+      final msg = BaseResponse.fromJson(res.data).message;
+      if (msg == null) throw NoDataException();
+      return;
     } catch (e) {
       throw e;
     }

@@ -192,14 +192,6 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     }
   }
 
-  Charge createCharge() {
-    print('Reference: => ${state.order.reference}');
-    return Charge()
-      ..email = 'test@email.com'
-      ..reference = state.order.reference
-      ..amount = (state.totalAmount * 100).toInt();
-  }
-
   Future<List<Prediction>> searchPlaces(String keyword) {
     try {
       if (keyword.isEmpty) throw Exception();

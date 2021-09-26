@@ -6,7 +6,7 @@ abstract class IUsersRepo {
   Future<void> createOrder(Map<String, dynamic> data);
   Future<void> fetchAllHistory();
   Future<HistoryDetail> fetchHistoryDetail(String id);
-  Future<Object> verifyPayment(String reference);
+  Future<void> verifyPayment(String reference, String orderId);
   Future<void> getCharges();
   Charges get charges;
   void dispose();
