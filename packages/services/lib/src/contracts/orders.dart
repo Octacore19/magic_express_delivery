@@ -11,5 +11,7 @@ abstract class IOrdersService {
 
   Future<DioResponse> fetchRiderOrderDetail(String id);
 
+  Future<DioResponse> verifyPaymentStatus(Map<String, String> query);
+
   Future<DioResponse> getCharges();
 }

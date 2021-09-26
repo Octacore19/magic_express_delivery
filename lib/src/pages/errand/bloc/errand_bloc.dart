@@ -15,7 +15,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
   ErrandBloc({
     required CoordinatorCubit coordinatorCubit,
     required PlacesRepo placesRepo,
-    required OrdersRepo ordersRepo,
+    required UsersRepo ordersRepo,
     required ErrorHandler errorHandler,
   })  : _placesRepo = placesRepo,
         _coordinatorCubit = coordinatorCubit,
@@ -52,7 +52,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
   final PlacesRepo _placesRepo;
   final CoordinatorCubit _coordinatorCubit;
   final ErrorHandler _handler;
-  final OrdersRepo _ordersRepo;
+  final UsersRepo _ordersRepo;
 
   late StreamSubscription _storeAddressSub;
   late StreamSubscription _deliveryAddressSub;

@@ -11,7 +11,7 @@ part 'history_state.dart';
 
 class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
   HistoryBloc({
-    required OrdersRepo ordersRepo,
+    required UsersRepo ordersRepo,
     required ErrorHandler errorHandler,
   })  : _ordersRepo = ordersRepo,
         _handler = errorHandler,
@@ -23,7 +23,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     });
   }
 
-  final OrdersRepo _ordersRepo;
+  final UsersRepo _ordersRepo;
   final ErrorHandler _handler;
 
   late StreamSubscription _historySubscription;

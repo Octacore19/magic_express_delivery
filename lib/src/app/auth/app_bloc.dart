@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_paystack_client/flutter_paystack_client.dart';
 import 'package:repositories/repositories.dart';
 
 part 'app_events.dart';
@@ -12,7 +13,7 @@ part 'app_states.dart';
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc({
     required AuthRepo authRepo,
-    required OrdersRepo ordersRepo,
+    required UsersRepo ordersRepo,
     required bool isRider
   })  : _authRepo = authRepo,
         _ordersRepo = ordersRepo,
@@ -21,7 +22,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   }
 
   final AuthRepo _authRepo;
-  final OrdersRepo _ordersRepo;
+  final UsersRepo _ordersRepo;
   late final StreamSubscription<AuthStatus> _statusSubscription;
 
   void _onStatusChanged(AuthStatus status) =>
@@ -46,18 +47,19 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         if (user.isEmpty) {
           return AppState.unauthenticated(state.isRider);
         }
-        _initUserParticles();
+        _initUserParticles(user.paystackKey);
         return AppState.authenticated(state.isRider, user);
       default:
         return AppState.unknown(state.isRider);
     }
   }
 
-  _initUserParticles() async {
+  _initUserParticles(String key) async {
     try {
       if (state.isRider) {
 
       } else {
+        await PaystackClient.initialize(key);
         await _ordersRepo.fetchAllHistory();
         await _ordersRepo.getCharges();
       }

@@ -4,21 +4,27 @@ import 'package:repositories/src/impl/impl.dart';
 import 'package:repositories/src/models/order.dart';
 import 'package:services/services.dart';
 
-class OrdersRepo implements IOrdersRepo {
-  OrdersRepo({required ApiProvider api}) : _repo = OrdersRepoImpl(api: api);
-  final IOrdersRepo _repo;
+class UsersRepo implements IUsersRepo {
+  UsersRepo({required ApiProvider api}) : _repo = UsersRepoImpl(api: api);
+  final IUsersRepo _repo;
 
   @override
-  Future<void> createOrder(Map<String, dynamic> data) => _repo.createOrder(data);
+  Future<void> createOrder(Map<String, dynamic> data) =>
+      _repo.createOrder(data);
 
   @override
   Future<void> fetchAllHistory() => _repo.fetchAllHistory();
 
   @override
-  Future<HistoryDetail> fetchHistoryDetail(String id) => _repo.fetchHistoryDetail(id);
+  Future<HistoryDetail> fetchHistoryDetail(String id) =>
+      _repo.fetchHistoryDetail(id);
 
   @override
   Future<void> getCharges() => _repo.getCharges();
+
+  @override
+  Future<Object> verifyPayment(String reference) =>
+      _repo.verifyPayment(reference);
 
   @override
   void dispose() => _repo.dispose();

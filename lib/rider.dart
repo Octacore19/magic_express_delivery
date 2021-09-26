@@ -40,7 +40,7 @@ void main() async {
         ),
       ),
       RepositoryProvider(
-        create: (context) => OrdersRepo(
+        create: (context) => UsersRepo(
           api: RepositoryProvider.of(context),
         ),
       ),

@@ -64,7 +64,9 @@ class AuthRepoImpl extends IAuthRepo {
       final data = BaseResponse.fromJson(response.data).data;
       if (data == null) throw AuthenticationException();
       final user = LoginResponse.fromJson(data).toUser;
+      print('User here: => $user');
       final userString = user.toSerializedJson();
+      print('Serialized user: => $userString');
       await _preference.write<String>(key: userCacheKey, value: userString);
       _statusController.sink.add(AuthStatus.loggedIn);
       return;
@@ -139,6 +141,7 @@ extension on LoginResponse {
           firstName: u.firstName,
           lastName: u.lastName,
           role: u.role,
+          paystackKey: paystackKey ?? ''
         );
       }
     }

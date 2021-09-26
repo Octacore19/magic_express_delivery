@@ -2,8 +2,8 @@ import 'package:repositories/repositories.dart';
 import 'package:repositories/src/contracts/contracts.dart';
 import 'package:services/services.dart';
 
-class OrdersRepoImpl implements IOrdersRepo {
-  OrdersRepoImpl({required ApiProvider api})
+class UsersRepoImpl implements IUsersRepo {
+  UsersRepoImpl({required ApiProvider api})
       : _service = OrdersService(api: api);
 
   final OrdersService _service;
@@ -67,6 +67,20 @@ class OrdersRepoImpl implements IOrdersRepo {
       if (data == null) throw NoDataException();
       final response = HistoryDetailResponse.fromJson(data);
       return HistoryDetail.fromResponse(response);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<Object> verifyPayment(String reference) async {
+    try {
+      final query = {'reference': reference};
+      final res = await _service.verifyPaymentStatus(query);
+      if (!res.success) throw RequestFailureException(res.message);
+      final data = BaseResponse.fromJson(res.data).data;
+      if (data == null) throw NoDataException();
+      return data;
     } catch (e) {
       throw e;
     }

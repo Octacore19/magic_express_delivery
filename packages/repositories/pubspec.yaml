@@ -12,3 +12,4 @@ dependencies:
   uuid: ^3.0.4
   services:
     path: ../services
+  encrypt: ^5.0.1

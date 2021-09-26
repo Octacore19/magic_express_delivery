@@ -1,10 +1,10 @@
 class LoginResponse {
   final _User? user;
-
-  LoginResponse(this.user);
+  final String? paystackKey;
 
   LoginResponse.fromJson(Map<String, dynamic> json)
-      : user = _User.fromJson(json['user']);
+      : user = _User.fromJson(json['user']),
+        paystackKey = json['public_key'];
 
   @override
   String toString() {

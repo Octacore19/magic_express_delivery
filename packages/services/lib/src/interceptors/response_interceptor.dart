@@ -30,7 +30,6 @@ class ResponseInterceptor extends Interceptor {
         now.hour,
         int.tryParse(expires ?? '') ?? 0,
       );
-      print('Expires in $t');
       _preference.write<String>(
         key: ApiConstants.TIME_STAMP,
         value: t.toIso8601String(),

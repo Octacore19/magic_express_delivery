@@ -27,5 +27,9 @@ class OrdersService implements IOrdersService {
       _orders.fetchRiderOrderDetail(id);
 
   @override
+  Future<DioResponse> verifyPaymentStatus(Map<String, String> query) =>
+      _orders.verifyPaymentStatus(query);
+
+  @override
   Future<DioResponse> getCharges() => _orders.getCharges();
 }

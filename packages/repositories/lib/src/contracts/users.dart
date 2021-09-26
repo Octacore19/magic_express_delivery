@@ -1,11 +1,12 @@
 import 'package:repositories/repositories.dart';
 
-abstract class IOrdersRepo {
+abstract class IUsersRepo {
   Stream<Order> get order;
   Stream<List<History>> get history;
   Future<void> createOrder(Map<String, dynamic> data);
   Future<void> fetchAllHistory();
   Future<HistoryDetail> fetchHistoryDetail(String id);
+  Future<Object> verifyPayment(String reference);
   Future<void> getCharges();
   Charges get charges;
   void dispose();

@@ -26,7 +26,7 @@ class OrdersImpl implements IOrdersService {
     try {
       final baseResponse = await _dio.get(ApiEndpoints.USER_ORDERS);
       return DioResponse.fromJson(baseResponse.data);
-    } on Exception catch(e) {
+    } on Exception catch (e) {
       throw e;
     }
   }
@@ -34,7 +34,8 @@ class OrdersImpl implements IOrdersService {
   @override
   Future<DioResponse> fetchUserOrderDetail(String id) async {
     try {
-      final baseResponse = await _dio.get(ApiEndpoints.USER_ORDER_DETAIL + '/$id');
+      final baseResponse =
+          await _dio.get(ApiEndpoints.USER_ORDER_DETAIL + '/$id');
       return DioResponse.fromJson(baseResponse.data);
     } on Exception catch (e) {
       throw e;
@@ -46,7 +47,7 @@ class OrdersImpl implements IOrdersService {
     try {
       final baseResponse = await _dio.get(ApiEndpoints.RIDER_ORDERS);
       return DioResponse.fromJson(baseResponse.data);
-    } on Exception catch(e) {
+    } on Exception catch (e) {
       throw e;
     }
   }
@@ -54,9 +55,23 @@ class OrdersImpl implements IOrdersService {
   @override
   Future<DioResponse> fetchRiderOrderDetail(String id) async {
     try {
-      final baseResponse = await _dio.get(ApiEndpoints.RIDER_ORDER_DETAIL + '/$id');
+      final baseResponse =
+          await _dio.get(ApiEndpoints.RIDER_ORDER_DETAIL + '/$id');
       return DioResponse.fromJson(baseResponse.data);
     } on Exception catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<DioResponse> verifyPaymentStatus(Map<String, String> query) async {
+    try {
+      final baseResponse = await _dio.get(
+        ApiEndpoints.VERIFY_PAYMENT,
+        queryParameters: query,
+      );
+      return DioResponse.fromJson(baseResponse.data);
+    } catch (e) {
       throw e;
     }
   }
@@ -66,7 +81,7 @@ class OrdersImpl implements IOrdersService {
     try {
       final baseResponse = await _dio.get(ApiEndpoints.CHARGES);
       return DioResponse.fromJson(baseResponse.data);
-    } catch(e) {
+    } catch (e) {
       throw e;
     }
   }

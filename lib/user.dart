@@ -13,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp();
-  await PaystackClient.initialize('pk_test_2add46e7ac44cc017a6844025e9ccfba75420c35');
+  // await PaystackClient.initialize('pk_test_2add46e7ac44cc017a6844025e9ccfba75420c35');
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getTemporaryDirectory(),
   );
@@ -41,7 +41,7 @@ void main() async {
         ),
       ),
       RepositoryProvider(
-        create: (context) => OrdersRepo(
+        create: (context) => UsersRepo(
           api: RepositoryProvider.of(context),
         ),
       ),

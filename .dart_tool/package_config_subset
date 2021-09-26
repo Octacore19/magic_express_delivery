@@ -18,6 +18,10 @@ args
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/args-2.3.0/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/args-2.3.0/lib/
+asn1lib
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/asn1lib-1.0.2/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/asn1lib-1.0.2/lib/
 async
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.8.1/
@@ -114,6 +118,10 @@ email_validator
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/email_validator-2.0.1/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/email_validator-2.0.1/lib/
+encrypt
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/encrypt-5.0.1/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/encrypt-5.0.1/lib/
 equatable
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/equatable-2.0.3/
@@ -354,6 +362,10 @@ plugin_platform_interface
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.0.1/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.0.1/lib/
+pointycastle
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/pointycastle-3.3.4/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/pointycastle-3.3.4/lib/
 pool
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/pool-1.5.0/

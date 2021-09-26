@@ -28,7 +28,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     _binding.removeObserver(this);
     context.read<AuthRepo>().dispose();
     context.read<PlacesRepo>().dispose();
-    context.read<OrdersRepo>().dispose();
+    context.read<UsersRepo>().dispose();
     super.dispose();
   }
 
@@ -61,7 +61,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       case AppLifecycleState.detached:
         context.read<AuthRepo>().dispose();
         context.read<PlacesRepo>().dispose();
-        context.read<OrdersRepo>().dispose();
+        context.read<UsersRepo>().dispose();
         break;
     }
   }
