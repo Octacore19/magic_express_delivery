@@ -61,4 +61,8 @@ class PlacesRepo implements IPlacesRepo {
 
   @override
   Future<PlaceDetail> fetchDetail(String placeId) => _repo.fetchDetail(placeId);
+
+  @override
+  Future<DistanceMatrix> getDistanceCalc(String startId, String endId) =>
+      _repo.getDistanceCalc(startId, endId);
 }

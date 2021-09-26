@@ -3,9 +3,13 @@ import 'package:services/src/models/models.dart';
 abstract class IOrdersService {
   Future<DioResponse> createOrder(Map<String, dynamic> data);
 
-  Future<DioResponse> fetchOrders();
+  Future<DioResponse> fetchUserOrders();
 
-  Future<DioResponse> fetchOrderDetail(String id);
+  Future<DioResponse> fetchUserOrderDetail(String id);
+
+  Future<DioResponse> fetchRiderOrders();
+
+  Future<DioResponse> fetchRiderOrderDetail(String id);
 
   Future<DioResponse> getCharges();
 }

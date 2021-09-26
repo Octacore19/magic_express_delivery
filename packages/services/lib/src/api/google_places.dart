@@ -16,4 +16,8 @@ class PlacesService implements IPlacesService {
   @override
   Future<DioResponse> searchForPlace(Map<String, dynamic> queryParams) =>
       _service.searchForPlace(queryParams);
+
+  @override
+  Future<DioResponse> getDistanceMatrix(Map<String, dynamic> queryParams) =>
+      _service.getDistanceMatrix(queryParams);
 }

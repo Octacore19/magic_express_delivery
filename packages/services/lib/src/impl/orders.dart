@@ -22,9 +22,9 @@ class OrdersImpl implements IOrdersService {
   }
 
   @override
-  Future<DioResponse> fetchOrders() async {
+  Future<DioResponse> fetchUserOrders() async {
     try {
-      final baseResponse = await _dio.get(ApiEndpoints.ORDER_LIST);
+      final baseResponse = await _dio.get(ApiEndpoints.USER_ORDERS);
       return DioResponse.fromJson(baseResponse.data);
     } on Exception catch(e) {
       throw e;
@@ -32,9 +32,29 @@ class OrdersImpl implements IOrdersService {
   }
 
   @override
-  Future<DioResponse> fetchOrderDetail(String id) async {
+  Future<DioResponse> fetchUserOrderDetail(String id) async {
     try {
-      final baseResponse = await _dio.get(ApiEndpoints.ORDER_DETAIL + '/$id');
+      final baseResponse = await _dio.get(ApiEndpoints.USER_ORDER_DETAIL + '/$id');
+      return DioResponse.fromJson(baseResponse.data);
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<DioResponse> fetchRiderOrders() async {
+    try {
+      final baseResponse = await _dio.get(ApiEndpoints.RIDER_ORDERS);
+      return DioResponse.fromJson(baseResponse.data);
+    } on Exception catch(e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<DioResponse> fetchRiderOrderDetail(String id) async {
+    try {
+      final baseResponse = await _dio.get(ApiEndpoints.RIDER_ORDER_DETAIL + '/$id');
       return DioResponse.fromJson(baseResponse.data);
     } on Exception catch (e) {
       throw e;

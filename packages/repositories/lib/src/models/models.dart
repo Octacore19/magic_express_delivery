@@ -1,5 +1,6 @@
 export 'base_response.dart';
 export 'charges.dart';
+export 'distance_matrix.dart';
 export 'history.dart';
 export 'history_detail.dart';
 export 'order.dart';

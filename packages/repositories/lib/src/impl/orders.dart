@@ -42,7 +42,7 @@ class OrdersRepoImpl implements IOrdersRepo {
   @override
   Future<void> fetchAllHistory() async {
     try {
-      final res = await _service.fetchOrders();
+      final res = await _service.fetchUserOrders();
       if (!res.success) throw RequestFailureException(res.message);
       final data = BaseResponse.fromJson(res.data).data;
       if (data == null) throw NoDataException();
@@ -59,7 +59,7 @@ class OrdersRepoImpl implements IOrdersRepo {
   @override
   Future<HistoryDetail> fetchHistoryDetail(String id) async {
     try {
-      final res = await _service.fetchOrderDetail(id);
+      final res = await _service.fetchUserOrderDetail(id);
       if (!res.success) throw RequestFailureException(res.message);
       final data = BaseResponse.fromJson(res.data).data;
       if (data == null) throw NoDataException();

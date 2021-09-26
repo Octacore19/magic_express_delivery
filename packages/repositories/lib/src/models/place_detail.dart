@@ -34,7 +34,7 @@ class PlaceDetail extends Equatable {
 
   bool get empty => this == PlaceDetail.empty();
 
-  bool get notEmpty => this == PlaceDetail.empty();
+  bool get notEmpty => this != PlaceDetail.empty();
 
   @override
   String toString() {

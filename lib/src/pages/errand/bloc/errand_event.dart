@@ -21,4 +21,5 @@ enum ErrandAction {
   OnItemRemoved,
   OnOrderSubmitted,
   OnCompletedOrderPlacement,
+  CalculateDistanceAndTime,
 }

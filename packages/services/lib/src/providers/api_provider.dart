@@ -19,11 +19,13 @@ class ApiProvider {
       baseUrl: ApiConstants.BASE_URL,
       connectTimeout: ApiConstants.CONNECT_TIMEOUT,
       receiveTimeout: ApiConstants.RECEIVE_TIMEOUT,
+      sendTimeout: ApiConstants.CONNECT_TIMEOUT,
     );
     var googleOption = BaseOptions(
       baseUrl: ApiConstants.GOOGLE_BASE_URL,
       connectTimeout: ApiConstants.CONNECT_TIMEOUT,
       receiveTimeout: ApiConstants.RECEIVE_TIMEOUT,
+      sendTimeout: ApiConstants.CONNECT_TIMEOUT,
     );
     _mainDio = Dio(mainOption);
     _googleDio = Dio(googleOption);
@@ -50,5 +52,6 @@ class ApiProvider {
   }
 
   Dio get mainInstance => _mainDio;
+
   Dio get googleInstance => _googleDio;
 }

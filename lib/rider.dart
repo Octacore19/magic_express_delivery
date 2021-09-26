@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paystack_client/flutter_paystack_client.dart';
@@ -9,8 +10,9 @@ import 'package:services/services.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
-  Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = MyBlocObserver();
+  await Firebase.initializeApp();
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getTemporaryDirectory(),
   );

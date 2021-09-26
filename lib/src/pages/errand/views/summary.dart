@@ -176,19 +176,37 @@ class _ItemsDetails extends StatelessWidget {
 class _DistanceDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<ErrandBloc, ErrandState, double>(
-      selector: (s) => s.distance,
-      builder: (_, distance) => Text.rich(
-        TextSpan(
-          text: 'Distance covered: ',
-          style: Theme.of(context).textTheme.bodyText1,
-          children: [
+    return BlocBuilder<ErrandBloc, ErrandState>(
+      builder: (_, state) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text.rich(
             TextSpan(
-              text: '${distance.toStringAsFixed(2)} km',
-              style: Theme.of(context).textTheme.bodyText2,
-            )
-          ],
-        ),
+              text: 'Distance covered: ',
+              style: Theme.of(context).textTheme.bodyText1,
+              children: [
+                TextSpan(
+                  text: '${state.estimatedDistance.text}',
+                  style: Theme.of(context).textTheme.bodyText2,
+                )
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text.rich(
+            TextSpan(
+              text: 'Estimated Time: ',
+              style: Theme.of(context).textTheme.bodyText1,
+              children: [
+                TextSpan(
+                  text: '${state.estimatedDuration.text}',
+                  style: Theme.of(context).textTheme.bodyText2,
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

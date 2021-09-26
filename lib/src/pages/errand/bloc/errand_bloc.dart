@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paystack_client/flutter_paystack_client.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/models/models.dart';
 import 'package:repositories/repositories.dart';
@@ -18,8 +17,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     required PlacesRepo placesRepo,
     required OrdersRepo ordersRepo,
     required ErrorHandler errorHandler,
-  })
-      : _placesRepo = placesRepo,
+  })  : _placesRepo = placesRepo,
         _coordinatorCubit = coordinatorCubit,
         _ordersRepo = ordersRepo,
         _handler = errorHandler,
@@ -81,10 +79,20 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
       case ErrandAction.OnStoreDetailChanged:
         PlaceDetail? arg = event.args as PlaceDetail?;
         yield state.copyWith(storeDetail: arg);
+        if (state.deliveryDetail.notEmpty) {
+          final action = ErrandAction.CalculateDistanceAndTime;
+          final event = ErrandEvent(action);
+          add(event);
+        }
         break;
       case ErrandAction.OnDeliveryDetailChanged:
         PlaceDetail? arg = event.args as PlaceDetail?;
         yield state.copyWith(deliveryDetail: arg);
+        if (state.storeDetail.notEmpty) {
+          final action = ErrandAction.CalculateDistanceAndTime;
+          final event = ErrandEvent(action);
+          add(event);
+        }
         break;
       case ErrandAction.OnCartItemsAdded:
         List<CartItem> arg = event.args as List<CartItem>;
@@ -102,11 +110,35 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
         Order order = event.args as Order;
         yield state.copyWith(order: order);
         break;
+      case ErrandAction.CalculateDistanceAndTime:
+        yield* _mapCalculateDistanceAndTime(event, state);
+        break;
     }
   }
 
-  Stream<ErrandState> _mapOnOrderSubmitted(ErrandEvent event,
-      ErrandState state,) async* {
+  String _startPlaceId = '';
+  String _endPlaceId = '';
+
+  Stream<ErrandState> _mapCalculateDistanceAndTime(
+    ErrandEvent event,
+    ErrandState state,
+  ) async* {
+    try {
+      final res = await _placesRepo.getDistanceCalc(_startPlaceId, _endPlaceId);
+      yield state.copyWith(
+        distance: res.element.distance,
+        duration: res.element.duration,
+      );
+    } on Exception catch (e) {
+      _handler.handleExceptionsWithAction(e, () => add(event));
+      yield state.copyWith(status: Status.error);
+    }
+  }
+
+  Stream<ErrandState> _mapOnOrderSubmitted(
+    ErrandEvent event,
+    ErrandState state,
+  ) async* {
     yield state.copyWith(status: Status.loading);
     try {
       final order = state.errandOrder.copyWith(
@@ -128,8 +160,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
 
   ErrandState _mapOnItemRemoved(ErrandState state, ErrandEvent event) {
     int position = event.args as int;
-    List<CartItem> l = List.from(state.cartItems)
-      ..removeAt(position);
+    List<CartItem> l = List.from(state.cartItems)..removeAt(position);
     _coordinatorCubit.setCartItems(l);
     return state.copyWith(
       cartItems: l,
@@ -141,6 +172,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     Prediction? prediction = event.args as Prediction?;
     if (prediction != null) {
       try {
+        _startPlaceId = prediction.id;
         _placesRepo.fetchPickupDetail(prediction.id);
       } catch (e) {
         print(e);
@@ -152,6 +184,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     Prediction? prediction = event.args as Prediction?;
     if (prediction != null) {
       try {
+        _endPlaceId = prediction.id;
         _placesRepo.fetchDestinationDetail(prediction.id);
       } catch (e) {
         print(e);

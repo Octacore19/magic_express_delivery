@@ -13,10 +13,18 @@ class OrdersService implements IOrdersService {
       _orders.createOrder(data);
 
   @override
-  Future<DioResponse> fetchOrders() => _orders.fetchOrders();
+  Future<DioResponse> fetchUserOrders() => _orders.fetchUserOrders();
 
   @override
-  Future<DioResponse> fetchOrderDetail(String id) => _orders.fetchOrderDetail(id);
+  Future<DioResponse> fetchUserOrderDetail(String id) =>
+      _orders.fetchUserOrderDetail(id);
+
+  @override
+  Future<DioResponse> fetchRiderOrders() => _orders.fetchRiderOrders();
+
+  @override
+  Future<DioResponse> fetchRiderOrderDetail(String id) =>
+      _orders.fetchRiderOrderDetail(id);
 
   @override
   Future<DioResponse> getCharges() => _orders.getCharges();

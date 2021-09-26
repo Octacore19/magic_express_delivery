@@ -59,7 +59,26 @@ class PlacesRepoImpl implements IPlacesRepo {
       final placeDetailRes = PlaceDetailResponse.fromJson(data);
       _sessionToken = '';
       return PlaceDetail.fromResponse(placeDetailRes);
-    } catch(e) {
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<DistanceMatrix> getDistanceCalc(String startId, String endId) async {
+    try {
+      final query = {
+        'origins': 'place_id:$startId',
+        'destinations': 'place_id:$endId',
+        'key': ApiConstants.GOOGLE_PLACES_KEY,
+      };
+      final res = await _service.getDistanceMatrix(query);
+      if (!res.success) throw RequestFailureException(res.message);
+      final data = BaseResponse.fromJson(res.data).data;
+      if (data == null) throw NoDataException();
+      final matrixResponse = DistanceMatrixResponse.fromJson(data);
+      return DistanceMatrix.fromResponse(matrixResponse);
+    } catch (e) {
       throw e;
     }
   }

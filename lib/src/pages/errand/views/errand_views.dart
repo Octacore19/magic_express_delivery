@@ -139,15 +139,26 @@ class _DeliveryAddressInput extends StatelessWidget {
 class _DistanceCalculationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<ErrandBloc, ErrandState, double>(
-      selector: (s) => s.distance,
-      builder: (_, distance) => Visibility(
-        visible: distance != 0,
+    return BlocBuilder<ErrandBloc, ErrandState>(
+      builder: (_, state) => Visibility(
+        visible: state.estimatedDistance.isNotEmpty,
         child: Align(
           alignment: Alignment.topLeft,
-          child: Text(
-            'Distance: ${distance.toStringAsFixed(2)} km',
-            style: Theme.of(context).textTheme.caption,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 24),
+              Text(
+                'Distance: ${state.estimatedDistance.text}',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Estimated Time: ${state.estimatedDuration.text}',
+                style: Theme.of(context).textTheme.bodyText2,
+              )
+            ],
           ),
         ),
       ),

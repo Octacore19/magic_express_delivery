@@ -91,7 +91,6 @@ class _ErrandPageFormState extends State<_ErrandPageForm> {
               _StoreAddressInput(_storeAddressController),
               const SizedBox(height: 16),
               _DeliveryAddressInput(_deliveryAddressController),
-              const SizedBox(height: 8),
               _DistanceCalculationView(),
               const SizedBox(height: 48),
               _ShoppingCartView(),

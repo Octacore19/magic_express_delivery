@@ -14,6 +14,8 @@ class ErrandState extends Equatable {
     required this.message,
     required this.errandOrder,
     required this.order,
+    required this.estimatedDistance,
+    required this.estimatedDuration,
   });
 
   factory ErrandState.init({required Charges charges}) {
@@ -30,6 +32,8 @@ class ErrandState extends Equatable {
       order: Order.empty(),
       message: '',
       status: Status.initial,
+      estimatedDistance: TextValueObject.empty(),
+      estimatedDuration: TextValueObject.empty(),
     );
   }
 
@@ -48,6 +52,9 @@ class ErrandState extends Equatable {
   final Status status;
   final String message;
 
+  final TextValueObject estimatedDistance;
+  final TextValueObject estimatedDuration;
+
   bool get buttonActive =>
       !loading &&
       cartItems.isNotEmpty &&
@@ -65,7 +72,8 @@ class ErrandState extends Equatable {
 
   bool get success => status == Status.success;
 
-  bool get isPayStackPayment => success && errandOrder.paymentType == PaymentType.card;
+  bool get isPayStackPayment =>
+      success && errandOrder.paymentType == PaymentType.card;
 
   int get totalQuantity {
     int total = 0;
@@ -75,22 +83,10 @@ class ErrandState extends Equatable {
     return total;
   }
 
-  double get distance {
-    double distance = 0;
-    if (!storeDetail.empty && !deliveryDetail.empty) {
-      distance = Geolocator.distanceBetween(
-        storeDetail.latitude,
-        storeDetail.longitude,
-        deliveryDetail.latitude,
-        deliveryDetail.longitude,
-      );
-      distance = distance / 1000;
-    }
-    return distance;
-  }
-
   double get deliveryAmount {
-    return charges.basePrice + (distance * charges.pricePerKm);
+    final dis = estimatedDistance.value/1000;
+    return charges.basePrice +
+        (dis * charges.pricePerKm).toDouble();
   }
 
   double get totalAmount {
@@ -109,20 +105,25 @@ class ErrandState extends Equatable {
     ErrandOrder? errandOrder,
     String? message,
     Order? order,
+    TextValueObject? distance,
+    TextValueObject? duration,
   }) {
     return ErrandState._(
-        storeName: storeName ?? this.storeName,
-        storeAddress: storeAddress ?? this.storeAddress,
-        deliveryAddress: deliveryAddress ?? this.deliveryAddress,
-        storeDetail: storeDetail ?? this.storeDetail,
-        deliveryDetail: deliveryDetail ?? this.deliveryDetail,
-        cartItems: cartItems ?? this.cartItems,
-        totalCartPrice: totalCartPrice ?? this.totalCartPrice,
-        charges: this.charges,
-        message: message ?? '',
-        status: status ?? this.status,
-        errandOrder: errandOrder ?? this.errandOrder,
-        order: order ?? this.order);
+      storeName: storeName ?? this.storeName,
+      storeAddress: storeAddress ?? this.storeAddress,
+      deliveryAddress: deliveryAddress ?? this.deliveryAddress,
+      storeDetail: storeDetail ?? this.storeDetail,
+      deliveryDetail: deliveryDetail ?? this.deliveryDetail,
+      cartItems: cartItems ?? this.cartItems,
+      totalCartPrice: totalCartPrice ?? this.totalCartPrice,
+      charges: this.charges,
+      message: message ?? '',
+      status: status ?? this.status,
+      errandOrder: errandOrder ?? this.errandOrder,
+      order: order ?? this.order,
+      estimatedDuration: duration ?? this.estimatedDuration,
+      estimatedDistance: distance ?? this.estimatedDistance,
+    );
   }
 
   @override
@@ -139,5 +140,7 @@ class ErrandState extends Equatable {
         status,
         errandOrder,
         order,
+        estimatedDuration,
+        estimatedDistance,
       ];
 }
