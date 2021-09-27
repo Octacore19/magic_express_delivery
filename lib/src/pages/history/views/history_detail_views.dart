@@ -32,7 +32,10 @@ class _LocationWidget extends StatelessWidget {
                 Flexible(
                   child: Text(
                     detail.pickupAddress,
-                    style: Theme.of(context).textTheme.subtitle2,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle2
+                        ?.copyWith(fontWeight: FontWeight.w700),
                   ),
                 )
               ],
@@ -48,7 +51,10 @@ class _LocationWidget extends StatelessWidget {
                 Flexible(
                   child: Text(
                     detail.dropOffAddress,
-                    style: Theme.of(context).textTheme.subtitle2,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle2
+                        ?.copyWith(fontWeight: FontWeight.w700),
                   ),
                 )
               ],
@@ -79,7 +85,10 @@ class _PersonnelDetailHeader extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 8),
           child: Text(
             'PERSONNEL DETAIL',
-            style: Theme.of(context).textTheme.subtitle2,
+            style: Theme.of(context)
+                .textTheme
+                .subtitle2
+                ?.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
       ),
@@ -119,7 +128,10 @@ class _RecipientWidget extends StatelessWidget {
                     Text.rich(
                       TextSpan(
                         text: 'Sender Name: ',
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            ?.copyWith(fontWeight: FontWeight.w700),
                         children: [
                           TextSpan(
                             text: detail.senderName,
@@ -132,7 +144,10 @@ class _RecipientWidget extends StatelessWidget {
                     Text.rich(
                       TextSpan(
                         text: 'Sender Phone: ',
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            ?.copyWith(fontWeight: FontWeight.w700),
                         children: [
                           TextSpan(
                             text: detail.senderPhone,
@@ -156,7 +171,10 @@ class _RecipientWidget extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           text: 'Receiver Name: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              ?.copyWith(fontWeight: FontWeight.w700),
                           children: [
                             TextSpan(
                               text: detail.receiverName,
@@ -169,7 +187,10 @@ class _RecipientWidget extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           text: 'Receiver Phone: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              ?.copyWith(fontWeight: FontWeight.w700),
                           children: [
                             TextSpan(
                               text: detail.receiverPhone,
@@ -209,7 +230,10 @@ class _OrderItemsHeader extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 8),
           child: Text(
             'ORDER ITEMS',
-            style: Theme.of(context).textTheme.subtitle2,
+            style: Theme.of(context)
+                .textTheme
+                .subtitle2
+                ?.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
       ),
@@ -242,12 +266,18 @@ class _CartItemsWidget extends StatelessWidget {
             return ListTile(
               leading: Text(
                 '${index + 1}',
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(fontWeight: FontWeight.w700),
               ),
               dense: true,
               title: Text(
                 item.itemName,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(fontWeight: FontWeight.w700),
               ),
               subtitle: item.description.isNotEmpty
                   ? Padding(
@@ -260,10 +290,10 @@ class _CartItemsWidget extends StatelessWidget {
                   : null,
               trailing: Text(
                 convertToNairaAndKobo(item.price),
-                style: Theme.of(context)
-                    .textTheme
-                    .caption
-                    ?.copyWith(fontFamily: 'Roboto'),
+                style: Theme.of(context).textTheme.caption?.copyWith(
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
             );
           },
@@ -296,7 +326,10 @@ class _SummaryWidget extends StatelessWidget {
                 children: [
                   Text(
                     'TOTAL AMOUNT',
-                    style: Theme.of(context).textTheme.subtitle2,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle2
+                        ?.copyWith(fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -324,6 +357,7 @@ class _SummaryWidget extends StatelessWidget {
                     color: _paymentStatusColor(detail.paymentStatus)),
               ),
             ),
+            const SizedBox(width: 24),
             Builder(
               builder: (_) {
                 if (detail.paidAt.isEmpty) return SizedBox.shrink();
@@ -334,8 +368,10 @@ class _SummaryWidget extends StatelessWidget {
                     children: [
                       Text(
                         'PAYMENT DATE AND TIME',
-                        style: Theme.of(context).textTheme.subtitle2,
-                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle2
+                            ?.copyWith(fontWeight: FontWeight.w700),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -358,7 +394,10 @@ class _SummaryWidget extends StatelessWidget {
               children: [
                 Text(
                   'DELIVERY NOTE',
-                  style: Theme.of(context).textTheme.subtitle2,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2
+                      ?.copyWith(fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -379,7 +418,10 @@ class _SummaryWidget extends StatelessWidget {
               children: [
                 Text(
                   'STORE NAME',
-                  style: Theme.of(context).textTheme.subtitle2,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2
+                      ?.copyWith(fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -399,7 +441,10 @@ class _SummaryWidget extends StatelessWidget {
             children: [
               Text(
                 'ORDER DATE AND TIME',
-                style: Theme.of(context).textTheme.subtitle2,
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle2
+                    ?.copyWith(fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 8),
               Text(
@@ -420,7 +465,10 @@ class _SummaryWidget extends StatelessWidget {
                 children: [
                   Text(
                     'DELIVERY STATUS',
-                    style: Theme.of(context).textTheme.subtitle2,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle2
+                        ?.copyWith(fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -439,7 +487,10 @@ class _SummaryWidget extends StatelessWidget {
                   children: [
                     Text(
                       'DELIVERY DATE AND TIME',
-                      style: Theme.of(context).textTheme.subtitle2,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          ?.copyWith(fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 8),
                     Text(

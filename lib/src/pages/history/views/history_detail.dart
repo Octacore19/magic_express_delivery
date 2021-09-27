@@ -22,10 +22,7 @@ class HistoryDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'ORDER DETAIL',
-          style: Theme.of(context).textTheme.headline6,
-        ),
+        title: Text('ORDER DETAIL'),
         centerTitle: true,
       ),
       body: Padding(
@@ -42,7 +39,8 @@ class HistoryDetailPage extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: CircularProgressIndicator.adaptive(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade900),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.blue.shade900),
                       ),
                     ),
                   ),
