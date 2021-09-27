@@ -215,6 +215,17 @@ class HistoryPage extends StatelessWidget {
   }
 
   Color _getStatusColor(OrderStatus status) {
-    return Colors.orange;
+    switch (status) {
+      case OrderStatus.created:
+        return Colors.grey.shade700;
+      case OrderStatus.processed:
+      case OrderStatus.assigned:
+        return Colors.orange;
+      case OrderStatus.transit:
+      case OrderStatus.delivered:
+      return Colors.green;
+      case OrderStatus.unknown:
+        return Colors.red;
+    }
   }
 }
