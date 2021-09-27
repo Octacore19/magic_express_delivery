@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
@@ -21,6 +22,25 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   void initState() {
     _binding.addObserver(this);
     super.initState();
+    FirebaseMessaging.onMessage.listen((message) {
+      print('Got a message whilst in the foreground!');
+      print('Message from: ${message.from}');
+      print('Message category: ${message.category}');
+      print('Message id: ${message.messageId}');
+      print('Message type: ${message.messageType}');
+      print('Message senderId: ${message.senderId}');
+      print('Message from: ${message.sentTime}');
+
+      final data = message.data;
+
+
+      final notification = message.notification;
+
+      if (notification != null) {
+        print('Notification title: ${notification.title}');
+        print('Notification content: ${notification.body}');
+      }
+    });
   }
 
   @override
