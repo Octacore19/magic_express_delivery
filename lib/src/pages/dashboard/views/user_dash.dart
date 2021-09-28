@@ -76,7 +76,7 @@ class _State extends State<UserDash> {
                       context.read<AuthRepo>().logOut();
                       AppKeys.navigatorKey.currentState?.pushAndRemoveUntil(
                         LoginPage.route(),
-                            (route) => false,
+                        (route) => false,
                       );
                     },
                     child: Text('Yes'),

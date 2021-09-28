@@ -13,7 +13,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final isRider = context.read<AppBloc>().state.isRider;
     if (isRider) return BlocProvider(
-      create: (_) => RiderHomeCubit(),
+      create: (context) => RiderHomeCubit(
+        errorHandler: RepositoryProvider.of(context),
+        ridersRepo: RepositoryProvider.of(context)
+      ),
       child: RiderHome(),
     );
     return SingleChildScrollView(

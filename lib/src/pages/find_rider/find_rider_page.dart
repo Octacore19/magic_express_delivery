@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
@@ -58,10 +59,22 @@ class _State extends State<FindRiderPage> with SingleTickerProviderStateMixin {
         }
       }
     });
-
     _controller.forward();
 
-    _loadData();
+    FirebaseMessaging.onMessage.listen((message) {
+      final notification = message.notification;
+      final android = notification?.android;
+
+      if (notification != null && android != null) {
+        setState(() {
+          _loadingInProgress = false;
+        });
+        print('Notification title: ${notification.title}');
+        print('Notification content: ${notification.body}');
+      }
+
+      final data = message.data;
+    });
   }
 
   @override
@@ -73,22 +86,111 @@ class _State extends State<FindRiderPage> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 32),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildAnimation(),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-              Text(
-                'Please wait while we find a rider for you',
-                style: Theme.of(context).textTheme.headline6,
-                textAlign: TextAlign.center,
-              )
-            ],
-          ),
+        child: Builder(
+          builder: (_) {
+            if (_loadingInProgress) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildAnimation(),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                    Text(
+                      'Please wait while we find a rider for you',
+                      style: Theme.of(context).textTheme.headline6,
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
+              );
+            }
+            return SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                alignment: Alignment.center,
+                child: Card(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(6),
+                            bottomRight: Radius.circular(6),
+                          ),
+                        ),
+                        padding: EdgeInsets.all(8),
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Find your Dispatch Rider',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6
+                              ?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Image(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        width: MediaQuery.of(context).size.height * 0.4,
+                        image: AssetImage(AppImages.DRIVER_IMAGE),
+                        colorBlendMode: BlendMode.dst,
+                      ),
+                      const SizedBox(height: 32),
+                      Container(
+                        margin: EdgeInsets.only(left: 8),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'John Driver',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 8, top: 8),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'driver@email.com',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(right: 8, bottom: 8, top: 24),
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.phone),
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextButton(
+                          child: Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                              DashboardPage.route(),
+                              (route) => false,
+                            );
+                          },
+                          style: TextButton.styleFrom(
+                              textStyle: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  ?.copyWith(fontWeight: FontWeight.w700),
+                              padding: EdgeInsets.symmetric(vertical: 16)),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -135,21 +237,6 @@ class _State extends State<FindRiderPage> with SingleTickerProviderStateMixin {
         color: color,
         shape: BoxShape.circle,
       ),
-    );
-  }
-
-  Future _loadData() async {
-    await new Future.delayed(new Duration(seconds: 10));
-    _dataLoaded();
-  }
-
-  void _dataLoaded() {
-    setState(() {
-      _loadingInProgress = false;
-    });
-    Navigator.of(context).pushAndRemoveUntil(
-      DashboardPage.route(),
-      (route) => false,
     );
   }
 }

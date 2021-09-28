@@ -17,6 +17,7 @@ class ProfilePage extends StatelessWidget {
               fit: BoxFit.fill,
               image: AssetImage('assets/profile_picture.png'),
               width: MediaQuery.of(context).size.width * .3,
+              height: MediaQuery.of(context).size.width * .3,
               color: Colors.blue.shade300.withOpacity(.5),
             ),
             const SizedBox(height: 32),

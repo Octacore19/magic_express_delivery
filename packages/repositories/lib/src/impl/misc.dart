@@ -45,7 +45,7 @@ class MiscRepoImpl implements IMiscRepo {
       final d = {'token': token};
       final res = await _service.updateDeviceToken(d);
       if (!res.success) throw RequestFailureException(res.message);
-      final data = BaseResponse.fromJson(res.data).message;
+      final data = BaseResponse.fromJson(res.data).data;
       if (data == null) throw NoDataException();
       return;
     } catch (e) {

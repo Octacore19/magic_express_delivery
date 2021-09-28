@@ -29,7 +29,6 @@ class User extends Equatable {
     String t = json['p'] ?? '';
     List<int> value = t.isNotEmpty ? List.from(jsonDecode(t)) : [];
     String pKey = value.isNotEmpty ? utf8.decode(value) : '';
-    print('Decoded key => $pKey');
     return User(
       firstName: json['firstName'],
       lastName: json['lastName'],
@@ -42,7 +41,6 @@ class User extends Equatable {
 
   String toSerializedJson() {
     final p = utf8.encode(paystackKey);
-    print('Encoded key => $p');
     final json = '{'
         '"firstName":"${this.firstName}",'
         '"lastName":"${this.lastName}",'

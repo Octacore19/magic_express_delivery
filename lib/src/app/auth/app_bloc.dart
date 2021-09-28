@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paystack_client/flutter_paystack_client.dart';
 import 'package:repositories/repositories.dart';
@@ -69,6 +70,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         await _usersRepo?.fetchAllHistory();
         await _miscRepo.fetchChargesFromService();
       }
+      final token = await FirebaseMessaging.instance.getToken();
+      if (token != null) await _miscRepo.updateDeviceToken(token);
     } catch (e) {
       log(e.toString());
     }

@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
@@ -22,24 +21,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   void initState() {
     _binding.addObserver(this);
     super.initState();
-    FirebaseMessaging.onMessage.listen((message) {
-      print('Got a message whilst in the foreground!');
-      print('Message from: ${message.from}');
-      print('Message category: ${message.category}');
-      print('Message id: ${message.messageId}');
-      print('Message type: ${message.messageType}');
-      print('Message senderId: ${message.senderId}');
-      print('Message from: ${message.sentTime}');
-
-      final data = message.data;
-
-      final notification = message.notification;
-
-      if (notification != null) {
-        print('Notification title: ${notification.title}');
-        print('Notification content: ${notification.body}');
-      }
-    });
   }
 
   @override
@@ -56,7 +37,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => AppBloc(
+          create: (context) => AppBloc(
             authRepo: RepositoryProvider.of(context),
             miscRepo: RepositoryProvider.of(context),
             isRider: widget.isRider,
@@ -82,7 +63,12 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       case AppLifecycleState.detached:
         context.read<AuthRepo>().dispose();
         context.read<PlacesRepo>().dispose();
-        context.read<UsersRepo>().dispose();
+        context.read<NotificationRepo>().dispose();
+        if (widget.isRider) {
+          context.read<RidersRepo>().dispose();
+        } else {
+          context.read<UsersRepo>().dispose();
+        }
         break;
     }
   }
