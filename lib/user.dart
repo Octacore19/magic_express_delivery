@@ -88,6 +88,16 @@ void main() async {
           api: RepositoryProvider.of(context),
         ),
       ),
+      RepositoryProvider(
+        create: (context) => MiscRepo(
+          api: RepositoryProvider.of(context),
+        ),
+      ),
+      RepositoryProvider(
+        create: (context) => NotificationRepo(
+          api: RepositoryProvider.of(context),
+        ),
+      )
     ],
     child: App(),
   ));

@@ -1,9 +1,11 @@
 class ApiEndpoints {
+  const ApiEndpoints._();
+
   //AUTHENTICATION
   static const LOGIN_USER = '/auth/login';
   static const REGISTER_USER = '/auth/register';
-  static const RESEND_VERIFICATION_EMAIL = '/auth/resend/verification';
   static const FORGOT_PASSWORD = '/auth/password/forgot';
+  static const LOG_OUT = '/logout';
 
   //ORDERS
   static const CREATE_ORDER = '/user/place-order';
@@ -27,10 +29,11 @@ class ApiEndpoints {
   //SETTINGS
   static const UPDATE_LOCATION = '/settings/update-location';
   static const UPDATE_USER_PASSWORD = '/settings/update-password';
+  static const DEVICE_TOKEN = '/settings/fcm-token';
+  static const USER_LOCATION = '/settings/update-location';
 
   //MISCELLANEOUS
   static const CHARGES = '/charges';
-  static const LOG_OUT = '/logout';
   static const VERIFY_PAYMENT = '/verify_transaction';
   static const TRACK_ORDER = '/track/order';
 }

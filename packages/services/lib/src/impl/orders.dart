@@ -77,9 +77,36 @@ class OrdersImpl implements IOrdersService {
   }
 
   @override
-  Future<DioResponse> getCharges() async {
+  Future<DioResponse> trackOrder(Map<String, dynamic> query) async {
     try {
-      final baseResponse = await _dio.get(ApiEndpoints.CHARGES);
+      final baseResponse = await _dio.get(
+        ApiEndpoints.TRACK_ORDER,
+        queryParameters: query,
+      );
+      return DioResponse.fromJson(baseResponse.data);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<DioResponse> updateOrderPaymentStatus(String orderId) async {
+    try {
+      final baseResponse = await _dio.post('/order/$orderId/payment');
+      return DioResponse.fromJson(baseResponse.data);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<DioResponse> updateOrderStatus(
+      String orderId, Map<String, dynamic> data) async {
+    try {
+      final baseResponse = await _dio.post(
+        '/order/$orderId/status',
+        data: FormData.fromMap(data),
+      );
       return DioResponse.fromJson(baseResponse.data);
     } catch (e) {
       throw e;

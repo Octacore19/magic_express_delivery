@@ -31,5 +31,17 @@ class OrdersService implements IOrdersService {
       _orders.verifyPaymentStatus(query);
 
   @override
-  Future<DioResponse> getCharges() => _orders.getCharges();
+  Future<DioResponse> trackOrder(Map<String, dynamic> query) =>
+      _orders.trackOrder(query);
+
+  @override
+  Future<DioResponse> updateOrderPaymentStatus(String orderId) =>
+      _orders.updateOrderPaymentStatus(orderId);
+
+  @override
+  Future<DioResponse> updateOrderStatus(
+    String orderId,
+    Map<String, dynamic> data,
+  ) =>
+      _orders.updateOrderStatus(orderId, data);
 }

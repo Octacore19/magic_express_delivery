@@ -17,4 +17,11 @@ class AuthService implements IAuthenticationService {
   @override
   Future<DioResponse> registerUser(Map<String, dynamic> data) =>
       _auth.registerUser(data);
+
+  @override
+  Future<DioResponse> forgotPassword(Map<String, dynamic> data) =>
+      _auth.forgotPassword(data);
+
+  @override
+  Future<DioResponse> logoutUser() => _auth.logoutUser();
 }

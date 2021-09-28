@@ -7,7 +7,6 @@ abstract class IUsersRepo {
   Future<void> fetchAllHistory();
   Future<HistoryDetail> fetchHistoryDetail(String id);
   Future<void> verifyPayment(String reference, String orderId);
-  Future<void> getCharges();
   Charges get charges;
   void dispose();
 }

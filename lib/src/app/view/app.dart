@@ -33,7 +33,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
       final data = message.data;
 
-
       final notification = message.notification;
 
       if (notification != null) {
@@ -59,8 +58,10 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         BlocProvider(
           create: (_) => AppBloc(
             authRepo: RepositoryProvider.of(context),
-            ordersRepo: RepositoryProvider.of(context),
-            isRider: widget.isRider
+            miscRepo: RepositoryProvider.of(context),
+            isRider: widget.isRider,
+            usersRepo: widget.isRider ? null : RepositoryProvider.of(context),
+            ridersRepo: widget.isRider ? RepositoryProvider.of(context) : null,
           ),
         ),
         BlocProvider(create: (_) => CoordinatorCubit())

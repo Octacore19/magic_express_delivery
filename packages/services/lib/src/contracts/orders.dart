@@ -13,5 +13,9 @@ abstract class IOrdersService {
 
   Future<DioResponse> verifyPaymentStatus(Map<String, String> query);
 
-  Future<DioResponse> getCharges();
+  Future<DioResponse> updateOrderPaymentStatus(String orderId);
+
+  Future<DioResponse> updateOrderStatus(String orderId, Map<String, dynamic> data);
+
+  Future<DioResponse> trackOrder(Map<String, dynamic> query);
 }

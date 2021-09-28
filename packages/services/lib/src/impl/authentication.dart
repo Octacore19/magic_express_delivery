@@ -39,4 +39,27 @@ class AuthImpl implements IAuthenticationService {
       throw e;
     }
   }
+
+  @override
+  Future<DioResponse> forgotPassword(Map<String, dynamic> data) async {
+    try {
+      final baseResponse = await _dio.post(
+        ApiEndpoints.FORGOT_PASSWORD,
+        data: FormData.fromMap(data),
+      );
+      return DioResponse.fromJson(baseResponse.data);
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<DioResponse> logoutUser() async {
+    try {
+      final baseResponse = await _dio.post(ApiEndpoints.LOG_OUT);
+      return DioResponse.fromJson(baseResponse.data);
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
 }

@@ -20,9 +20,6 @@ class UsersRepo implements IUsersRepo {
       _repo.fetchHistoryDetail(id);
 
   @override
-  Future<void> getCharges() => _repo.getCharges();
-
-  @override
   Future<void> verifyPayment(String reference, String orderId) =>
       _repo.verifyPayment(reference, orderId);
 

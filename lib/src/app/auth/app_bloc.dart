@@ -13,16 +13,22 @@ part 'app_states.dart';
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc({
     required AuthRepo authRepo,
-    required UsersRepo ordersRepo,
-    required bool isRider
+    required MiscRepo miscRepo,
+    required bool isRider,
+    UsersRepo? usersRepo,
+    RidersRepo? ridersRepo,
   })  : _authRepo = authRepo,
-        _ordersRepo = ordersRepo,
+        _usersRepo = usersRepo,
+        _miscRepo = miscRepo,
+        _ridersRepo = ridersRepo,
         super(AppState.unknown(isRider)) {
     _statusSubscription = _authRepo.status.listen(_onStatusChanged);
   }
 
   final AuthRepo _authRepo;
-  final UsersRepo _ordersRepo;
+  final UsersRepo? _usersRepo;
+  final RidersRepo? _ridersRepo;
+  final MiscRepo _miscRepo;
   late final StreamSubscription<AuthStatus> _statusSubscription;
 
   void _onStatusChanged(AuthStatus status) =>
@@ -57,13 +63,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   _initUserParticles(String key) async {
     try {
       if (state.isRider) {
-
+        await _ridersRepo?.fetchAllHistory();
       } else {
         await PaystackClient.initialize(key);
-        await _ordersRepo.fetchAllHistory();
-        await _ordersRepo.getCharges();
+        await _usersRepo?.fetchAllHistory();
+        await _miscRepo.fetchChargesFromService();
       }
-    } catch(e) {
+    } catch (e) {
       log(e.toString());
     }
   }

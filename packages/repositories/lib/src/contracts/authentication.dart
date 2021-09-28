@@ -22,6 +22,8 @@ abstract class IAuthRepo {
       String confirmPassword,
       );
 
+  Future<String> forgotPassword(String email);
+
   void logOut();
 
   void dispose();

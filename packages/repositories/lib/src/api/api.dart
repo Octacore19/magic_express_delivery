@@ -1,3 +1,6 @@
 export 'authentication.dart';
-export 'users.dart';
+export 'misc.dart';
+export 'notification.dart';
 export 'places.dart';
+export 'riders.dart';
+export 'users.dart';

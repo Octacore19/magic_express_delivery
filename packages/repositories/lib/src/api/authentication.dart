@@ -51,4 +51,8 @@ class AuthRepo implements IAuthRepo {
         password,
         confirmPassword,
       );
+
+  @override
+  Future<String> forgotPassword(String email) =>
+      _authRepo.forgotPassword(email);
 }

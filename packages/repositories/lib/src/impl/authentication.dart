@@ -64,9 +64,7 @@ class AuthRepoImpl extends IAuthRepo {
       final data = BaseResponse.fromJson(response.data).data;
       if (data == null) throw AuthenticationException();
       final user = LoginResponse.fromJson(data).toUser;
-      print('User here: => $user');
       final userString = user.toSerializedJson();
-      print('Serialized user: => $userString');
       await _preference.write<String>(key: userCacheKey, value: userString);
       _statusController.sink.add(AuthStatus.loggedIn);
       return;
@@ -99,7 +97,21 @@ class AuthRepoImpl extends IAuthRepo {
       final res = BaseResponse.fromJson(response.data).data;
       if (res == null) throw AuthenticationException();
       return res['message'];
-    } on DioError catch (e) {
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<String> forgotPassword(String email) async {
+    try {
+      final data = {'email': email};
+      final response = await _auth.forgotPassword(data);
+      if (!response.success) throw RequestFailureException(response.message);
+      final res = BaseResponse.fromJson(response.data).data;
+      if (res == null) throw AuthenticationException();
+      return res['message'];
+    } on Exception catch (e) {
       throw e;
     }
   }
@@ -110,11 +122,15 @@ class AuthRepoImpl extends IAuthRepo {
   }
 
   @override
-  void logOut() {
-    _preference.remove(key: userCacheKey);
-    _preference.remove(key: ApiConstants.TOKEN);
-    _preference.remove(key: ApiConstants.TIME_STAMP);
-    _statusController.add(AuthStatus.loggedOut);
+  void logOut() async {
+    try {
+      _preference.remove(key: userCacheKey);
+      _preference.remove(key: ApiConstants.TOKEN);
+      _preference.remove(key: ApiConstants.TIME_STAMP);
+      _statusController.add(AuthStatus.loggedOut);
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 
   Future<bool> _tokenAboutToExpire() async {
@@ -123,8 +139,9 @@ class AuthRepoImpl extends IAuthRepo {
     if (timeStamp.isNotEmpty) {
       final DateTime ex = DateTime.parse(timeStamp);
       final DateTime current = DateTime.now();
-      return current.isAfter(ex) || (current.isAfter(ex.subtract(Duration(hours: 1))) &&
-          current.isBefore(ex));
+      return current.isAfter(ex) ||
+          (current.isAfter(ex.subtract(Duration(hours: 1))) &&
+              current.isBefore(ex));
     }
     return true;
   }
@@ -136,13 +153,12 @@ extension on LoginResponse {
       final u = user!;
       if (u.email != null && u.phoneNumber != null) {
         return User(
-          email: u.email ?? '',
-          phoneNumber: u.phoneNumber ?? '',
-          firstName: u.firstName,
-          lastName: u.lastName,
-          role: u.role,
-          paystackKey: paystackKey ?? ''
-        );
+            email: u.email ?? '',
+            phoneNumber: u.phoneNumber ?? '',
+            firstName: u.firstName,
+            lastName: u.lastName,
+            role: u.role,
+            paystackKey: paystackKey ?? '');
       }
     }
     return User.empty;

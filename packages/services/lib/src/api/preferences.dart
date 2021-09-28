@@ -1,5 +1,5 @@
 import 'package:services/src/contracts/contracts.dart';
-import 'package:services/src/impl/preferences.dart';
+import 'package:services/src/impl/impl.dart';
 
 class Preferences implements LocalService {
   final _pref = PreferencesImpl();

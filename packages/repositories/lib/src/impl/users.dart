@@ -88,17 +88,7 @@ class UsersRepoImpl implements IUsersRepo {
 
   @override
   Future<void> getCharges() async {
-    try {
-      final res = await _service.getCharges();
-      if (!res.success) throw RequestFailureException(res.message);
-      final data = BaseResponse.fromJson(res.data).data;
-      if (data == null) throw NoDataException();
-      final response = ChargesResponse.fromJson(data);
-      _charges = Charges.fromResponse(response);
-      return;
-    } catch (e) {
-      throw e;
-    }
+
   }
 
   @override

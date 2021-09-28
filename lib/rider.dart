@@ -35,15 +35,20 @@ void main() async {
         },
       ),
       RepositoryProvider(
-        create: (context) => PlacesRepo(
+        create: (context) => RidersRepo(
           api: RepositoryProvider.of(context),
         ),
       ),
       RepositoryProvider(
-        create: (context) => UsersRepo(
+        create: (context) => MiscRepo(
           api: RepositoryProvider.of(context),
         ),
       ),
+      RepositoryProvider(
+        create: (context) => NotificationRepo(
+          api: RepositoryProvider.of(context),
+        ),
+      )
     ],
     child: App(true),
   ));
