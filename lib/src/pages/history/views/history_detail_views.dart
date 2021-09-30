@@ -87,7 +87,7 @@ class _PersonnelDetailHeader extends StatelessWidget {
             'PERSONNEL DETAIL',
             style: Theme.of(context)
                 .textTheme
-                .subtitle2
+                .subtitle1
                 ?.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
@@ -140,7 +140,7 @@ class _RecipientWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 16),
                     Text.rich(
                       TextSpan(
                         text: 'Sender Phone: ',
@@ -183,7 +183,7 @@ class _RecipientWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 16),
                       Text.rich(
                         TextSpan(
                           text: 'Receiver Phone: ',
@@ -232,7 +232,7 @@ class _OrderItemsHeader extends StatelessWidget {
             'ORDER ITEMS',
             style: Theme.of(context)
                 .textTheme
-                .subtitle2
+                .subtitle1
                 ?.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
@@ -265,7 +265,7 @@ class _CartItemsWidget extends StatelessWidget {
             final item = detail.orderItems[index];
             return ListTile(
               leading: Text(
-                '${index + 1}',
+                '${item.quantity}',
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
@@ -291,9 +291,7 @@ class _CartItemsWidget extends StatelessWidget {
               trailing: Text(
                 convertToNairaAndKobo(item.price),
                 style: Theme.of(context).textTheme.caption?.copyWith(
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                    ),
+                    fontFamily: 'Roboto', fontWeight: FontWeight.w700),
               ),
             );
           },
@@ -328,7 +326,7 @@ class _SummaryWidget extends StatelessWidget {
                     'TOTAL AMOUNT',
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle2
+                        .subtitle1
                         ?.copyWith(fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 8),
@@ -336,7 +334,7 @@ class _SummaryWidget extends StatelessWidget {
                     convertToNairaAndKobo(detail.totalAmount),
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
+                        .bodyText1
                         ?.copyWith(fontFamily: 'Roboto'),
                   )
                 ],
@@ -346,6 +344,7 @@ class _SummaryWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(
                   color: _paymentStatusColor(detail.paymentStatus),
+                  width: 1.5,
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
@@ -354,7 +353,9 @@ class _SummaryWidget extends StatelessWidget {
               child: Text(
                 detail.paymentStatus,
                 style: Theme.of(context).textTheme.caption?.copyWith(
-                    color: _paymentStatusColor(detail.paymentStatus)),
+                      color: _paymentStatusColor(detail.paymentStatus),
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
             ),
             const SizedBox(width: 24),
@@ -370,13 +371,13 @@ class _SummaryWidget extends StatelessWidget {
                         'PAYMENT DATE AND TIME',
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle2
+                            .subtitle1
                             ?.copyWith(fontWeight: FontWeight.w700),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         detail.paidAt,
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyText1,
                       )
                     ],
                   ),
@@ -396,13 +397,13 @@ class _SummaryWidget extends StatelessWidget {
                   'DELIVERY NOTE',
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2
+                      .subtitle1
                       ?.copyWith(fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   detail.deliveryNote,
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 )
               ],
             ),
@@ -420,13 +421,13 @@ class _SummaryWidget extends StatelessWidget {
                   'STORE NAME',
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2
+                      .subtitle1
                       ?.copyWith(fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   detail.storeName,
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 )
               ],
             ),
@@ -443,13 +444,13 @@ class _SummaryWidget extends StatelessWidget {
                 'ORDER DATE AND TIME',
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle2
+                    .subtitle1
                     ?.copyWith(fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 8),
               Text(
                 detail.createdAt,
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyText1,
               )
             ],
           ),
@@ -467,7 +468,7 @@ class _SummaryWidget extends StatelessWidget {
                     'DELIVERY STATUS',
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle2
+                        .subtitle1
                         ?.copyWith(fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 8),
@@ -475,7 +476,7 @@ class _SummaryWidget extends StatelessWidget {
                     detail.deliveredAt.isNotEmpty
                         ? 'Delivered'
                         : 'Not Delivered',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyText1,
                   )
                 ],
               ),
@@ -489,13 +490,13 @@ class _SummaryWidget extends StatelessWidget {
                       'DELIVERY DATE AND TIME',
                       style: Theme.of(context)
                           .textTheme
-                          .subtitle2
+                          .subtitle1
                           ?.copyWith(fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       detail.deliveredAt,
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.bodyText1,
                     )
                   ],
                 ),

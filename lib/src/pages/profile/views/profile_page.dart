@@ -36,12 +36,15 @@ class ProfilePage extends StatelessWidget {
                           EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                       child: Text.rich(
                         TextSpan(
-                          text: 'First Name: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          text: 'First Name:  ',
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              ?.copyWith(fontWeight: FontWeight.w700),
                           children: [
                             TextSpan(
                               text: user.firstName,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.subtitle2,
                             )
                           ],
                         ),
@@ -60,11 +63,14 @@ class ProfilePage extends StatelessWidget {
                       child: Text.rich(
                         TextSpan(
                           text: 'Last Name: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              ?.copyWith(fontWeight: FontWeight.w700),
                           children: [
                             TextSpan(
                               text: user.lastName,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.subtitle2,
                             )
                           ],
                         ),
@@ -83,11 +89,14 @@ class ProfilePage extends StatelessWidget {
                       child: Text.rich(
                         TextSpan(
                           text: 'Email: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              ?.copyWith(fontWeight: FontWeight.w700),
                           children: [
                             TextSpan(
                               text: user.email.isNotEmpty ? user.email : 'N/A',
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.subtitle2,
                             )
                           ],
                         ),
@@ -106,13 +115,16 @@ class ProfilePage extends StatelessWidget {
                       child: Text.rich(
                         TextSpan(
                           text: 'Phone Number: ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              ?.copyWith(fontWeight: FontWeight.w700),
                           children: [
                             TextSpan(
                               text: user.phoneNumber.isNotEmpty
                                   ? user.phoneNumber
                                   : 'N/A',
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.subtitle2,
                             )
                           ],
                         ),
