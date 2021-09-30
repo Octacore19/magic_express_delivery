@@ -8,29 +8,30 @@ class DeliveryState extends Equatable {
     required this.deliveryDetail,
     required this.cartItems,
     required this.totalCartPrice,
-    required this.order,
+    required this.deliveryOrder,
     required this.status,
     required this.message,
     required this.charges,
     required this.estimatedDistance,
     required this.estimatedDuration,
+    required this.order,
   });
 
   factory DeliveryState.initial({required Charges charges}) {
     return DeliveryState._(
-      pickupAddress: '',
-      deliveryAddress: '',
-      pickupDetail: PlaceDetail.empty(),
-      deliveryDetail: PlaceDetail.empty(),
-      cartItems: List.empty(),
-      totalCartPrice: 0,
-      order: DeliveryOrder.empty(),
-      status: Status.initial,
-      message: '',
-      charges: charges,
-      estimatedDistance: TextValueObject.empty(),
-      estimatedDuration: TextValueObject.empty(),
-    );
+        pickupAddress: '',
+        deliveryAddress: '',
+        pickupDetail: PlaceDetail.empty(),
+        deliveryDetail: PlaceDetail.empty(),
+        cartItems: List.empty(),
+        totalCartPrice: 0,
+        deliveryOrder: DeliveryOrder.empty(),
+        status: Status.initial,
+        message: '',
+        charges: charges,
+        estimatedDistance: TextValueObject.empty(),
+        estimatedDuration: TextValueObject.empty(),
+        order: NewOrder.empty());
   }
 
   final String pickupAddress;
@@ -42,7 +43,8 @@ class DeliveryState extends Equatable {
   final List<CartItem> cartItems;
   final double totalCartPrice;
 
-  final DeliveryOrder order;
+  final DeliveryOrder deliveryOrder;
+  final NewOrder order;
   final Status status;
   final String message;
 
@@ -55,11 +57,12 @@ class DeliveryState extends Equatable {
       !pickupDetail.empty &&
       !deliveryDetail.empty;
 
-  bool get sender => order.personnelType == PersonnelType.sender;
+  bool get sender => deliveryOrder.personnelType == PersonnelType.sender;
 
-  bool get receiver => order.personnelType == PersonnelType.receiver;
+  bool get receiver => deliveryOrder.personnelType == PersonnelType.receiver;
 
-  bool get thirdParty => order.personnelType == PersonnelType.thirdParty;
+  bool get thirdParty =>
+      deliveryOrder.personnelType == PersonnelType.thirdParty;
 
   bool get loading => status == Status.loading;
 
@@ -82,23 +85,6 @@ class DeliveryState extends Equatable {
     return totalCartPrice + deliveryAmount;
   }
 
-  DeliveryState delivered() {
-    return DeliveryState._(
-      pickupAddress: '',
-      deliveryAddress: '',
-      pickupDetail: PlaceDetail.empty(),
-      deliveryDetail: PlaceDetail.empty(),
-      cartItems: [],
-      totalCartPrice: 0,
-      order: DeliveryOrder.empty(),
-      status: Status.success,
-      message: '',
-      charges: this.charges,
-      estimatedDistance: TextValueObject.empty(),
-      estimatedDuration: TextValueObject.empty(),
-    );
-  }
-
   DeliveryState copyWith({
     String? pickupAddress,
     String? deliveryAddress,
@@ -106,11 +92,12 @@ class DeliveryState extends Equatable {
     PlaceDetail? deliveryDetail,
     List<CartItem>? cartItems,
     double? totalCartPrice,
-    DeliveryOrder? order,
+    DeliveryOrder? deliverOrder,
     Status? status,
     String? message,
     TextValueObject? distance,
     TextValueObject? duration,
+    NewOrder? order,
   }) {
     return DeliveryState._(
       pickupAddress: pickupAddress ?? this.pickupAddress,
@@ -119,12 +106,13 @@ class DeliveryState extends Equatable {
       deliveryDetail: deliveryDetail ?? this.deliveryDetail,
       cartItems: cartItems ?? this.cartItems,
       totalCartPrice: totalCartPrice ?? this.totalCartPrice,
-      order: order ?? this.order,
+      deliveryOrder: deliverOrder ?? this.deliveryOrder,
       status: status ?? this.status,
       message: message ?? '',
       charges: this.charges,
       estimatedDuration: duration ?? this.estimatedDuration,
       estimatedDistance: distance ?? this.estimatedDistance,
+      order: order ?? this.order,
     );
   }
 
@@ -136,11 +124,12 @@ class DeliveryState extends Equatable {
         deliveryDetail,
         cartItems,
         totalCartPrice,
-        order,
+        deliveryOrder,
         status,
         message,
         charges,
         estimatedDuration,
+        order,
         estimatedDistance,
       ];
 }

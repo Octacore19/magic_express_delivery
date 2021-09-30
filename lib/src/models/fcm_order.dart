@@ -4,6 +4,7 @@ import 'package:repositories/repositories.dart';
 
 class FCMOrder extends Equatable {
   const FCMOrder._({
+    required this.orderId,
     required this.rider,
     required this.user,
     required this.trackingNumber,
@@ -11,6 +12,7 @@ class FCMOrder extends Equatable {
 
   factory FCMOrder.empty() {
     return FCMOrder._(
+      orderId: '',
       rider: FCMUser.empty(),
       user: FCMUser.empty(),
       trackingNumber: '',
@@ -19,18 +21,21 @@ class FCMOrder extends Equatable {
 
   factory FCMOrder.fromJson(Map<String, dynamic> json) {
     return FCMOrder._(
+      orderId: json['id'],
       rider: FCMUser.fromJson(jsonDecode(json['rider'])),
       user: FCMUser.fromJson(jsonDecode(json['user'])),
       trackingNumber: json['tracking_number'],
     );
   }
 
+  final String orderId;
   final FCMUser rider;
   final FCMUser user;
   final String trackingNumber;
 
   @override
   List<Object?> get props => [
+        orderId,
         rider,
         user,
         trackingNumber,

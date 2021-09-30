@@ -294,7 +294,7 @@ class _SenderDetails extends StatelessWidget {
                     ?.copyWith(fontWeight: FontWeight.w700),
                 children: [
                   TextSpan(
-                    text: state.order.senderName,
+                    text: state.deliveryOrder.senderName,
                     style: Theme.of(context).textTheme.bodyText2,
                   )
                 ],
@@ -310,7 +310,7 @@ class _SenderDetails extends StatelessWidget {
                     ?.copyWith(fontWeight: FontWeight.w700),
                 children: [
                   TextSpan(
-                    text: state.order.senderPhone,
+                    text: state.deliveryOrder.senderPhone,
                     style: Theme.of(context).textTheme.bodyText2,
                   )
                 ],
@@ -342,7 +342,7 @@ class _ReceiverDetails extends StatelessWidget {
                     ?.copyWith(fontWeight: FontWeight.w700),
                 children: [
                   TextSpan(
-                    text: state.order.receiverName,
+                    text: state.deliveryOrder.receiverName,
                     style: Theme.of(context).textTheme.bodyText2,
                   )
                 ],
@@ -358,7 +358,7 @@ class _ReceiverDetails extends StatelessWidget {
                     ?.copyWith(fontWeight: FontWeight.w700),
                 children: [
                   TextSpan(
-                    text: state.order.receiverPhone,
+                    text: state.deliveryOrder.receiverPhone,
                     style: Theme.of(context).textTheme.bodyText2,
                   )
                 ],

@@ -15,7 +15,10 @@ class _StoreNameInput extends StatelessWidget {
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         labelText: 'Store name',
-        labelStyle: Theme.of(context).textTheme.bodyText2,
+        labelStyle: Theme.of(context)
+            .textTheme
+            .bodyText2
+            ?.copyWith(fontWeight: FontWeight.w700),
         focusedBorder: AppTheme.textOutlineFocusedBorder(context),
         enabledBorder: AppTheme.textOutlineEnabledBorder(context),
         errorBorder: AppTheme.textOutlineErrorBorder(context),
@@ -46,11 +49,15 @@ class _StoreAddressInput extends StatelessWidget {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           labelText: 'Store address',
-          labelStyle: Theme.of(context).textTheme.bodyText2,
+          labelStyle: Theme.of(context)
+              .textTheme
+              .bodyText2
+              ?.copyWith(fontWeight: FontWeight.w700),
           hintText: 'Search and select an address',
-          hintStyle: Theme.of(context).textTheme.caption?.copyWith(
-              color: Colors.grey
-          ),
+          hintStyle: Theme.of(context)
+              .textTheme
+              .caption
+              ?.copyWith(color: Colors.grey, fontWeight: FontWeight.w700),
           focusedBorder: AppTheme.textOutlineFocusedBorder(context),
           enabledBorder: AppTheme.textOutlineEnabledBorder(context),
           errorBorder: AppTheme.textOutlineErrorBorder(context),
@@ -99,11 +106,15 @@ class _DeliveryAddressInput extends StatelessWidget {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           labelText: 'Delivery address',
-          labelStyle: Theme.of(context).textTheme.bodyText2,
+          labelStyle: Theme.of(context)
+              .textTheme
+              .bodyText2
+              ?.copyWith(fontWeight: FontWeight.w700),
           hintText: 'Search and select an address',
-          hintStyle: Theme.of(context).textTheme.caption?.copyWith(
-              color: Colors.grey
-          ),
+          hintStyle: Theme.of(context)
+              .textTheme
+              .caption
+              ?.copyWith(color: Colors.grey, fontWeight: FontWeight.w700),
           focusedBorder: AppTheme.textOutlineFocusedBorder(context),
           enabledBorder: AppTheme.textOutlineEnabledBorder(context),
           errorBorder: AppTheme.textOutlineErrorBorder(context),
@@ -151,12 +162,18 @@ class _DistanceCalculationView extends StatelessWidget {
               const SizedBox(height: 24),
               Text(
                 'Distance: ${state.estimatedDistance.text}',
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    ?.copyWith(fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 16),
               Text(
                 'Estimated Time: ${state.estimatedDuration.text}',
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    ?.copyWith(fontWeight: FontWeight.w700),
               )
             ],
           ),
@@ -183,7 +200,7 @@ class _ShoppingCartView extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .bodyText2
-                  ?.apply(color: Colors.white),
+                  ?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
             ),
           ),
           _CartItemsView(),
@@ -198,10 +215,8 @@ class _ShoppingCartView extends StatelessWidget {
                       EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                   child: Text(
                     'Total Price: ${convertToNairaAndKobo(total)}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
-                        ?.apply(fontFamily: 'Roboto'),
+                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                        fontFamily: 'Roboto', fontWeight: FontWeight.w700),
                   ),
                 ),
               );
@@ -227,12 +242,22 @@ class _CartItemsView extends StatelessWidget {
               itemCount: items.length,
               itemBuilder: (_, i) => ListTile(
                 dense: true,
-                leading: Text(items[i].quantity.toString()),
-                title: Text(items[i].name),
+                leading: Text(
+                  items[i].quantity.toString(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2,
+                ),
+                title: Text(
+                  items[i].name,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1,
+                ),
                 trailing: InkWell(
                   child: Icon(
                     MdiIcons.close,
-                    size: 16.0,
+                    size: 20.0,
                   ),
                   onTap: () {
                     final event = ErrandEvent(ErrandAction.OnItemRemoved, i);
@@ -258,7 +283,10 @@ class _AddOrderButton extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: TextButton.icon(
         style: TextButton.styleFrom(
-          textStyle: Theme.of(context).textTheme.button,
+          textStyle: Theme.of(context)
+              .textTheme
+              .button
+              ?.copyWith(fontWeight: FontWeight.w700),
         ),
         onPressed: () {
           CartDialog()..show(context);
@@ -288,7 +316,8 @@ class _NextToProcessButton extends StatelessWidget {
           child: Builder(
             builder: (_) {
               if (s.loading) {
-                return SizedBox(child: CircularProgressIndicator.adaptive(
+                return SizedBox(
+                    child: CircularProgressIndicator.adaptive(
                   valueColor: AlwaysStoppedAnimation(Colors.blue.shade500),
                 ));
               }

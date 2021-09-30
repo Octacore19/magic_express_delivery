@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -36,6 +37,9 @@ class FindRiderState extends Equatable {
 
 class FindRiderCubit extends Cubit<FindRiderState> {
   FindRiderCubit({required UsersRepo repo}) : super(FindRiderState.init()) {
+    _orderSub = repo.order.listen((event) {
+      _orderId = event.id.toString();
+    });
     FirebaseMessaging.onMessage.listen((message) {
       final notification = message.notification;
       final android = notification?.android;
@@ -46,10 +50,20 @@ class FindRiderCubit extends Cubit<FindRiderState> {
       }
 
       final data = message.data;
-      log('Data gotten: $data');
       final fcmData = FCMOrder.fromJson(data);
-      emit(FindRiderState.success(fcmData));
-      repo.fetchAllHistory();
+      if (fcmData.orderId == _orderId) {
+        emit(FindRiderState.success(fcmData));
+        repo.fetchAllHistory();
+      }
     });
+  }
+
+  late StreamSubscription _orderSub;
+  String _orderId = '';
+
+  @override
+  Future<void> close() {
+    _orderSub.cancel();
+    return super.close();
   }
 }

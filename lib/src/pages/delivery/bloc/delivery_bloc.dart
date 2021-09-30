@@ -43,7 +43,9 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
       add(event);
     });
     _completeOrderSub = ordersRepo.order.listen((order) {
-      print(order);
+      final action = DeliveryAction.OnCompletedOrderPlacement;
+      final event = DeliveryEvent(action, order);
+      add(event);
     });
   }
 
@@ -95,13 +97,17 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
         break;
       case DeliveryAction.OnDeliveryOrderChanged:
         DeliveryOrder order = event.args as DeliveryOrder;
-        yield state.copyWith(order: order);
+        yield state.copyWith(deliverOrder: order);
         break;
       case DeliveryAction.OnOrderSubmitted:
         yield* _mapOnOrderSubmitted(event, state);
         break;
       case DeliveryAction.CalculateDistanceAndTime:
         yield* _mapCalculateDistanceAndTime(event, state);
+        break;
+      case DeliveryAction.OnCompletedOrderPlacement:
+        NewOrder order = event.args as NewOrder;
+        yield state.copyWith(order: order);
         break;
     }
   }
@@ -129,14 +135,14 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
       DeliveryEvent event, DeliveryState state) async* {
     yield state.copyWith(status: Status.loading);
     try {
-      final order = state.order.copyWith(
+      final order = state.deliveryOrder.copyWith(
         orderItems: state.cartItems,
         pickupLocation: Location.fromPlace(state.pickupDetail),
         destinationLocation: Location.fromPlace(state.deliveryDetail),
         totalPrice: state.totalCartPrice,
       );
       await _ordersRepo.createOrder(order.toJson());
-      yield state.delivered();
+      yield state.copyWith(status: Status.success);
     } on NoDataException {
       yield state.copyWith(status: Status.error, message: 'No order created');
     } on Exception catch (e) {

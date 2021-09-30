@@ -57,8 +57,12 @@ class PaystackPage extends StatelessWidget {
               padding: EdgeInsets.all(48),
               child: Column(
                 children: [
-                  Image(image: AssetImage(AppImages.ATM_CARD)),
-                  const SizedBox(height: 96),
+                  Image(
+                    image: AssetImage(AppImages.ATM_CARD),
+                    height: MediaQuery.of(context).size.height * .35,
+                    width: MediaQuery.of(context).size.width * 0.6,
+                  ),
+                  const SizedBox(height: 72),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -69,7 +73,7 @@ class PaystackPage extends StatelessWidget {
                         ),
                       ),
                       onPressed:
-                      state.loading ? null : () => _processPayment(context),
+                          state.loading ? null : () => _processPayment(context),
                       child: Builder(
                         builder: (_) {
                           if (state.loading) {
@@ -77,7 +81,8 @@ class PaystackPage extends StatelessWidget {
                               height: 24,
                               width: 24,
                               child: CircularProgressIndicator.adaptive(
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade900),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.blue.shade900),
                               ),
                             );
                           }

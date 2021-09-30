@@ -164,10 +164,10 @@ class _ShoppingCartView extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             child: Text(
               'Delivery items',
-              style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                  ),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText2
+                  ?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
             ),
           ),
           _CartItemsView(),

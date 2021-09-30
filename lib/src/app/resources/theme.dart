@@ -15,13 +15,17 @@ class AppTheme {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            textStyle: GoogleFonts.workSansTextTheme().button,
+            textStyle: GoogleFonts.workSansTextTheme()
+                .button
+                ?.copyWith(fontWeight: FontWeight.w700),
             primary: Colors.blue[900],
           ),
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            textStyle: GoogleFonts.workSansTextTheme().button,
+            textStyle: GoogleFonts.workSansTextTheme()
+                .button
+                ?.copyWith(fontWeight: FontWeight.w700),
             primary: Colors.blue[900],
           ),
         ),
@@ -57,9 +61,10 @@ class AppTheme {
       );
 
   static TextStyle? textFieldHeaderStyle(BuildContext context) {
-    return Theme.of(context).textTheme.bodyText2?.copyWith(
-        fontWeight: FontWeight.w700
-    );
+    return Theme.of(context)
+        .textTheme
+        .bodyText2
+        ?.copyWith(fontWeight: FontWeight.w700);
   }
 
   static OutlineInputBorder? textOutlineFocusedBorder(BuildContext context) {
@@ -70,7 +75,8 @@ class AppTheme {
     );
   }
 
-  static UnderlineInputBorder? textUnderlineFocusedBorder(BuildContext context) {
+  static UnderlineInputBorder? textUnderlineFocusedBorder(
+      BuildContext context) {
     final primaryColor = Theme.of(context).primaryColorDark;
     return UnderlineInputBorder(
       borderSide: BorderSide(width: 2, color: primaryColor),
@@ -86,7 +92,8 @@ class AppTheme {
     );
   }
 
-  static UnderlineInputBorder? textUnderlineEnabledBorder(BuildContext context) {
+  static UnderlineInputBorder? textUnderlineEnabledBorder(
+      BuildContext context) {
     final primaryColor = Theme.of(context).primaryColorDark;
     return UnderlineInputBorder(
       borderSide: BorderSide(width: 2, color: primaryColor),

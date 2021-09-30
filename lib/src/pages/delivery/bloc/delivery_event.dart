@@ -19,5 +19,6 @@ enum DeliveryAction {
   OnCartItemsAdded,
   OnItemRemoved,
   OnOrderSubmitted,
+  OnCompletedOrderPlacement,
   CalculateDistanceAndTime,
 }

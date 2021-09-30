@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/find_rider/finder_rider_cubit.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FindRiderPage extends StatefulWidget {
   const FindRiderPage();
@@ -14,7 +15,7 @@ class FindRiderPage extends StatefulWidget {
     return AppRoutes.generateRoute(
       child: BlocProvider(
         create: (context) => FindRiderCubit(
-          repo: RepositoryProvider.of(context)
+          repo: RepositoryProvider.of(context),
         ),
         child: FindRiderPage(),
       ),
@@ -75,134 +76,141 @@ class _State extends State<FindRiderPage> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 32),
-        child: BlocBuilder<FindRiderCubit, FindRiderState>(
-          builder: (_, state) {
-            if (state.loading) {
-              return Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _buildAnimation(),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-                    Text(
-                      'Please wait while we find a rider for you',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w700),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                ),
-              );
-            }
-            final rider = state.detail.rider;
-            return SingleChildScrollView(
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                alignment: Alignment.center,
-                child: Card(
+    return WillPopScope(
+      child: Scaffold(
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 32),
+          child: BlocBuilder<FindRiderCubit, FindRiderState>(
+            builder: (_, state) {
+              if (state.loading) {
+                return Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(6),
-                            bottomRight: Radius.circular(6),
-                          ),
-                        ),
-                        padding: EdgeInsets.all(8),
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Find your Dispatch Rider',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              ?.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Image(
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        width: MediaQuery.of(context).size.height * 0.4,
-                        image: AssetImage(AppImages.DRIVER_IMAGE),
-                        colorBlendMode: BlendMode.dst,
-                      ),
-                      const SizedBox(height: 32),
-                      Container(
-                        margin: EdgeInsets.only(left: 8),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '${rider.firstName} ${rider.lastName}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline4
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 8, top: 8),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          rider.email,
-                          style: Theme.of(context).textTheme.subtitle2,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 8, top: 8),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'has been assigned to your order',
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle2
-                              ?.copyWith(
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(right: 8, bottom: 8, top: 24),
-                        alignment: Alignment.centerLeft,
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.phone),
-                          color: Theme.of(context).primaryColorDark,
-                        ),
-                      ),
+                      _buildAnimation(),
                       SizedBox(
-                        width: double.infinity,
-                        child: TextButton(
-                          child: Text('OK'),
-                          onPressed: () {
-                            Navigator.of(context).pushAndRemoveUntil(
-                              DashboardPage.route(),
-                              (route) => false,
-                            );
-                          },
-                          style: TextButton.styleFrom(
-                              textStyle: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  ?.copyWith(fontWeight: FontWeight.w700),
-                              padding: EdgeInsets.symmetric(vertical: 16)),
-                        ),
+                          height: MediaQuery.of(context).size.height * 0.2),
+                      Text(
+                        'Please wait while we find a rider for you',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                        textAlign: TextAlign.center,
                       )
                     ],
                   ),
+                );
+              }
+              final rider = state.detail.rider;
+              return SingleChildScrollView(
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  alignment: Alignment.center,
+                  child: Card(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(6),
+                              bottomRight: Radius.circular(6),
+                            ),
+                          ),
+                          padding: EdgeInsets.all(8),
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Find your Dispatch Rider',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                ?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Image(
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          width: MediaQuery.of(context).size.height * 0.4,
+                          image: AssetImage(AppImages.DRIVER_IMAGE),
+                          colorBlendMode: BlendMode.dst,
+                        ),
+                        const SizedBox(height: 32),
+                        Container(
+                          margin: EdgeInsets.only(left: 8),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${rider.firstName} ${rider.lastName}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline4
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 8, top: 8),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            rider.email,
+                            style: Theme.of(context).textTheme.subtitle2,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 8, top: 8),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'has been assigned to your order',
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2
+                                ?.copyWith(
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: 8, bottom: 8, top: 24),
+                          alignment: Alignment.centerLeft,
+                          child: IconButton(
+                            onPressed: () async {
+                              final number = 'tel://${rider.phoneNumber}';
+                              await launch(number);
+                            },
+                            icon: Icon(Icons.phone),
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: TextButton(
+                            child: Text('OK'),
+                            onPressed: () {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                DashboardPage.route(),
+                                (route) => false,
+                              );
+                            },
+                            style: TextButton.styleFrom(
+                                textStyle: Theme.of(context)
+                                    .textTheme
+                                    .headline6
+                                    ?.copyWith(fontWeight: FontWeight.w700),
+                                padding: EdgeInsets.symmetric(vertical: 16)),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
+      onWillPop: () async => false,
     );
   }
 
