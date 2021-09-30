@@ -112,7 +112,9 @@ class _LoginFormState extends State<_LoginForm> {
       alignment: Alignment.topLeft,
       child: Text(
         'Login to account',
-        style: Theme.of(context).textTheme.headline6,
+        style: Theme.of(context).textTheme.headline6?.copyWith(
+          fontWeight: FontWeight.w700
+        ),
       ),
     );
   }

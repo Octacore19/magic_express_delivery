@@ -67,6 +67,7 @@ void main() async {
           return AuthRepo(
             preference: RepositoryProvider.of(context),
             api: RepositoryProvider.of(context),
+            isRider: false,
           )..onAppLaunch();
         },
       ),

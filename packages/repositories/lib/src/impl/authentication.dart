@@ -15,7 +15,9 @@ class AuthRepoImpl extends IAuthRepo {
   AuthRepoImpl({
     required Preferences preference,
     required ApiProvider api,
-  }) : _preference = preference {
+    required bool isRider,
+  })  : _preference = preference,
+        _isRider = isRider {
     _auth = AuthService(api: api);
   }
 
@@ -23,6 +25,7 @@ class AuthRepoImpl extends IAuthRepo {
 
   final _statusController = BehaviorSubject<AuthStatus>();
   late AuthService _auth;
+  final bool _isRider;
 
   @override
   Stream<AuthStatus> get status async* {
@@ -64,6 +67,9 @@ class AuthRepoImpl extends IAuthRepo {
       final data = BaseResponse.fromJson(response.data).data;
       if (data == null) throw AuthenticationException();
       final user = LoginResponse.fromJson(data).toUser;
+      if ((user.role?.toLowerCase() == 'user' && _isRider) ||
+          (user.role?.toLowerCase() == 'rider' && !_isRider))
+        throw AuthenticationException('Account cannot log in here');
       final userString = user.toSerializedJson();
       await _preference.write<String>(key: userCacheKey, value: userString);
       _statusController.sink.add(AuthStatus.loggedIn);

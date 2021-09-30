@@ -9,8 +9,13 @@ class AuthRepo implements IAuthRepo {
   AuthRepo({
     required Preferences preference,
     required ApiProvider api,
+    required bool isRider,
   }) {
-    _authRepo = AuthRepoImpl(preference: preference, api: api);
+    _authRepo = AuthRepoImpl(
+      preference: preference,
+      api: api,
+      isRider: isRider,
+    );
   }
 
   late IAuthRepo _authRepo;

@@ -140,7 +140,9 @@ class _SubmitButton extends StatelessWidget {
               },
             ),
             style: ElevatedButton.styleFrom(
-              textStyle: Theme.of(context).textTheme.button,
+              textStyle: Theme.of(context).textTheme.button?.copyWith(
+                fontWeight: FontWeight.w700
+              ),
               padding: EdgeInsets.all(16.0),
               primary: primaryColorSelect(context),
             ),
