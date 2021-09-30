@@ -28,11 +28,6 @@ class HistoryState extends Equatable {
 
   bool get noHistory => _history.isEmpty;
 
-  List<Order> get sortedList {
-    _history.sort((a, b) => a.status.compareTo(b.status));
-    return _history;
-  }
-
   List<Order> get activeOrders {
     return _history
         .where((e) =>
@@ -42,7 +37,10 @@ class HistoryState extends Equatable {
 
   List<Order> get inActiveOrders {
     return _history
-        .where((e) => e.status != OrderStatus.assigned || e.status != OrderStatus.transit)
+        .where((e) =>
+            e.status == OrderStatus.created ||
+            e.status == OrderStatus.processed ||
+            e.status == OrderStatus.delivered)
         .toList();
   }
 
