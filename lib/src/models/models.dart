@@ -1,6 +1,7 @@
 export 'cart_item.dart';
 export 'delivery.dart';
 export 'errand.dart';
+export 'fcm_order.dart';
 export 'location.dart';
 export 'order.dart';
 export 'payment.dart';

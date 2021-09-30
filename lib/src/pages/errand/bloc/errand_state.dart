@@ -29,7 +29,7 @@ class ErrandState extends Equatable {
       totalCartPrice: 0,
       charges: charges,
       errandOrder: ErrandOrder.empty(),
-      order: Order.empty(),
+      order: NewOrder.empty(),
       message: '',
       status: Status.initial,
       estimatedDistance: TextValueObject.empty(),
@@ -48,7 +48,7 @@ class ErrandState extends Equatable {
   final double totalCartPrice;
 
   final ErrandOrder errandOrder;
-  final Order order;
+  final NewOrder order;
   final Status status;
   final String message;
 
@@ -104,7 +104,7 @@ class ErrandState extends Equatable {
     Status? status,
     ErrandOrder? errandOrder,
     String? message,
-    Order? order,
+    NewOrder? order,
     TextValueObject? distance,
     TextValueObject? duration,
   }) {

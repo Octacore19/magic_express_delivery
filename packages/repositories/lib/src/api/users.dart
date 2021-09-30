@@ -1,7 +1,7 @@
 import 'package:repositories/repositories.dart';
 import 'package:repositories/src/contracts/contracts.dart';
 import 'package:repositories/src/impl/impl.dart';
-import 'package:repositories/src/models/order.dart';
+import 'package:repositories/src/models/new_order.dart';
 import 'package:services/services.dart';
 
 class UsersRepo implements IUsersRepo {
@@ -16,7 +16,7 @@ class UsersRepo implements IUsersRepo {
   Future<void> fetchAllHistory() => _repo.fetchAllHistory();
 
   @override
-  Future<HistoryDetail> fetchHistoryDetail(String id) =>
+  Future<OrderDetail> fetchHistoryDetail(String id) =>
       _repo.fetchHistoryDetail(id);
 
   @override
@@ -27,11 +27,11 @@ class UsersRepo implements IUsersRepo {
   void dispose() => _repo.dispose();
 
   @override
-  Stream<Order> get order => _repo.order;
+  Stream<NewOrder> get order => _repo.order;
 
   @override
   Charges get charges => _repo.charges;
 
   @override
-  Stream<List<History>> get history => _repo.history;
+  Stream<List<Order>> get history => _repo.history;
 }

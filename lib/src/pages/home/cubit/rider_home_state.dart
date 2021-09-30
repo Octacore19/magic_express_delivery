@@ -3,7 +3,7 @@ part of 'rider_home_cubit.dart';
 class RiderHomeState extends Equatable {
   RiderHomeState._({
     required this.status,
-    required List<History> history,
+    required List<Order> history,
     required this.detail,
     required this.message,
     required this.riderAvailable,
@@ -13,15 +13,15 @@ class RiderHomeState extends Equatable {
     return RiderHomeState._(
       status: Status.initial,
       history: List.empty(),
-      detail: HistoryDetail.empty(),
+      detail: OrderDetail.empty(),
       message: '',
       riderAvailable: false,
     );
   }
 
   final Status status;
-  final List<History> _history;
-  final HistoryDetail detail;
+  final List<Order> _history;
+  final OrderDetail detail;
   final String message;
 
   final bool riderAvailable;
@@ -30,7 +30,7 @@ class RiderHomeState extends Equatable {
 
   bool get noHistory => _history.isEmpty;
 
-  List<History> get newOrders {
+  List<Order> get newOrders {
     return _history
         .where((e) =>
             e.status == OrderStatus.processed ||
@@ -39,14 +39,14 @@ class RiderHomeState extends Equatable {
         .toList();
   }
 
-  List<History> get completedOrders {
+  List<Order> get completedOrders {
     return _history.where((e) => e.status == OrderStatus.delivered).toList();
   }
 
   RiderHomeState copyWith({
     Status? status,
-    List<History>? history,
-    HistoryDetail? detail,
+    List<Order>? history,
+    OrderDetail? detail,
     String? message,
     bool? riderAvailable,
   }) {
@@ -63,7 +63,7 @@ class RiderHomeState extends Equatable {
     return RiderHomeState._(
       status: Status.initial,
       history: List.empty(),
-      detail: HistoryDetail.empty(),
+      detail: OrderDetail.empty(),
       message: '',
       riderAvailable: json['available'],
     );

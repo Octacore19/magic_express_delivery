@@ -14,11 +14,11 @@ class RidersRepo implements IRidersRepo {
   Future<void> fetchAllHistory() => _repo.fetchAllHistory();
 
   @override
-  Future<HistoryDetail> fetchHistoryDetail(String id) =>
+  Future<OrderDetail> fetchHistoryDetail(String id) =>
       _repo.fetchHistoryDetail(id);
 
   @override
-  Stream<List<History>> get history => _repo.history;
+  Stream<List<Order>> get history => _repo.history;
 
   @override
   Future<void> updateOrderPaymentStatus() => _repo.updateOrderPaymentStatus();

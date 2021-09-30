@@ -1,8 +1,8 @@
 enum OrderStatus {
-  created,
-  processed,
   assigned,
   transit,
+  created,
+  processed,
   delivered,
   unknown
 }
@@ -41,4 +41,6 @@ extension OrderStatusExt on OrderStatus {
         return '';
     }
   }
+
+  int compareTo(OrderStatus other) => this.index.compareTo(other.index);
 }

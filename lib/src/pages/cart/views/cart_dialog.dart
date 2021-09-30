@@ -31,10 +31,20 @@ class CartDialog extends StatelessWidget {
             FocusScope.of(context).unfocus();
             context.read<CartCubit>().onItemAdded();
           },
+          style: TextButton.styleFrom(
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .button
+                  ?.copyWith(fontWeight: FontWeight.w700)),
         ),
         TextButton(
           child: Text('Finish'),
           onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+          style: TextButton.styleFrom(
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .button
+                  ?.copyWith(fontWeight: FontWeight.w700)),
         ),
       ],
       content: _CartForm(),
@@ -76,7 +86,11 @@ class _CartFormState extends State<_CartForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Add an item', style: Theme.of(context).textTheme.headline6),
+            Text('Add an item',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    ?.copyWith(fontWeight: FontWeight.w700)),
             const SizedBox(height: 24),
             _ItemNameInput(_itemNameController),
             const SizedBox(height: 24),

@@ -6,7 +6,7 @@ class _LocationWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final HistoryDetail detail;
+  final OrderDetail detail;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +102,7 @@ class _RecipientWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final HistoryDetail detail;
+  final OrderDetail detail;
 
   @override
   Widget build(BuildContext context) {
@@ -247,7 +247,7 @@ class _CartItemsWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final HistoryDetail detail;
+  final OrderDetail detail;
 
   @override
   Widget build(BuildContext context) {
@@ -309,7 +309,7 @@ class _SummaryWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final HistoryDetail detail;
+  final OrderDetail detail;
 
   @override
   Widget build(BuildContext context) {

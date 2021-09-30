@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/models/models.dart';
+import 'package:magic_express_delivery/src/models/order.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 

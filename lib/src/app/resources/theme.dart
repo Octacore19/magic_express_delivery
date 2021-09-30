@@ -57,22 +57,40 @@ class AppTheme {
       );
 
   static TextStyle? textFieldHeaderStyle(BuildContext context) {
-    return Theme.of(context).textTheme.bodyText2;
+    return Theme.of(context).textTheme.bodyText2?.copyWith(
+        fontWeight: FontWeight.w700
+    );
   }
 
   static OutlineInputBorder? textOutlineFocusedBorder(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColorDark;
     return OutlineInputBorder(
-      borderSide: BorderSide(width: 1.5, color: primaryColor),
+      borderSide: BorderSide(width: 2, color: primaryColor),
       borderRadius: BorderRadius.all(Radius.circular(6)),
+    );
+  }
+
+  static UnderlineInputBorder? textUnderlineFocusedBorder(BuildContext context) {
+    final primaryColor = Theme.of(context).primaryColorDark;
+    return UnderlineInputBorder(
+      borderSide: BorderSide(width: 2, color: primaryColor),
+      // borderRadius: BorderRadius.all(Radius.circular(6)),
     );
   }
 
   static OutlineInputBorder? textOutlineEnabledBorder(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColorDark;
     return OutlineInputBorder(
-      borderSide: BorderSide(color: primaryColor),
+      borderSide: BorderSide(width: 2, color: primaryColor),
       borderRadius: BorderRadius.all(Radius.circular(6)),
+    );
+  }
+
+  static UnderlineInputBorder? textUnderlineEnabledBorder(BuildContext context) {
+    final primaryColor = Theme.of(context).primaryColorDark;
+    return UnderlineInputBorder(
+      borderSide: BorderSide(width: 2, color: primaryColor),
+      // borderRadius: BorderRadius.all(Radius.circular(6)),
     );
   }
 
@@ -84,10 +102,27 @@ class AppTheme {
     );
   }
 
+  static UnderlineInputBorder? textUnderlineErrorBorder(BuildContext context) {
+    final errorColor = Theme.of(context).errorColor;
+    return UnderlineInputBorder(
+      borderSide: BorderSide(color: errorColor),
+      // borderRadius: BorderRadius.all(Radius.circular(6)),
+    );
+  }
+
   static OutlineInputBorder? textOutlineErrorFocusedBorder(
       BuildContext context) {
     final errorColor = Theme.of(context).errorColor;
     return OutlineInputBorder(
+      borderSide: BorderSide(width: 1.5, color: errorColor),
+      borderRadius: BorderRadius.all(Radius.circular(6)),
+    );
+  }
+
+  static UnderlineInputBorder? textUnderlineErrorFocusedBorder(
+      BuildContext context) {
+    final errorColor = Theme.of(context).errorColor;
+    return UnderlineInputBorder(
       borderSide: BorderSide(width: 1.5, color: errorColor),
       borderRadius: BorderRadius.all(Radius.circular(6)),
     );

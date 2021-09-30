@@ -107,7 +107,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
         yield* _mapOnOrderSubmitted(event, state);
         break;
       case ErrandAction.OnCompletedOrderPlacement:
-        Order order = event.args as Order;
+        NewOrder order = event.args as NewOrder;
         yield state.copyWith(order: order);
         break;
       case ErrandAction.CalculateDistanceAndTime:

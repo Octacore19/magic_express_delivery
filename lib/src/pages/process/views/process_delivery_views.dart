@@ -22,7 +22,10 @@ class _NameInput extends StatelessWidget {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           labelText: header,
-          labelStyle: Theme.of(context).textTheme.bodyText2,
+          labelStyle: Theme.of(context)
+              .textTheme
+              .bodyText2
+              ?.copyWith(fontWeight: FontWeight.w700),
           border: AppTheme.textOutlineEnabledBorder(context),
           enabledBorder: AppTheme.textOutlineEnabledBorder(context),
           focusedBorder: AppTheme.textOutlineFocusedBorder(context),
@@ -55,7 +58,10 @@ class _PhoneNumberInput extends StatelessWidget {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           labelText: header,
-          labelStyle: Theme.of(context).textTheme.bodyText2,
+          labelStyle: Theme.of(context)
+              .textTheme
+              .bodyText2
+              ?.copyWith(fontWeight: FontWeight.w700),
           border: AppTheme.textOutlineEnabledBorder(context),
           enabledBorder: AppTheme.textOutlineEnabledBorder(context),
           focusedBorder: AppTheme.textOutlineFocusedBorder(context),
@@ -73,7 +79,10 @@ class _DeliveryNoteView extends StatelessWidget {
     return TextButton.icon(
       style: TextButton.styleFrom(
         padding: EdgeInsets.symmetric(vertical: 12.0),
-        textStyle: Theme.of(context).textTheme.button,
+        textStyle: Theme.of(context)
+            .textTheme
+            .button
+            ?.copyWith(fontWeight: FontWeight.w700),
       ),
       onPressed: () {
         showDialog(
@@ -119,7 +128,7 @@ class _DeliveryNoteView extends StatelessWidget {
       },
       icon: Icon(
         MdiIcons.plus,
-        size: 16.0,
+        size: 20.0,
       ),
       label: Text('Add a delivery note'),
     );
@@ -139,7 +148,10 @@ class _PaymentOptionsView extends StatelessWidget {
             margin: EdgeInsets.only(bottom: 8.0),
             child: Text(
               'Select payment method:',
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText2
+                  ?.copyWith(fontWeight: FontWeight.w700),
             ),
           ),
           SizedBox(
@@ -169,7 +181,10 @@ class _PaymentOptionsView extends StatelessWidget {
           child: Text.rich(
             TextSpan(
               text: 'Cash  ',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  ?.copyWith(fontWeight: FontWeight.w700),
               children: [
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
@@ -188,7 +203,10 @@ class _PaymentOptionsView extends StatelessWidget {
           child: Text.rich(
             TextSpan(
               text: 'Card   ',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  ?.copyWith(fontWeight: FontWeight.w700),
               children: [
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
@@ -210,7 +228,10 @@ class _PaymentOptionsView extends StatelessWidget {
           child: Text.rich(
             TextSpan(
               text: 'Cash   ',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  ?.copyWith(fontWeight: FontWeight.w700),
               children: [
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,

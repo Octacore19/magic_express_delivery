@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:repositories/repositories.dart';
 import 'package:services/services.dart';
 
-class HistoryDetail extends Equatable {
-  const HistoryDetail._({
+class OrderDetail extends Equatable {
+  const OrderDetail._({
     required this.id,
     required this.user,
     required this.rider,
@@ -30,8 +30,8 @@ class HistoryDetail extends Equatable {
     required this.updatedAt,
   });
 
-  factory HistoryDetail.empty() {
-    return HistoryDetail._(
+  factory OrderDetail.empty() {
+    return OrderDetail._(
       id: -1,
       user: OrderUser.empty(),
       rider: OrderUser.empty(),
@@ -59,8 +59,8 @@ class HistoryDetail extends Equatable {
     );
   }
 
-  factory HistoryDetail.fromResponse(HistoryDetailResponse response) {
-    return HistoryDetail._(
+  factory OrderDetail.fromResponse(HistoryDetailResponse response) {
+    return OrderDetail._(
       id: response.id ?? -1,
       user: OrderUser.fromResponse(response.user),
       rider: OrderUser.fromResponse(response.rider),

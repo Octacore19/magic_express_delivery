@@ -11,7 +11,9 @@ class _PersonnelOptionsView extends StatelessWidget {
           margin: EdgeInsets.only(bottom: 8.0),
           child: Text(
             'Personnel Option:',
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.headline6?.copyWith(
+                fontWeight: FontWeight.w700
+            ),
           ),
         ),
         const SizedBox(height: 16),
@@ -78,7 +80,9 @@ class _PersonnelDisplay extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.headline6?.copyWith(
+                    fontWeight: FontWeight.w700
+                ),
               ),
               Container(
                 margin: EdgeInsets.only(top: 8.0),

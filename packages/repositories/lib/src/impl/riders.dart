@@ -1,7 +1,7 @@
 import 'package:repositories/repositories.dart';
 import 'package:repositories/src/contracts/contracts.dart';
-import 'package:repositories/src/models/history.dart';
-import 'package:repositories/src/models/history_detail.dart';
+import 'package:repositories/src/models/order.dart';
+import 'package:repositories/src/models/order_detail.dart';
 import 'package:services/services.dart';
 
 class RidersRepoImpl implements IRidersRepo {
@@ -9,11 +9,11 @@ class RidersRepoImpl implements IRidersRepo {
     _service = OrdersService(api: api);
   }
 
-  final _controller = BehaviorSubject<List<History>>.seeded(List.empty());
+  final _controller = BehaviorSubject<List<Order>>.seeded(List.empty());
   late OrdersService _service;
 
   @override
-  Stream<List<History>> get history => _controller.stream;
+  Stream<List<Order>> get history => _controller.stream;
 
   @override
   Future<void> fetchAllHistory() async {
@@ -25,7 +25,7 @@ class RidersRepoImpl implements IRidersRepo {
       final list =
       (data as List).map((e) => HistoryResponse.fromJson(e)).toList();
       if (list.isEmpty) throw NoElementException();
-      final history = list.map((e) => History.fromResponse(e)).toList();
+      final history = list.map((e) => Order.fromResponse(e)).toList();
       _controller.sink.add(history);
       return;
     } catch (e) {
@@ -34,14 +34,14 @@ class RidersRepoImpl implements IRidersRepo {
   }
 
   @override
-  Future<HistoryDetail> fetchHistoryDetail(String id) async {
+  Future<OrderDetail> fetchHistoryDetail(String id) async {
     try {
       final res = await _service.fetchRiderOrderDetail(id);
       if (!res.success) throw RequestFailureException(res.message);
       final data = BaseResponse.fromJson(res.data).data;
       if (data == null) throw NoDataException();
       final response = HistoryDetailResponse.fromJson(data);
-      return HistoryDetail.fromResponse(response);
+      return OrderDetail.fromResponse(response);
     } catch (e) {
       throw e;
     }

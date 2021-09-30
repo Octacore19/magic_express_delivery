@@ -38,7 +38,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
         yield* _mapFetchHistoryDetail(event, state);
         break;
       case HistoryActions.getHistoryList:
-        List<History> args = event.args as List<History>;
+        List<Order> args = event.args as List<Order>;
         yield state.copyWith(history: args);
         break;
       case HistoryActions.refreshHistoryList:
@@ -51,9 +51,9 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     HistoryEvent event,
     HistoryState state,
   ) async* {
-    yield state.copyWith(status: Status.loading, detail: HistoryDetail.empty());
+    yield state.copyWith(status: Status.loading, detail: OrderDetail.empty());
     try {
-      History arg = event.args as History;
+      Order arg = event.args as Order;
       final res = await _ordersRepo.fetchHistoryDetail(arg.id.toString());
       yield state.copyWith(status: Status.success, detail: res);
     } on Exception catch (e) {
@@ -66,7 +66,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     HistoryEvent event,
     HistoryState state,
   ) async* {
-    yield state.copyWith(status: Status.loading, detail: HistoryDetail.empty());
+    yield state.copyWith(status: Status.loading, detail: OrderDetail.empty());
     try {
       await _ordersRepo.fetchAllHistory();
       yield state.copyWith(status: Status.success);

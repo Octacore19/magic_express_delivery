@@ -47,105 +47,110 @@ class HistoryPage extends StatelessWidget {
                 ],
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  child: SizedBox(
-                    height: h,
-                    child: BlocBuilder<HistoryBloc, HistoryState>(
-                      builder: (_, state) {
-                        if (state.noHistory) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 24),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 24),
-                                Icon(
-                                  Icons.warning_amber_rounded,
-                                  size: 96,
-                                  color: Colors.red,
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  'No data currently available to display',
-                                  style: Theme.of(context).textTheme.headline6,
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 16),
-                                TextButton(
-                                  onPressed: () {
-                                    final action =
-                                        HistoryActions.onRefreshHistoryList;
-                                    final event = HistoryEvent(action);
-                                    context.read<HistoryBloc>().add(event);
-                                  },
-                                  child: Text(
-                                    'Click to refresh page',
-                                    style:
-                                        Theme.of(context).textTheme.subtitle2,
+                child: RefreshIndicator(
+                  displacement: 120,
+                  onRefresh: () =>
+                      context.read<HistoryBloc>().refreshHistoryList(),
+                  child: SingleChildScrollView(
+                    child: SizedBox(
+                      height: h,
+                      child: BlocBuilder<HistoryBloc, HistoryState>(
+                        builder: (_, state) {
+                          if (state.noHistory) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 24),
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 24),
+                                  Icon(
+                                    Icons.warning_amber_rounded,
+                                    size: 96,
+                                    color: Colors.red,
                                   ),
-                                )
-                              ],
-                            ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'No data currently available to display',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        ?.copyWith(fontWeight: FontWeight.w700),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  TextButton(
+                                    onPressed: () {
+                                      final action =
+                                          HistoryActions.onRefreshHistoryList;
+                                      final event = HistoryEvent(action);
+                                      context.read<HistoryBloc>().add(event);
+                                    },
+                                    child: Text(
+                                      'Click to refresh page',
+                                      style:
+                                          Theme.of(context).textTheme.subtitle2,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 16),
+                              buildList(
+                                context,
+                                state.sortedList,
+                                'Active orders',
+                              ),
+                              state.activeOrders.isNotEmpty
+                                  ? SizedBox(height: 24)
+                                  : SizedBox.shrink(),
+                              buildList(
+                                context,
+                                state.inActiveOrders,
+                                'Non-Active orders',
+                              ),
+                            ],
                           );
-                        }
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 16),
-                            buildList(
-                              context,
-                              state.activeOrders,
-                              'Active orders',
-                            ),
-                            state.activeOrders.isNotEmpty
-                                ? SizedBox(height: 24)
-                                : SizedBox.shrink(),
-                            buildList(
-                              context,
-                              state.inActiveOrders,
-                              'Non-Active orders',
-                            ),
-                          ],
-                        );
-                      },
+                        },
+                      ),
                     ),
                   ),
                 ),
               )
             ],
           ),
-          /*child: RefreshIndicator(
-            displacement: 120,
-            onRefresh: () => context.read<HistoryBloc>().refreshHistoryList(),
-          ),*/
         ),
       ),
     );
   }
 
-  Widget buildList(BuildContext context, List<History> history, String header) {
+  Widget buildList(BuildContext context, List<Order> history, String header) {
     if (history.isEmpty) return SizedBox.shrink();
-    return Flexible(
+    return Expanded(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColorDark,
-              borderRadius: BorderRadius.circular(6)
+              borderRadius: BorderRadius.circular(6),
             ),
             padding: EdgeInsets.all(8),
             child: Text(
               header,
-              style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle1
+                  ?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
             ),
           ),
           const SizedBox(height: 16),
-          Flexible(
+          Expanded(
             child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              key: ObjectKey(history),
               itemCount: history.length,
               itemBuilder: (_, index) {
                 final d = history[index];
@@ -158,10 +163,11 @@ class HistoryPage extends StatelessWidget {
     );
   }
 
-  Widget buildItem(BuildContext context, History d) {
+  Widget buildItem(BuildContext context, Order d) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Card(
+        key: ObjectKey(d),
         color: Colors.blue[50]?.withOpacity(1),
         shadowColor: Colors.blue[100],
         shape: RoundedRectangleBorder(
@@ -189,7 +195,10 @@ class HistoryPage extends StatelessWidget {
                   Flexible(
                     child: Text(
                       d.startAddress,
-                      style: Theme.of(context).textTheme.subtitle2,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          ?.copyWith(fontWeight: FontWeight.w700),
                     ),
                   )
                 ],
@@ -205,7 +214,10 @@ class HistoryPage extends StatelessWidget {
                   Flexible(
                     child: Text(
                       d.endAddress,
-                      style: Theme.of(context).textTheme.subtitle2,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          ?.copyWith(fontWeight: FontWeight.w700),
                     ),
                   )
                 ],
@@ -226,20 +238,16 @@ class HistoryPage extends StatelessWidget {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(
-                        color: _getStatusColor(
-                          d.status,
-                        ),
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(16))),
+                    border: Border.all(
+                        color: _getStatusColor(d.status), width: 1.5),
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                  ),
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: Text(
                     d.status.value,
                     style: Theme.of(context).textTheme.caption?.copyWith(
-                          color: _getStatusColor(
-                            d.status,
-                          ),
-                        ),
+                        color: _getStatusColor(d.status),
+                        fontWeight: FontWeight.bold),
                   ),
                 )
               ],

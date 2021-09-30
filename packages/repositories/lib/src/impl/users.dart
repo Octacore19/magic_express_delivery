@@ -8,17 +8,17 @@ class UsersRepoImpl implements IUsersRepo {
 
   final OrdersService _service;
 
-  final _orderController = BehaviorSubject<Order>.seeded(Order.empty());
+  final _orderController = BehaviorSubject<NewOrder>.seeded(NewOrder.empty());
   final _historyController =
-      BehaviorSubject<List<History>>.seeded(List.empty());
+      BehaviorSubject<List<Order>>.seeded(List.empty());
 
   Charges? _charges;
 
   @override
-  Stream<Order> get order => _orderController.stream;
+  Stream<NewOrder> get order => _orderController.stream;
 
   @override
-  Stream<List<History>> get history => _historyController.stream;
+  Stream<List<Order>> get history => _historyController.stream;
 
   @override
   Charges get charges => _charges ?? Charges.empty();
@@ -31,7 +31,7 @@ class UsersRepoImpl implements IUsersRepo {
       final d = BaseResponse.fromJson(res.data).data;
       if (d == null) throw NoDataException();
       final orderResponse = OrderResponse.fromJson(d);
-      final order = Order.fromResponse(orderResponse);
+      final order = NewOrder.fromResponse(orderResponse);
       _orderController.sink.add(order);
       fetchAllHistory();
       return;
@@ -50,7 +50,7 @@ class UsersRepoImpl implements IUsersRepo {
       final list =
           (data as List).map((e) => HistoryResponse.fromJson(e)).toList();
       if (list.isEmpty) throw NoElementException();
-      final history = list.map((e) => History.fromResponse(e)).toList();
+      final history = list.map((e) => Order.fromResponse(e)).toList();
       _historyController.sink.add(history);
       return;
     } catch (e) {
@@ -59,14 +59,14 @@ class UsersRepoImpl implements IUsersRepo {
   }
 
   @override
-  Future<HistoryDetail> fetchHistoryDetail(String id) async {
+  Future<OrderDetail> fetchHistoryDetail(String id) async {
     try {
       final res = await _service.fetchUserOrderDetail(id);
       if (!res.success) throw RequestFailureException(res.message);
       final data = BaseResponse.fromJson(res.data).data;
       if (data == null) throw NoDataException();
       final response = HistoryDetailResponse.fromJson(data);
-      return HistoryDetail.fromResponse(response);
+      return OrderDetail.fromResponse(response);
     } catch (e) {
       throw e;
     }

@@ -3,7 +3,7 @@ part of 'history_bloc.dart';
 class HistoryState extends Equatable {
   HistoryState._({
     required this.status,
-    required List<History> history,
+    required List<Order> history,
     required this.detail,
     required this.message,
   }) : _history = history;
@@ -12,14 +12,14 @@ class HistoryState extends Equatable {
     return HistoryState._(
       status: Status.initial,
       history: List.empty(),
-      detail: HistoryDetail.empty(),
+      detail: OrderDetail.empty(),
       message: '',
     );
   }
 
   final Status status;
-  final List<History> _history;
-  final HistoryDetail detail;
+  final List<Order> _history;
+  final OrderDetail detail;
   final String message;
 
   bool get loading => status == Status.loading;
@@ -28,24 +28,28 @@ class HistoryState extends Equatable {
 
   bool get noHistory => _history.isEmpty;
 
-  List<History> get activeOrders {
+  List<Order> get sortedList {
+    _history.sort((a, b) => a.status.compareTo(b.status));
+    return _history;
+  }
+
+  List<Order> get activeOrders {
     return _history
         .where((e) =>
             e.status == OrderStatus.assigned || e.status == OrderStatus.transit)
         .toList();
   }
 
-  List<History> get inActiveOrders {
+  List<Order> get inActiveOrders {
     return _history
-        .where((e) =>
-    e.status != OrderStatus.assigned || e.status != OrderStatus.transit)
+        .where((e) => e.status != OrderStatus.assigned || e.status != OrderStatus.transit)
         .toList();
   }
 
   HistoryState copyWith({
     Status? status,
-    List<History>? history,
-    HistoryDetail? detail,
+    List<Order>? history,
+    OrderDetail? detail,
     String? message,
   }) {
     return HistoryState._(

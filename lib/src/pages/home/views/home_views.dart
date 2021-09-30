@@ -13,12 +13,16 @@ class _GreetingsView extends StatelessWidget {
             if (user.isNotEmpty) {
               return Text(
                 _generateGreeting() + ', ${user.firstName} ${user.lastName}!',
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.headline6?.copyWith(
+                  fontWeight: FontWeight.w700
+                ),
               );
             }
             return Text(
               _generateGreeting() + ', John Doe!',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.headline6?.copyWith(
+                  fontWeight: FontWeight.w700
+              ),
             );
           },
         ),
@@ -75,7 +79,9 @@ class _ErrandCardView extends StatelessWidget {
                     Text(
                       'Send on errand',
                       textWidthBasis: TextWidthBasis.parent,
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.headline6?.copyWith(
+                          fontWeight: FontWeight.w700
+                      ),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -121,7 +127,9 @@ class _DeliveryCardView extends StatelessWidget {
                   children: [
                     Text(
                       'Make a delivery',
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.headline6?.copyWith(
+                          fontWeight: FontWeight.w700
+                      ),
                     ),
                     const SizedBox(height: 16),
                     Text(

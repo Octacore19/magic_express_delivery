@@ -21,12 +21,22 @@ class DeliverySummaryDialog extends StatelessWidget {
     return AlertDialog(
       scrollable: true,
       title: Text('Delivery Summary'),
+      titleTextStyle: Theme.of(context)
+          .textTheme
+          .headline6
+          ?.copyWith(fontWeight: FontWeight.w700),
       actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context, rootNavigator: true).pop();
           },
           child: Text('Cancel'),
+          style: TextButton.styleFrom(
+            textStyle: Theme.of(context)
+                .textTheme
+                .button
+                ?.copyWith(fontWeight: FontWeight.w700),
+          ),
         ),
         TextButton(
           onPressed: () {
@@ -36,9 +46,14 @@ class DeliverySummaryDialog extends StatelessWidget {
             Navigator.of(context, rootNavigator: true).pop();
           },
           child: Text('Place order'),
+          style: TextButton.styleFrom(
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .button
+                  ?.copyWith(fontWeight: FontWeight.w700)),
         )
       ],
-      contentPadding: EdgeInsets.all(32),
+      contentPadding: EdgeInsets.all(24),
       content: BlocBuilder<DeliveryBloc, DeliveryState>(
         builder: (_, state) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +87,10 @@ class _PickupDetails extends StatelessWidget {
       builder: (_, detail) => Text.rich(
         TextSpan(
           text: 'Pickup Address: ',
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context)
+              .textTheme
+              .bodyText1
+              ?.copyWith(fontWeight: FontWeight.w700),
           children: [
             TextSpan(
               text: detail.address,
@@ -93,7 +111,10 @@ class _DeliveryDetails extends StatelessWidget {
       builder: (_, detail) => Text.rich(
         TextSpan(
           text: 'Delivery Address: ',
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context)
+              .textTheme
+              .bodyText1
+              ?.copyWith(fontWeight: FontWeight.w700),
           children: [
             TextSpan(
               text: detail.address,
@@ -119,11 +140,17 @@ class _ItemsDetails extends StatelessWidget {
               children: [
                 Text(
                   'No of items',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      ?.copyWith(fontWeight: FontWeight.w700),
                 ),
                 Text(
                   'Total Amount in Cart',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      ?.copyWith(fontWeight: FontWeight.w700),
                 )
               ],
             ),
@@ -164,7 +191,10 @@ class _DistanceDetails extends StatelessWidget {
           Text.rich(
             TextSpan(
               text: 'Distance covered: ',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  ?.copyWith(fontWeight: FontWeight.w700),
               children: [
                 TextSpan(
                   text: '${state.estimatedDistance.text}',
@@ -177,7 +207,10 @@ class _DistanceDetails extends StatelessWidget {
           Text.rich(
             TextSpan(
               text: 'Estimated Time: ',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  ?.copyWith(fontWeight: FontWeight.w700),
               children: [
                 TextSpan(
                   text: '${state.estimatedDuration.text}',
@@ -202,13 +235,17 @@ class _TotalAmountDetails extends StatelessWidget {
           Text.rich(
             TextSpan(
               text: 'Delivery cost: ',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  ?.copyWith(fontWeight: FontWeight.w700),
               children: [
                 TextSpan(
                   text: convertToNairaAndKobo(state.deliveryAmount),
-                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                      fontFamily: 'Roboto'
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      ?.copyWith(fontFamily: 'Roboto'),
                 )
               ],
             ),
@@ -217,13 +254,17 @@ class _TotalAmountDetails extends StatelessWidget {
           Text.rich(
             TextSpan(
               text: 'Total cost: ',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  ?.copyWith(fontWeight: FontWeight.w700),
               children: [
                 TextSpan(
                   text: convertToNairaAndKobo(state.totalAmount),
-                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                      fontFamily: 'Roboto'
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      ?.copyWith(fontFamily: 'Roboto'),
                 )
               ],
             ),
@@ -247,7 +288,10 @@ class _SenderDetails extends StatelessWidget {
             Text.rich(
               TextSpan(
                 text: 'Sender Name: ',
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(fontWeight: FontWeight.w700),
                 children: [
                   TextSpan(
                     text: state.order.senderName,
@@ -260,7 +304,10 @@ class _SenderDetails extends StatelessWidget {
             Text.rich(
               TextSpan(
                 text: 'Sender Phone: ',
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(fontWeight: FontWeight.w700),
                 children: [
                   TextSpan(
                     text: state.order.senderPhone,
@@ -289,7 +336,10 @@ class _ReceiverDetails extends StatelessWidget {
             Text.rich(
               TextSpan(
                 text: 'Receiver Name: ',
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(fontWeight: FontWeight.w700),
                 children: [
                   TextSpan(
                     text: state.order.receiverName,
@@ -302,7 +352,10 @@ class _ReceiverDetails extends StatelessWidget {
             Text.rich(
               TextSpan(
                 text: 'Receiver Phone: ',
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(fontWeight: FontWeight.w700),
                 children: [
                   TextSpan(
                     text: state.order.receiverPhone,

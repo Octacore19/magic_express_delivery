@@ -79,6 +79,10 @@ class _QuantityInput extends StatelessWidget {
           labelText: 'Quantity',
           isDense: true,
           labelStyle: AppTheme.textFieldHeaderStyle(context),
+          focusedBorder: AppTheme.textUnderlineFocusedBorder(context),
+          focusedErrorBorder: AppTheme.textUnderlineErrorFocusedBorder(context),
+          enabledBorder: AppTheme.textUnderlineEnabledBorder(context),
+          errorBorder: AppTheme.textUnderlineErrorBorder(context),
         ),
       ),
     );
@@ -103,6 +107,10 @@ class _UnitPriceInput extends StatelessWidget {
           labelText: 'Unit Price',
           isDense: true,
           labelStyle: AppTheme.textFieldHeaderStyle(context),
+          focusedBorder: AppTheme.textUnderlineFocusedBorder(context),
+          focusedErrorBorder: AppTheme.textUnderlineErrorFocusedBorder(context),
+          enabledBorder: AppTheme.textUnderlineEnabledBorder(context),
+          errorBorder: AppTheme.textUnderlineErrorBorder(context),
         ),
       ),
     );

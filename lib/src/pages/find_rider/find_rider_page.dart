@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
+import 'package:magic_express_delivery/src/pages/find_rider/finder_rider_cubit.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 
 class FindRiderPage extends StatefulWidget {
@@ -10,7 +12,12 @@ class FindRiderPage extends StatefulWidget {
 
   static Route route() {
     return AppRoutes.generateRoute(
-      child: FindRiderPage(),
+      child: BlocProvider(
+        create: (context) => FindRiderCubit(
+          repo: RepositoryProvider.of(context)
+        ),
+        child: FindRiderPage(),
+      ),
       fullScreenDialog: true,
     );
   }
@@ -20,8 +27,6 @@ class FindRiderPage extends StatefulWidget {
 }
 
 class _State extends State<FindRiderPage> with SingleTickerProviderStateMixin {
-  late bool _loadingInProgress;
-
   late Animation<double> _angleAnimation;
 
   late Animation<double> _scaleAnimation;
@@ -31,7 +36,7 @@ class _State extends State<FindRiderPage> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _loadingInProgress = true;
+    final state = context.read<FindRiderCubit>().state;
 
     _controller = new AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
@@ -50,31 +55,16 @@ class _State extends State<FindRiderPage> with SingleTickerProviderStateMixin {
 
     _angleAnimation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        if (_loadingInProgress) {
+        if (state.loading) {
           _controller.reverse();
         }
       } else if (status == AnimationStatus.dismissed) {
-        if (_loadingInProgress) {
+        if (state.loading) {
           _controller.forward();
         }
       }
     });
     _controller.forward();
-
-    FirebaseMessaging.onMessage.listen((message) {
-      final notification = message.notification;
-      final android = notification?.android;
-
-      if (notification != null && android != null) {
-        setState(() {
-          _loadingInProgress = false;
-        });
-        print('Notification title: ${notification.title}');
-        print('Notification content: ${notification.body}');
-      }
-
-      final data = message.data;
-    });
   }
 
   @override
@@ -88,9 +78,9 @@ class _State extends State<FindRiderPage> with SingleTickerProviderStateMixin {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 32),
-        child: Builder(
-          builder: (_) {
-            if (_loadingInProgress) {
+        child: BlocBuilder<FindRiderCubit, FindRiderState>(
+          builder: (_, state) {
+            if (state.loading) {
               return Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -99,13 +89,17 @@ class _State extends State<FindRiderPage> with SingleTickerProviderStateMixin {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                     Text(
                       'Please wait while we find a rider for you',
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          ?.copyWith(fontWeight: FontWeight.w700),
                       textAlign: TextAlign.center,
                     )
                   ],
                 ),
               );
             }
+            final rider = state.detail.rider;
             return SingleChildScrollView(
               child: Container(
                 height: MediaQuery.of(context).size.height,
@@ -146,16 +140,32 @@ class _State extends State<FindRiderPage> with SingleTickerProviderStateMixin {
                         margin: EdgeInsets.only(left: 8),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'John Driver',
-                          style: Theme.of(context).textTheme.headline4,
+                          '${rider.firstName} ${rider.lastName}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4
+                              ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 8, top: 8),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'driver@email.com',
+                          rider.email,
                           style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 8, top: 8),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'has been assigned to your order',
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle2
+                              ?.copyWith(
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.w700),
                         ),
                       ),
                       Container(

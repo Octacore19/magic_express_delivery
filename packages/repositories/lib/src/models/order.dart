@@ -1,38 +1,93 @@
-import 'package:equatable/equatable.dart';
 import 'package:repositories/repositories.dart';
 import 'package:services/services.dart';
 
 class Order extends Equatable {
   const Order._({
     required this.id,
+    required this.status,
     required this.amount,
     required this.reference,
+    required this.startAddress,
+    required this.endAddress,
   });
+
+  factory Order({
+    int? id,
+    OrderStatus? status,
+    double? amount,
+    String? reference,
+    String? startAddress,
+    String? endAddress,
+  }) {
+    return Order._(
+        id: id ?? -1,
+        status: status ?? OrderStatus.unknown,
+        amount: amount ?? 0,
+        reference: reference ?? '',
+        startAddress: startAddress ?? '',
+        endAddress: endAddress ?? '');
+  }
 
   factory Order.empty() {
     return Order._(
-      id: -1,
-      amount: 0,
-      reference: '',
-    );
+        id: -1,
+        status: OrderStatus.unknown,
+        amount: 0,
+        reference: '',
+        startAddress: '',
+        endAddress: '');
   }
 
-  factory Order.fromResponse(OrderResponse response) {
+  factory Order.fromResponse(HistoryResponse response) {
     return Order._(
-      id: response.id ?? 0,
-      amount: double.tryParse(response.amount ?? '') ?? 0,
-      reference: response.reference ?? '',
-    );
+        id: response.id ?? -1,
+        status: response.status != null
+            ? OrderStatusExt.setStatus(response.status)
+            : OrderStatus.unknown,
+        amount: double.tryParse(response.amount ?? '') ?? 0,
+        reference: response.reference ?? '',
+        startAddress: response.startAddress ?? '',
+        endAddress: response.endAddress ?? '');
   }
 
   final int id;
+  final OrderStatus status;
   final double amount;
   final String reference;
+  final String startAddress;
+  final String endAddress;
 
-  bool get empty => this == Order.empty();
-
-  bool get notEmpty => this == Order.empty();
+  Order copyWith({
+    int? id,
+    OrderStatus? status,
+    double? amount,
+    String? reference,
+    String? startAddress,
+    String? endAddress,
+  }) {
+    return Order._(
+      id: id ?? this.id,
+      status: status ?? this.status,
+      amount: amount ?? this.amount,
+      reference: reference ?? this.reference,
+      startAddress: startAddress ?? this.startAddress,
+      endAddress: endAddress ?? this.endAddress,
+    );
+  }
 
   @override
-  List<Object?> get props => [id, amount, reference];
+  List<Object?> get props =>
+      [id, status, amount, reference, startAddress, endAddress];
+
+  @override
+  String toString() {
+    return '$runtimeType('
+        'id: $id, '
+        'status: $status, '
+        'reference: $reference, '
+        'amount: $amount, '
+        'startAddress: $startAddress, '
+        'endAddress: $endAddress'
+        ')';
+  }
 }
