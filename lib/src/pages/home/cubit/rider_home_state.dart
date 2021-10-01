@@ -28,8 +28,6 @@ class RiderHomeState extends Equatable {
 
   bool get loading => status == Status.loading;
 
-  bool get noHistory => _history.isEmpty;
-
   List<Order> get newOrders {
     return _history
         .where((e) =>
@@ -42,6 +40,9 @@ class RiderHomeState extends Equatable {
   List<Order> get completedOrders {
     return _history.where((e) => e.status == OrderStatus.delivered).toList();
   }
+
+  bool get noCompleted => completedOrders.isEmpty;
+  bool get noActive => newOrders.isEmpty;
 
   RiderHomeState copyWith({
     Status? status,

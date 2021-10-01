@@ -1,7 +1,7 @@
 import 'package:repositories/repositories.dart';
 
 abstract class IMiscRepo {
-  Future<void> updateUserLocation(double latitude, double longitude);
+  Future<void> updateUserLocation(double latitude, double longitude, String address);
 
   Future<void> updateDeviceToken(String token);
 
@@ -11,7 +11,7 @@ abstract class IMiscRepo {
     String confirmPassword,
   );
 
-  Future<void> updateAvailability();
+  Future<void> updateAvailability(bool value);
 
   Future<void> fetchChargesFromService();
 

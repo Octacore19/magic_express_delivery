@@ -7,7 +7,7 @@ abstract class IMiscService {
 
   Future<DioResponse> updateUserPassword(Map<String, dynamic> data);
 
-  Future<DioResponse> updateAvailability();
+  Future<DioResponse> updateAvailability(bool value);
 
   Future<DioResponse> getCharges();
 }

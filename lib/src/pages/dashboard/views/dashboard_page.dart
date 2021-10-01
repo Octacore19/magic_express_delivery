@@ -9,9 +9,12 @@ class DashboardPage extends StatelessWidget {
   static Route route() {
     return AppRoutes.generateRouteBuilder(builder: (context) {
       final isRider = context.read<AppBloc>().state.isRider;
-      if(isRider) {
+      if (isRider) {
         return BlocProvider(
-          create: (_) => RiderDashCubit(),
+          create: (context) => RiderDashCubit(
+            miscRepo: RepositoryProvider.of(context),
+            errorHandler: RepositoryProvider.of(context),
+          ),
           child: const DashboardPage(),
         );
       }

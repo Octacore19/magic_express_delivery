@@ -13,6 +13,5 @@ class HistoryEvent extends Equatable {
 enum HistoryActions {
   onRefreshHistoryList,
   fetchHistoryDetail,
-  refreshHistoryList,
   getHistoryList,
 }

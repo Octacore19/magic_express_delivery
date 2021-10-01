@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:magic_express_delivery/src/pages/home/home.dart';
 
 class RiderHome extends StatelessWidget {
   @override
@@ -9,24 +10,31 @@ class RiderHome extends StatelessWidget {
         children: [
           TabBar(
             labelColor: Theme.of(context).primaryColorDark,
-            labelStyle: Theme.of(context).textTheme.bodyText2,
+            labelStyle: Theme.of(context)
+                .textTheme
+                .bodyText2
+                ?.copyWith(fontWeight: FontWeight.w700),
             indicatorColor: Theme.of(context).primaryColorDark,
             unselectedLabelColor: Colors.grey,
-            unselectedLabelStyle: Theme.of(context).textTheme.bodyText2,
+            unselectedLabelStyle: Theme.of(context)
+                .textTheme
+                .bodyText2
+                ?.copyWith(fontWeight: FontWeight.w700),
             enableFeedback: true,
-            tabs: [
-              Tab(text: 'NEW REQUESTS'),
-              Tab(text: 'COMPLETED REQUESTS')
-            ],
+            tabs: [Tab(text: 'NEW REQUESTS'), Tab(text: 'COMPLETED REQUESTS')],
           ),
+          const SizedBox(height: 16),
           Expanded(
-            child: TabBarView(
-              children: [
-                Container(),
-                Container()
-              ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TabBarView(
+                children: [
+                  NewRiderOrders(),
+                  CompletedRiderOrders(),
+                ],
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

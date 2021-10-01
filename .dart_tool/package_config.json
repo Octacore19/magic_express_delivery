@@ -272,12 +272,6 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "flow_builder",
-      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flow_builder-0.0.4",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "flutter",
       "rootUri": "file:///C:/src/flutter/packages/flutter",
       "packageUri": "lib/",
@@ -358,6 +352,18 @@
     {
       "name": "formz",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/formz-0.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "geocoding",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/geocoding-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "geocoding_platform_interface",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/geocoding_platform_interface-2.0.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -830,6 +836,12 @@
       "languageVersion": "2.13"
     },
     {
+      "name": "workmanager",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/workmanager-0.5.0-dev.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "xdg_directories",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/xdg_directories-0.2.0",
       "packageUri": "lib/",
@@ -854,7 +866,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-09-30T15:11:58.622652Z",
+  "generated": "2021-09-30T20:45:04.824839Z",
   "generator": "pub",
   "generatorVersion": "2.14.2"
 }

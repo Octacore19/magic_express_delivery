@@ -11,6 +11,7 @@ class RiderDash extends StatefulWidget {
 }
 
 class _State extends State<RiderDash> {
+
   @override
   Widget build(BuildContext context) {
     int position = context.watch<RiderDashCubit>().state.pages.position;
@@ -50,7 +51,8 @@ class _State extends State<RiderDash> {
                 Text(
                   'Availability:',
                   style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                    color: state.riderAvailability ? Colors.blue.shade900 : Colors.grey
+                    color: state.riderAvailability ? Colors.green : Colors.red,
+                    fontWeight: FontWeight.w700
                   ),
                 ),
                 SizedBox(width: 4.0),

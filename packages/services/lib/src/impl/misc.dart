@@ -19,9 +19,12 @@ class MiscServiceImpl implements IMiscService {
   }
 
   @override
-  Future<DioResponse> updateAvailability() async {
+  Future<DioResponse> updateAvailability(bool value) async {
     try {
-      final baseResponse = await _dio.post(ApiEndpoints.RIDER_AVAILABILITY);
+      final baseResponse = await _dio.post(
+        ApiEndpoints.RIDER_AVAILABILITY,
+        data: {'is_available': value},
+      );
       return DioResponse.fromJson(baseResponse.data);
     } catch (e) {
       throw e;

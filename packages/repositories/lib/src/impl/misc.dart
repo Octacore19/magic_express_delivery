@@ -27,11 +27,11 @@ class MiscRepoImpl implements IMiscRepo {
   }
 
   @override
-  Future<void> updateAvailability() async {
+  Future<void> updateAvailability(bool value) async {
     try {
-      final res = await _service.updateAvailability();
+      final res = await _service.updateAvailability(value);
       if (!res.success) throw RequestFailureException(res.message);
-      final data = BaseResponse.fromJson(res.data).data;
+      final data = BaseResponse.fromJson(res.data).message;
       if (data == null) throw NoDataException();
       return;
     } catch (e) {
@@ -54,15 +54,16 @@ class MiscRepoImpl implements IMiscRepo {
   }
 
   @override
-  Future<void> updateUserLocation(double latitude, double longitude) async {
+  Future<void> updateUserLocation(double latitude, double longitude, String address) async {
     try {
       final d = {
         'location': {
           'latitude': latitude,
           'longitude': longitude,
+          'address': address,
         }
       };
-      final res = await _service.updateUserPassword(d);
+      final res = await _service.updateUserLocation(d);
       if (!res.success) throw RequestFailureException(res.message);
       final data = BaseResponse.fromJson(res.data).message;
       if (data == null) throw NoDataException();

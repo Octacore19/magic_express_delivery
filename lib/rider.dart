@@ -2,12 +2,14 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_paystack_client/flutter_paystack_client.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:repositories/repositories.dart';
 import 'package:services/services.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:workmanager/workmanager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,4 +55,32 @@ void main() async {
     ],
     child: App(true),
   ));
+}
+
+const LocationUpdateTask = 'Rider Location Update';
+
+void callbackDispatcher() {
+  Workmanager().executeTask((taskName, inputData) async {
+    if (taskName == LocationUpdateTask) {
+      final preference = Preferences();
+      final api = ApiProvider(preference: preference);
+      final miscRepo = MiscRepo(api: api);
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.always || permission == LocationPermission.whileInUse) {
+        Position userLocation = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
+        final res = await placemarkFromCoordinates(userLocation.latitude, userLocation.longitude);
+        final b = res.first;
+        final add = '${b.street} ${b.subAdministrativeArea} ${b.administrativeArea}';
+        await miscRepo.updateUserLocation(
+          userLocation.latitude,
+          userLocation.longitude,
+          add,
+        );
+      }
+    }
+    return Future.value(true);
+  });
 }

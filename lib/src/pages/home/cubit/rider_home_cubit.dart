@@ -24,6 +24,36 @@ class RiderHomeCubit extends Cubit<RiderHomeState> {
 
   late StreamSubscription _orderSubscription;
 
+  void fetchHistoryDetail(Order order) async {
+    emit(state.copyWith(status: Status.loading, detail: OrderDetail.empty()));
+    try {
+      final res = await _ridersRepo.fetchHistoryDetail(order.id.toString());
+      emit(state.copyWith(status: Status.success, detail: res));
+    } on Exception catch (e) {
+      _handler.handleExceptionsWithAction(e, () => fetchHistoryDetail(order));
+      emit(state.copyWith(status: Status.error));
+    }
+  }
+
+  void refreshHistory() async {
+    emit(state.copyWith(status: Status.loading, detail: OrderDetail.empty()));
+    try {
+      await _ridersRepo.fetchAllHistory();
+      emit(state.copyWith(status: Status.success));
+    } on Exception catch (e) {
+      _handler.handleExceptionsWithAction(e, refreshHistory);
+      emit(state.copyWith(status: Status.error));
+    }
+  }
+
+  Future<void> refreshHistoryList() async {
+    try {
+      await _ridersRepo.fetchAllHistory();
+    } on Exception catch (e) {
+      _handler.handleExceptions(e);
+    }
+  }
+
   @override
   Future<void> close() {
     _orderSubscription.cancel();

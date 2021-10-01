@@ -13,7 +13,7 @@ class ApiEndpoints {
   static const USER_ORDER_DETAIL = '/user/order';
   static const RIDER_ORDERS = '/rider/orders';
   static const RIDER_ORDER_DETAIL = '/rider/order';
-  static const RIDER_AVAILABILITY = 'rider/availability';
+  static const RIDER_AVAILABILITY = '/rider/availability';
 
   //GOOGLE PLACES
   static const SEARCH_PLACE = '/place/autocomplete/json';

@@ -12,7 +12,7 @@ class MiscService implements IMiscService {
   Future<DioResponse> getCharges() => _service.getCharges();
 
   @override
-  Future<DioResponse> updateAvailability() => _service.updateAvailability();
+  Future<DioResponse> updateAvailability(bool value) => _service.updateAvailability(value);
 
   @override
   Future<DioResponse> updateDeviceToken(Map<String, dynamic> data) =>

@@ -17,15 +17,17 @@ class MiscRepo implements IMiscRepo {
   Future<void> fetchChargesFromService() => _repo.fetchChargesFromService();
 
   @override
-  Future<void> updateAvailability() => _repo.updateAvailability();
+  Future<void> updateAvailability(bool value) =>
+      _repo.updateAvailability(value);
 
   @override
   Future<void> updateDeviceToken(String token) =>
       _repo.updateDeviceToken(token);
 
   @override
-  Future<void> updateUserLocation(double latitude, double longitude) =>
-      _repo.updateUserLocation(latitude, longitude);
+  Future<void> updateUserLocation(
+          double latitude, double longitude, String address) =>
+      _repo.updateUserLocation(latitude, longitude, address);
 
   @override
   Future<String> updateUserPassword(
