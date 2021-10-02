@@ -837,7 +837,7 @@
     },
     {
       "name": "workmanager",
-      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/workmanager-0.5.0-dev.7",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/workmanager-0.4.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -866,7 +866,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-09-30T20:45:04.824839Z",
+  "generated": "2021-10-02T06:47:32.221003Z",
   "generator": "pub",
   "generatorVersion": "2.14.2"
 }

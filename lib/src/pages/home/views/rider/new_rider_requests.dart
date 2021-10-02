@@ -4,7 +4,7 @@ import 'package:magic_express_delivery/src/pages/home/cubit/rider_home_cubit.dar
 import 'package:magic_express_delivery/src/utils/utils.dart';
 import 'package:repositories/repositories.dart';
 
-class NewRiderOrders extends StatelessWidget {
+class NewRiderRequests extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RiderHomeCubit, RiderHomeState>(
@@ -38,7 +38,12 @@ class NewRiderOrders extends StatelessWidget {
                   },
                   child: Text(
                     'Click to refresh page',
-                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                  style: TextButton.styleFrom(
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .button
+                        ?.copyWith(fontWeight: FontWeight.w700),
                   ),
                 )
               ],

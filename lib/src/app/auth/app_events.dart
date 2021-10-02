@@ -18,3 +18,12 @@ class AuthenticationStatusChanged  extends AppEvent {
   @override
   List<Object> get props => [status];
 }
+
+class OnMessageReceived extends AppEvent {
+  const OnMessageReceived(this.order);
+
+  final FCMOrder order;
+
+  @override
+  List<Object> get props => [order];
+}

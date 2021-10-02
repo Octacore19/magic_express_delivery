@@ -4,7 +4,7 @@ import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:magic_express_delivery/src/utils/utils.dart';
 import 'package:repositories/repositories.dart';
 
-class CompletedRiderOrders extends StatelessWidget {
+class CompletedRiderRequests extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RiderHomeCubit, RiderHomeState>(
@@ -38,7 +38,12 @@ class CompletedRiderOrders extends StatelessWidget {
                   },
                   child: Text(
                     'Click to refresh page',
-                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                  style: TextButton.styleFrom(
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .button
+                        ?.copyWith(fontWeight: FontWeight.w700),
                   ),
                 )
               ],
@@ -47,8 +52,7 @@ class CompletedRiderOrders extends StatelessWidget {
         }
         return RefreshIndicator(
           displacement: 120,
-          onRefresh: () =>
-              context.read<RiderHomeCubit>().refreshHistoryList(),
+          onRefresh: () => context.read<RiderHomeCubit>().refreshHistoryList(),
           child: ListView.builder(
             itemCount: state.completedOrders.length,
             itemBuilder: (context, index) {

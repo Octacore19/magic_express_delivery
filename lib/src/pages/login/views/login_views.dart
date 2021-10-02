@@ -30,7 +30,10 @@ class _EmailInput extends StatelessWidget {
       focusColor: primaryColor,
       hintText: 'Email',
       errorText: getError(error),
-      hintStyle: Theme.of(context).textTheme.caption,
+      hintStyle: Theme.of(context)
+          .textTheme
+          .caption
+          ?.copyWith(fontWeight: FontWeight.w700),
       focusedBorder: AppTheme.textOutlineFocusedBorder(context),
       enabledBorder: AppTheme.textOutlineEnabledBorder(context),
       errorBorder: AppTheme.textOutlineErrorBorder(context),
@@ -84,7 +87,10 @@ class _PasswordInput extends StatelessWidget {
       hintText: 'Password',
       focusColor: primaryColor,
       errorText: getError(error),
-      hintStyle: Theme.of(context).textTheme.caption,
+      hintStyle: Theme.of(context)
+          .textTheme
+          .caption
+          ?.copyWith(fontWeight: FontWeight.w700),
       suffixIcon: InkWell(
         child: Icon(
           passwordObscured ? MdiIcons.eye : MdiIcons.eyeOff,
@@ -140,9 +146,10 @@ class _SubmitButton extends StatelessWidget {
               },
             ),
             style: ElevatedButton.styleFrom(
-              textStyle: Theme.of(context).textTheme.button?.copyWith(
-                fontWeight: FontWeight.w700
-              ),
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .button
+                  ?.copyWith(fontWeight: FontWeight.w700),
               padding: EdgeInsets.all(16.0),
               primary: primaryColorSelect(context),
             ),
@@ -167,19 +174,35 @@ class _SubmitButton extends StatelessWidget {
   }
 }
 
-class _RegistrationButton extends StatelessWidget {
+class _AuthOptionButton extends StatelessWidget {
+  const _AuthOptionButton({
+    required this.text,
+    required this.onPressed,
+    this.hide = false,
+    this.align
+  });
+
+  final String text;
+  final VoidCallback onPressed;
+  final AlignmentGeometry? align;
+  final bool hide;
+
   @override
   Widget build(BuildContext context) {
-    final isRider = context.read<AppBloc>().state.isRider;
-    if (isRider) return SizedBox.shrink();
-    return TextButton(
-        child: Text('Not registered? Click here!'),
+    if (hide) return SizedBox.shrink();
+    return Align(
+      alignment: align ?? Alignment.center,
+      child: TextButton(
+        child: Text(text),
         style: TextButton.styleFrom(
-          padding: EdgeInsets.zero,
-          textStyle: Theme.of(context).textTheme.button,
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          textStyle: Theme.of(context)
+              .textTheme
+              .button
+              ?.copyWith(fontWeight: FontWeight.w700),
         ),
-        onPressed: () {
-          Navigator.of(context).push(RegistrationPage.route());
-        });
+        onPressed: onPressed,
+      ),
+    );
   }
 }

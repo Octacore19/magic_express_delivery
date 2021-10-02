@@ -29,11 +29,11 @@ class _State extends State<RiderDash> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_bag_rounded),
-            label: 'Orders',
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Profile',
+            icon: Icon(Icons.settings),
+            label: '',
           ),
         ],
       ),
@@ -75,46 +75,11 @@ class _State extends State<RiderDash> {
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         )
       ];
-    } else if (position == 1) {
-      return [
-        IconButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                title: Text('Do you want to log out?'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      context.read<AuthRepo>().logOut();
-                      AppKeys.navigatorKey.currentState?.pushAndRemoveUntil(
-                        LoginPage.route(),
-                        (route) => false,
-                      );
-                    },
-                    child: Text('Yes'),
-                  ),
-                  TextButton(
-                    onPressed: () =>
-                        Navigator.of(context, rootNavigator: true).pop(),
-                    child: Text('No'),
-                  )
-                ],
-              ),
-            );
-          },
-          icon: Icon(Icons.exit_to_app),
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        )
-      ];
     }
   }
 
   final List<Widget> _pages = [
-    HomePage(),
+    RiderHomePage(),
     ProfilePage(),
   ];
 }

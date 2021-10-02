@@ -37,7 +37,10 @@ class _FirstNameInput extends StatelessWidget {
       focusColor: primaryColor,
       hintText: 'First name',
       errorText: getError(error),
-      hintStyle: Theme.of(context).textTheme.caption,
+      hintStyle: Theme.of(context)
+          .textTheme
+          .caption
+          ?.copyWith(fontWeight: FontWeight.w700),
       focusedBorder: AppTheme.textOutlineFocusedBorder(context),
       enabledBorder: AppTheme.textOutlineEnabledBorder(context),
       errorBorder: AppTheme.textOutlineErrorBorder(context),
@@ -90,7 +93,10 @@ class _LastNameInput extends StatelessWidget {
       prefixIcon: Icon(Icons.person, color: primaryColor),
       hintText: 'Last name',
       errorText: getError(error),
-      hintStyle: Theme.of(context).textTheme.caption,
+      hintStyle: Theme.of(context)
+          .textTheme
+          .caption
+          ?.copyWith(fontWeight: FontWeight.w700),
       focusedBorder: AppTheme.textOutlineFocusedBorder(context),
       enabledBorder: AppTheme.textOutlineEnabledBorder(context),
       errorBorder: AppTheme.textOutlineErrorBorder(context),
@@ -142,7 +148,10 @@ class _EmailInput extends StatelessWidget {
       focusColor: primaryColor,
       hintText: 'Email',
       errorText: getError(error),
-      hintStyle: Theme.of(context).textTheme.caption,
+      hintStyle: Theme.of(context)
+          .textTheme
+          .caption
+          ?.copyWith(fontWeight: FontWeight.w700),
       focusedBorder: AppTheme.textOutlineFocusedBorder(context),
       enabledBorder: AppTheme.textOutlineEnabledBorder(context),
       errorBorder: AppTheme.textOutlineErrorBorder(context),
@@ -201,7 +210,10 @@ class _PhoneNumberInput extends StatelessWidget {
       prefixIcon: Icon(Icons.phone, color: primaryColor),
       hintText: 'Phone number',
       errorText: getError(error),
-      hintStyle: Theme.of(context).textTheme.caption,
+      hintStyle: Theme.of(context)
+          .textTheme
+          .caption
+          ?.copyWith(fontWeight: FontWeight.w700),
       focusedBorder: AppTheme.textOutlineFocusedBorder(context),
       enabledBorder: AppTheme.textOutlineEnabledBorder(context),
       errorBorder: AppTheme.textOutlineErrorBorder(context),
@@ -257,7 +269,10 @@ class _PasswordInput extends StatelessWidget {
       hintText: 'Password',
       focusColor: primaryColor,
       errorText: getError(error),
-      hintStyle: Theme.of(context).textTheme.caption,
+      hintStyle: Theme.of(context)
+          .textTheme
+          .caption
+          ?.copyWith(fontWeight: FontWeight.w700),
       suffixIcon: InkWell(
         child: Icon(
           passwordObscured ? MdiIcons.eye : MdiIcons.eyeOff,
@@ -329,7 +344,10 @@ class _ConfirmPasswordInput extends StatelessWidget {
       hintText: 'Confirm password',
       focusColor: primaryColor,
       errorText: getError(error),
-      hintStyle: Theme.of(context).textTheme.caption,
+      hintStyle: Theme.of(context)
+          .textTheme
+          .caption
+          ?.copyWith(fontWeight: FontWeight.w700),
       suffixIcon: InkWell(
         child: Icon(
           passwordObscured ? MdiIcons.eye : MdiIcons.eyeOff,
@@ -388,7 +406,10 @@ class _CreateButton extends StatelessWidget {
               },
             ),
             style: ElevatedButton.styleFrom(
-              textStyle: Theme.of(context).textTheme.button,
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .button
+                  ?.copyWith(fontWeight: FontWeight.w700),
               padding: EdgeInsets.all(16.0),
               primary: primaryColorSelect(context),
             ),

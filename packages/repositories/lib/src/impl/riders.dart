@@ -48,15 +48,21 @@ class RidersRepoImpl implements IRidersRepo {
   }
 
   @override
-  Future<void> updateOrderPaymentStatus() {
-    // TODO: implement updateOrderPaymentStatus
-    throw UnimplementedError();
+  Future<void> updateOrderPaymentStatus() async {
+    try {
+
+    } catch (e) {
+      throw e;
+    }
   }
 
   @override
-  Future<void> updateOrderStatus() {
-    // TODO: implement updateOrderStatus
-    throw UnimplementedError();
+  Future<void> updateOrderStatus() async {
+    try {
+
+    } catch (e) {
+      throw e;
+    }
   }
 
   @override

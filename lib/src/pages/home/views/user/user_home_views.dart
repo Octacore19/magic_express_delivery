@@ -1,4 +1,4 @@
-part of 'home_page.dart';
+part of 'user_homepage.dart';
 
 class _GreetingsView extends StatelessWidget {
   @override
@@ -14,7 +14,7 @@ class _GreetingsView extends StatelessWidget {
               return Text(
                 _generateGreeting() + ', ${user.firstName} ${user.lastName}!',
                 style: Theme.of(context).textTheme.headline6?.copyWith(
-                  fontWeight: FontWeight.w700
+                    fontWeight: FontWeight.w700
                 ),
               );
             }

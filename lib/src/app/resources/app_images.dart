@@ -8,4 +8,5 @@ class AppImages {
   static const PROFILE_PICTURE = 'assets/profile_picture.png';
   static const SHOPPING_CART = 'assets/shopping_cart.png';
   static const DRIVER_IMAGE = 'assets/driver.png';
+  static const DELIVERY_IMAGE = 'assets/delivery.png';
 }

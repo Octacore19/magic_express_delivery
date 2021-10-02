@@ -16,7 +16,8 @@ class ErrorHandler {
         break;
       case RequestFailureException:
         _ErrorDialogBuilder(
-          message: (e as RequestFailureException).message ?? 'Unable to fetch request',
+          message: (e as RequestFailureException).message ??
+              'Unable to fetch request',
         )..show(context);
         break;
       case NoDataException:
@@ -29,6 +30,11 @@ class ErrorHandler {
           message: 'No data available, try again',
         )..show(context);
         break;
+      case NoPermissionException:
+        _ErrorDialogBuilder(
+          message: (e as NoPermissionException).message!
+        )..show(context);
+        break;
     }
   }
 
@@ -39,7 +45,8 @@ class ErrorHandler {
         break;
       case RequestFailureException:
         _ErrorDialogBuilder(
-          message: (e as RequestFailureException).message ?? 'Unable to fetch request',
+          message: (e as RequestFailureException).message ??
+              'Unable to fetch request',
           onRetry: onPressed,
         )..show(context);
         break;
@@ -148,7 +155,10 @@ class _ErrorDialogBuilder extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 24.0),
                   child: Text(
                     message,
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        ?.copyWith(fontWeight: FontWeight.w700),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -162,7 +172,10 @@ class _ErrorDialogBuilder extends StatelessWidget {
                     child: Text('DISMISS'),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 16.0),
-                      textStyle: Theme.of(context).textTheme.button,
+                      textStyle: Theme.of(context)
+                          .textTheme
+                          .button
+                          ?.copyWith(fontWeight: FontWeight.w700),
                     ),
                   ),
                 ),
@@ -182,7 +195,10 @@ class _ErrorDialogBuilder extends StatelessWidget {
                           child: Text('RETRY'),
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.symmetric(vertical: 16.0),
-                            textStyle: Theme.of(context).textTheme.button,
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .button
+                                ?.copyWith(fontWeight: FontWeight.w700),
                           ),
                         ),
                       ),

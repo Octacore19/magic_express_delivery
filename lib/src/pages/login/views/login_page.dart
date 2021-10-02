@@ -83,11 +83,11 @@ class _LoginFormState extends State<_LoginForm> {
             ..showSnackBar(snack);
         }
       },
-      child: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 72),
+      child: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            alignment: Alignment.center,
             child: Column(
               children: [
                 headerWidget(),
@@ -95,10 +95,23 @@ class _LoginFormState extends State<_LoginForm> {
                 _EmailInput(_emailFocusNode),
                 const SizedBox(height: 24.0),
                 _PasswordInput(_passwordFocusNode),
-                const SizedBox(height: 96.0),
+                _AuthOptionButton(
+                  text: 'Forgot password',
+                  align: Alignment.centerRight,
+                  onPressed: () {
+                    // Navigator.of(context).push(RegistrationPage.route());
+                  },
+                ),
+                const SizedBox(height: 120.0),
                 _SubmitButton(),
                 const SizedBox(height: 16.0),
-                _RegistrationButton(),
+                _AuthOptionButton(
+                  text: 'Not registered? Click here!',
+                  hide: context.read<AppBloc>().state.isRider,
+                  onPressed: () {
+                    Navigator.of(context).push(RegistrationPage.route());
+                  },
+                ),
               ],
             ),
           ),

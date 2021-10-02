@@ -1,4 +1,2 @@
-export 'completed_rider_orders.dart';
-export 'home_page.dart';
-export 'new_riders_orders.dart';
-export 'rider_home.dart';
+export 'rider/rider.dart';
+export 'user/user_homepage.dart';

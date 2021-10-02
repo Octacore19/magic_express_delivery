@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:magic_express_delivery/rider.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
@@ -39,15 +40,40 @@ class RiderDashCubit extends Cubit<RiderDashState> with HydratedMixin {
   void toggleRiderAvailability(bool value) async {
     emit(state.copyWith(riderAvailability: value));
     try {
-      await _miscRepo.updateAvailability(value);
       if (value) {
-        Workmanager().registerPeriodicTask(
-          LocationUpdateTask,
-          LocationUpdateTask,
-          frequency: Duration(minutes: 30),
-        );
+        LocationPermission permission = await Geolocator.checkPermission();
+        if (permission == LocationPermission.denied) {
+          permission = await Geolocator.requestPermission();
+          if (permission == LocationPermission.denied) {
+            _handler.handleExceptions(NoPermissionException());
+          }
+        } else if (permission == LocationPermission.deniedForever) {
+          _handler.handleExceptions(NoPermissionException(
+            'Location permissions are permanently denied, we cannot request permissions.',
+          ));
+        } else {
+          await _miscRepo.updateAvailability(value);
+          if (value) {
+            Workmanager().registerPeriodicTask(
+              LocationUpdateTask,
+              LocationUpdateTask,
+              frequency: Duration(minutes: 30),
+            );
+          } else {
+            Workmanager().cancelByUniqueName("1");
+          }
+        }
       } else {
-        Workmanager().cancelByUniqueName("1");
+        await _miscRepo.updateAvailability(value);
+        if (value) {
+          Workmanager().registerPeriodicTask(
+            LocationUpdateTask,
+            LocationUpdateTask,
+            frequency: Duration(minutes: 30),
+          );
+        } else {
+          Workmanager().cancelByUniqueName("1");
+        }
       }
     } on Exception catch (e) {
       emit(state.copyWith(

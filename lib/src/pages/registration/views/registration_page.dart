@@ -155,7 +155,7 @@ class _RegistrationFormState extends State<_RegistrationForm> {
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             child: Column(
               children: [
                 headerWidget(),
@@ -186,7 +186,10 @@ class _RegistrationFormState extends State<_RegistrationForm> {
       alignment: Alignment.topLeft,
       child: Text(
         'Create account',
-        style: Theme.of(context).textTheme.headline6,
+        style: Theme.of(context)
+            .textTheme
+            .headline6
+            ?.copyWith(fontWeight: FontWeight.w700),
       ),
     );
   }

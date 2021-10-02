@@ -22,3 +22,9 @@ class NoDataException extends BaseException {
 class NoElementException extends BaseException {
   const NoElementException([String message = '']) : super(message);
 }
+
+class NoPermissionException extends BaseException {
+  const NoPermissionException(
+      [String message = 'Enable permission to use device location'])
+      : super(message);
+}

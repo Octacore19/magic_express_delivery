@@ -59,46 +59,11 @@ class _State extends State<UserDash> {
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         )
       ];
-    } else if (position == 2) {
-      return [
-        IconButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                title: Text('Do you want to log out?'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      context.read<AuthRepo>().logOut();
-                      AppKeys.navigatorKey.currentState?.pushAndRemoveUntil(
-                        LoginPage.route(),
-                        (route) => false,
-                      );
-                    },
-                    child: Text('Yes'),
-                  ),
-                  TextButton(
-                    onPressed: () =>
-                        Navigator.of(context, rootNavigator: true).pop(),
-                    child: Text('No'),
-                  )
-                ],
-              ),
-            );
-          },
-          icon: Icon(Icons.exit_to_app),
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        )
-      ];
     }
   }
 
   final List<Widget> _pages = [
-    HomePage(),
+    UserHomePage(),
     HistoryPage(),
     ProfilePage(),
   ];

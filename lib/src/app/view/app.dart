@@ -38,8 +38,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   }
 
   void _checkLocationPermissions() async {
-    final address = await placemarkFromCoordinates(6.5292779, 3.3772298);
-    log('Address => ${address.first}');
     bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!isServiceEnabled) {
       final snack = SnackBar(content: Text('Location services are disabled'));

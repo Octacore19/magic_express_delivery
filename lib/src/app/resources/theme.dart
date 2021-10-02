@@ -15,7 +15,7 @@ class AppTheme {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            textStyle: GoogleFonts.workSansTextTheme()
+            textStyle: GoogleFonts.ubuntuTextTheme()
                 .button
                 ?.copyWith(fontWeight: FontWeight.w700),
             primary: Colors.blue[900],
@@ -23,13 +23,13 @@ class AppTheme {
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            textStyle: GoogleFonts.workSansTextTheme()
+            textStyle: GoogleFonts.ubuntuTextTheme()
                 .button
                 ?.copyWith(fontWeight: FontWeight.w700),
             primary: Colors.blue[900],
           ),
         ),
-        textTheme: GoogleFonts.workSansTextTheme().apply(
+        textTheme: GoogleFonts.ubuntuTextTheme().apply(
           bodyColor: Colors.blue[900],
           displayColor: Colors.blue[900],
         ),
@@ -42,7 +42,7 @@ class AppTheme {
           actionsIconTheme: IconThemeData(
             color: Colors.blue[900],
           ),
-          titleTextStyle: GoogleFonts.workSansTextTheme().headline5?.copyWith(
+          titleTextStyle: GoogleFonts.ubuntuTextTheme().headline5?.copyWith(
                 color: Colors.blue.shade900,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
