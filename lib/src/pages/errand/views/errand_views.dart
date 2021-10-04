@@ -240,6 +240,7 @@ class _CartItemsView extends StatelessWidget {
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: items.length,
+              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (_, i) => ListTile(
                 dense: true,
                 leading: Text(

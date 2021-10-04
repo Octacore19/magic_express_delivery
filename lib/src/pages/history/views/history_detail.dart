@@ -22,7 +22,7 @@ class HistoryDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ORDER DETAIL'),
+        title: Text('Order Detail'),
         centerTitle: true,
       ),
       body: Padding(

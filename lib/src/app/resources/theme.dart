@@ -50,7 +50,7 @@ class AppTheme {
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           type: BottomNavigationBarType.shifting,
-          selectedIconTheme: IconThemeData(color: Colors.blue[900], size: 32),
+          selectedIconTheme: IconThemeData(color: Colors.blue.shade900, size: 32),
           selectedItemColor: Colors.blue[900],
           unselectedIconTheme: IconThemeData(color: Colors.grey, size: 24),
           unselectedItemColor: Colors.grey,

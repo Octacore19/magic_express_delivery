@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/pages/home/cubit/rider_home_cubit.dart';
+import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:magic_express_delivery/src/utils/utils.dart';
 import 'package:repositories/repositories.dart';
 
@@ -32,9 +33,7 @@ class NewRiderRequests extends StatelessWidget {
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
-                    /*final action = HistoryActions.onRefreshHistoryList;
-                  final event = HistoryEvent(action);
-                  context.read<HistoryBloc>().add(event);*/
+                    context.read<RiderHomeCubit>().refreshHistory();
                   },
                   child: Text(
                     'Click to refresh page',
@@ -80,10 +79,8 @@ class NewRiderRequests extends StatelessWidget {
           isThreeLine: true,
           contentPadding: EdgeInsets.all(16),
           onTap: () {
-            /*final action = HistoryActions.fetchHistoryDetail;
-            final event = HistoryEvent(action, d);
-            context.read<HistoryBloc>().add(event);
-            Navigator.of(context).push(HistoryDetailPage.route(context));*/
+            Navigator.of(context).push(RequestDetail.route(context));
+            context.read<RiderHomeCubit>().fetchHistoryDetail(d.id.toString());
           },
           title: Column(
             mainAxisSize: MainAxisSize.min,

@@ -21,6 +21,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
         _handler = errorHandler,
         _ordersRepo = ordersRepo,
         super(DeliveryState.initial(charges: ordersRepo.charges)) {
+    _ordersRepo.initRepo();
     _coordinatorCubit.setCartItems(List.empty());
     _pickupAddressSub = placesRepo.pickupDetail.listen((detail) {
       final action = DeliveryAction.OnPickupDetailChanged;
@@ -139,7 +140,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
         orderItems: state.cartItems,
         pickupLocation: Location.fromPlace(state.pickupDetail),
         destinationLocation: Location.fromPlace(state.deliveryDetail),
-        totalPrice: state.totalCartPrice,
+        totalPrice: state.totalAmount,
       );
       await _ordersRepo.createOrder(order.toJson());
       yield state.copyWith(status: Status.success);

@@ -1,4 +1,4 @@
-part of 'history_detail.dart';
+part of 'request_detail.dart';
 
 class _LocationWidget extends StatelessWidget {
   const _LocationWidget({
@@ -260,8 +260,8 @@ class _CartItemsWidget extends StatelessWidget {
         ),
         child: ListView.builder(
           itemCount: detail.orderItems.length,
-          physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           itemBuilder: (_, index) {
             final item = detail.orderItems[index];
             return ListTile(
@@ -514,5 +514,54 @@ class _SummaryWidget extends StatelessWidget {
       return Colors.red;
     }
     return Colors.green;
+  }
+}
+
+class _RiderOptionsButton extends StatelessWidget {
+  const _RiderOptionsButton({
+    required this.title,
+    required this.onPressed,
+    required this.loading,
+  });
+
+  final String title;
+  final VoidCallback onPressed;
+  final bool loading;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RiderHomeCubit, RiderHomeState>(
+      builder: (_, s) => Container(
+        margin: EdgeInsets.only(top: 24),
+        width: double.infinity,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.all(16),
+            textStyle: Theme.of(context).textTheme.button,
+          ),
+          onPressed: s.buttonActive ? onPressed : null,
+          child: Builder(
+            builder: (_) {
+              if (loading) {
+                return SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: CircularProgressIndicator.adaptive(
+                    valueColor: AlwaysStoppedAnimation(Colors.blue.shade500),
+                  ),
+                );
+              }
+              return Text(
+                title,
+                style: Theme.of(context).textTheme.button?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
   }
 }

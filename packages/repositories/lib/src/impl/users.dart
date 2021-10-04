@@ -24,6 +24,16 @@ class UsersRepoImpl implements IUsersRepo {
   Charges get charges => _charges ?? Charges.empty();
 
   @override
+  void initRepo() {
+    if (_charges == null) {
+      getCharges();
+    }
+    if (!_historyController.hasValue) {
+      fetchAllHistory();
+    }
+  }
+
+  @override
   Future<void> createOrder(Map<String, dynamic> data) async {
     try {
       final res = await _service.createOrder(data);

@@ -20,6 +20,7 @@ class RegistrationPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
+      backgroundColor: Colors.blue.shade50,
       body: BlocProvider(
         create: (_) => RegistrationBloc(
           authRepo: RepositoryProvider.of(context),

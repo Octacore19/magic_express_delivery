@@ -7,6 +7,7 @@ class RiderHomeState extends Equatable {
     required this.detail,
     required this.message,
     required this.riderAvailable,
+    required this.task,
   }) : _history = history;
 
   factory RiderHomeState.init() {
@@ -16,6 +17,7 @@ class RiderHomeState extends Equatable {
       detail: OrderDetail.empty(),
       message: '',
       riderAvailable: false,
+      task: Task.general,
     );
   }
 
@@ -23,10 +25,22 @@ class RiderHomeState extends Equatable {
   final List<Order> _history;
   final OrderDetail detail;
   final String message;
+  final Task task;
 
   final bool riderAvailable;
 
-  bool get loading => status == Status.loading;
+  bool get buttonActive => !_loading;
+
+  bool get _loading => status == Status.loading;
+
+  bool get success =>
+      status == Status.success && (task == Task.payment || task == Task.order);
+
+  bool get loading => _loading && task == Task.general;
+
+  bool get loadingPay => _loading && task == Task.payment;
+
+  bool get loadingOrder => _loading && task == Task.order;
 
   List<Order> get newOrders {
     return _history
@@ -42,6 +56,7 @@ class RiderHomeState extends Equatable {
   }
 
   bool get noCompleted => completedOrders.isEmpty;
+
   bool get noActive => newOrders.isEmpty;
 
   RiderHomeState copyWith({
@@ -50,6 +65,7 @@ class RiderHomeState extends Equatable {
     OrderDetail? detail,
     String? message,
     bool? riderAvailable,
+    Task? task,
   }) {
     return RiderHomeState._(
       status: status ?? this.status,
@@ -57,6 +73,7 @@ class RiderHomeState extends Equatable {
       detail: detail ?? this.detail,
       message: message ?? '',
       riderAvailable: riderAvailable ?? this.riderAvailable,
+      task: task ?? this.task,
     );
   }
 
@@ -67,6 +84,7 @@ class RiderHomeState extends Equatable {
       detail: OrderDetail.empty(),
       message: '',
       riderAvailable: json['available'],
+      task: Task.general,
     );
   }
 
@@ -81,5 +99,8 @@ class RiderHomeState extends Equatable {
         detail,
         message,
         riderAvailable,
+        task,
       ];
 }
+
+enum Task { general, payment, order }

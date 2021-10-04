@@ -32,9 +32,7 @@ class CompletedRiderRequests extends StatelessWidget {
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
-                    /*final action = HistoryActions.onRefreshHistoryList;
-                  final event = HistoryEvent(action);
-                  context.read<HistoryBloc>().add(event);*/
+                    context.read<RiderHomeCubit>().refreshHistory();
                   },
                   child: Text(
                     'Click to refresh page',
@@ -79,10 +77,8 @@ class CompletedRiderRequests extends StatelessWidget {
           isThreeLine: true,
           contentPadding: EdgeInsets.all(16),
           onTap: () {
-            /*final action = HistoryActions.fetchHistoryDetail;
-            final event = HistoryEvent(action, d);
-            context.read<HistoryBloc>().add(event);
-            Navigator.of(context).push(HistoryDetailPage.route(context));*/
+            Navigator.of(context).push(RequestDetail.route(context));
+            context.read<RiderHomeCubit>().fetchHistoryDetail(d.id.toString());
           },
           title: Column(
             mainAxisSize: MainAxisSize.min,

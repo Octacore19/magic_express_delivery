@@ -21,6 +21,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
         _ordersRepo = ordersRepo,
         _handler = errorHandler,
         super(ErrandState.init(charges: ordersRepo.charges)) {
+    _ordersRepo.initRepo();
     _storeAddressSub = _placesRepo.pickupDetail.listen((detail) {
       final action = ErrandAction.OnStoreDetailChanged;
       final event = ErrandEvent(action, detail);
@@ -145,7 +146,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
         orderItems: state.cartItems,
         storeLocation: Location.fromPlace(state.storeDetail),
         destinationLocation: Location.fromPlace(state.deliveryDetail),
-        totalPrice: state.totalCartPrice,
+        totalPrice: state.totalAmount,
       );
       await _ordersRepo.createOrder(order.toJson());
       yield state.copyWith(status: Status.success);

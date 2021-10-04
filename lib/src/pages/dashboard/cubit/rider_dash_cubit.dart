@@ -117,9 +117,10 @@ class RiderDashState extends Equatable {
     Status? status,
   }) {
     return RiderDashState._(
-        pages: pages ?? this.pages,
-        riderAvailability: riderAvailability ?? this.riderAvailability,
-        status: status ?? _status);
+      pages: pages ?? this.pages,
+      riderAvailability: riderAvailability ?? this.riderAvailability,
+      status: status ?? _status,
+    );
   }
 
   factory RiderDashState.fromJson(Map<String, dynamic> json) {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
@@ -17,31 +18,69 @@ class RiderHomeCubit extends Cubit<RiderHomeState> {
     _orderSubscription = ridersRepo.history.listen((history) {
       emit(state.copyWith(history: history));
     });
+    _detailSubscription = ridersRepo.detail.listen((detail) {
+      emit(state.copyWith(detail: detail));
+    });
   }
 
   final RidersRepo _ridersRepo;
   final ErrorHandler _handler;
 
   late StreamSubscription _orderSubscription;
+  late StreamSubscription _detailSubscription;
 
-  void fetchHistoryDetail(Order order) async {
-    emit(state.copyWith(status: Status.loading, detail: OrderDetail.empty()));
+  void fetchHistoryDetail(String id) async {
+    emit(state.copyWith(
+      status: Status.loading,
+      detail: OrderDetail.empty(),
+      task: Task.general,
+    ));
     try {
-      final res = await _ridersRepo.fetchHistoryDetail(order.id.toString());
-      emit(state.copyWith(status: Status.success, detail: res));
+      await _ridersRepo.fetchHistoryDetail(id.toString());
+      emit(state.copyWith(status: Status.success));
     } on Exception catch (e) {
-      _handler.handleExceptionsWithAction(e, () => fetchHistoryDetail(order));
+      _handler.handleExceptionsWithAction(e, () => fetchHistoryDetail(id));
       emit(state.copyWith(status: Status.error));
     }
   }
 
   void refreshHistory() async {
-    emit(state.copyWith(status: Status.loading, detail: OrderDetail.empty()));
+    emit(state.copyWith(
+      status: Status.loading,
+      detail: OrderDetail.empty(),
+      task: Task.general,
+    ));
     try {
       await _ridersRepo.fetchAllHistory();
       emit(state.copyWith(status: Status.success));
     } on Exception catch (e) {
       _handler.handleExceptionsWithAction(e, refreshHistory);
+      emit(state.copyWith(status: Status.error));
+    }
+  }
+
+  void updatePaymentStatus() async {
+    emit(state.copyWith(status: Status.loading, task: Task.payment));
+    try {
+      _ridersRepo.fetchAllHistory();
+      await _ridersRepo.updateOrderPaymentStatus(state.detail.id.toString());
+      emit(state.copyWith(status: Status.success));
+      _ridersRepo.fetchHistoryDetail(state.detail.id.toString());
+    } on Exception catch (e) {
+      _handler.handleExceptions(e);
+      emit(state.copyWith(status: Status.error));
+    }
+  }
+
+  void updateOrderStatus(OrderStatus status) async {
+    emit(state.copyWith(status: Status.loading, task: Task.order));
+    try {
+      await _ridersRepo.updateOrderStatus(state.detail.id.toString(), status);
+      emit(state.copyWith(status: Status.success));
+      _ridersRepo.fetchAllHistory();
+      _ridersRepo.fetchHistoryDetail(state.detail.id.toString());
+    } on Exception catch (e) {
+      _handler.handleExceptions(e);
       emit(state.copyWith(status: Status.error));
     }
   }
@@ -57,6 +96,7 @@ class RiderHomeCubit extends Cubit<RiderHomeState> {
   @override
   Future<void> close() {
     _orderSubscription.cancel();
+    _detailSubscription.cancel();
     return super.close();
   }
 }

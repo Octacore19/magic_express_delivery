@@ -81,8 +81,8 @@ class FCMUser extends Equatable {
   final String firstName;
   final String phoneNumber;
   final String email;
-  final double latitude;
-  final double longitude;
+  final dynamic latitude;
+  final dynamic longitude;
   final String address;
 
   @override

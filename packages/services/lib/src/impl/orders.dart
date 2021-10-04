@@ -92,7 +92,7 @@ class OrdersImpl implements IOrdersService {
   @override
   Future<DioResponse> updateOrderPaymentStatus(String orderId) async {
     try {
-      final baseResponse = await _dio.post('/order/$orderId/payment');
+      final baseResponse = await _dio.post('/${ApiEndpoints.RIDER_ORDER_DETAIL}/$orderId/payment');
       return DioResponse.fromJson(baseResponse.data);
     } catch (e) {
       throw e;
@@ -104,7 +104,7 @@ class OrdersImpl implements IOrdersService {
       String orderId, Map<String, dynamic> data) async {
     try {
       final baseResponse = await _dio.post(
-        '/order/$orderId/status',
+        '/${ApiEndpoints.RIDER_ORDER_DETAIL}/$orderId/status',
         data: FormData.fromMap(data),
       );
       return DioResponse.fromJson(baseResponse.data);

@@ -9,4 +9,5 @@ abstract class IUsersRepo {
   Future<void> verifyPayment(String reference, String orderId);
   Charges get charges;
   void dispose();
+  void initRepo();
 }

@@ -5,7 +5,6 @@ import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:magic_express_delivery/src/widgets/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:repositories/repositories.dart';
 
 part 'login_views.dart';
 
@@ -23,6 +22,7 @@ class LoginPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
+      backgroundColor: Colors.blue.shade50,
       body: DoubleBackToCloseWidget(
         child: BlocProvider(
           create: (_) => LoginBloc(

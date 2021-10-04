@@ -35,15 +35,15 @@ class _State extends State<UserDash> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_rounded),
-            label: 'Home',
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list_rounded),
-            label: 'History',
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Profile',
+            icon: Icon(Icons.settings),
+            label: '',
           ),
         ],
       ),

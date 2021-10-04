@@ -9,6 +9,9 @@ class UsersRepo implements IUsersRepo {
   final IUsersRepo _repo;
 
   @override
+  void initRepo() => _repo.initRepo();
+
+  @override
   Future<void> createOrder(Map<String, dynamic> data) =>
       _repo.createOrder(data);
 

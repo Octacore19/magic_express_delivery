@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paystack_client/flutter_paystack_client.dart';
+import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/models/models.dart';
 import 'package:magic_express_delivery/src/utils/utils.dart';
 import 'package:repositories/repositories.dart';
@@ -28,7 +29,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         super(AppState.unknown(isRider)) {
     _statusSubscription = _authRepo.status.listen(_onStatusChanged);
     if (isRider) {
-      FirebaseMessaging.onMessage.listen((message) {
+      FirebaseMessaging.onMessage.listen((message) async {
         final notification = message.notification;
         final android = notification?.android;
         final context = AppKeys.navigatorKey.currentState?.context;
@@ -36,8 +37,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         if (notification != null && android != null && context != null) {
           print('Notification title: ${notification.title}');
           print('Notification content: ${notification.body}');
-          showDialog(
+          bool value = await showDialog(
             context: context,
+            barrierDismissible: false,
             builder: (_) => AlertDialog(
               shape: RoundedRectangleBorder(
                 side: BorderSide(),
@@ -59,6 +61,12 @@ class AppBloc extends Bloc<AppEvent, AppState> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16.0),
+                  Image(
+                    image: AssetImage(AppImages.DELIVERY_IMAGE),
+                    height: MediaQuery.of(context).size.width * 0.25,
+                    width: MediaQuery.of(context).size.width * 0.25,
+                  ),
+                  const SizedBox(height: 16.0),
                   Text(
                     notification.body ?? '',
                     style: Theme.of(context)
@@ -72,12 +80,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
                     width: double.infinity,
                     child: TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.of(context, rootNavigator: true).pop(true);
                       },
                       child: Text('VIEW'),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 16.0),
-                        textStyle: Theme.of(context).textTheme.button,
+                        textStyle: Theme.of(context)
+                            .textTheme
+                            .button
+                            ?.copyWith(fontWeight: FontWeight.w700),
                       ),
                     ),
                   ),
@@ -85,11 +96,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
               ),
             ),
           );
+          if (value) {
+            final data = message.data;
+            log('Data gotten => $data');
+            final fcmData = FCMOrder.fromJson(data);
+            add(OnMessageReceived(fcmData));
+          }
         }
-
-        final data = message.data;
-        log('Data gotten => $data');
-        final fcmData = FCMOrder.fromJson(data);
       });
     }
   }
