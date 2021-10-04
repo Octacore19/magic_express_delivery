@@ -33,8 +33,7 @@ class RiderHomeState extends Equatable {
 
   bool get _loading => status == Status.loading;
 
-  bool get success =>
-      status == Status.success && (task == Task.payment || task == Task.order);
+  bool get success => status == Status.success;
 
   bool get loading => _loading && task == Task.general;
 

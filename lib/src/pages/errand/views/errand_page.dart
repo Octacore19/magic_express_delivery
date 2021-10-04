@@ -68,6 +68,7 @@ class _ErrandPageFormState extends State<_ErrandPageForm> {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<ErrandBloc>().state;
     return BlocListener<ErrandBloc, ErrandState>(
       listener: (_, state) async {
         if (state.isPayStackPayment) {
@@ -80,27 +81,43 @@ class _ErrandPageFormState extends State<_ErrandPageForm> {
           Navigator.of(context).push(FindRiderPage.route());
         }
       },
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: [
-              const SizedBox(height: 16),
-              _StoreNameInput(_storeNameController),
-              const SizedBox(height: 16),
-              _StoreAddressInput(_storeAddressController),
-              const SizedBox(height: 16),
-              _DeliveryAddressInput(_deliveryAddressController),
-              _DistanceCalculationView(),
-              const SizedBox(height: 48),
-              _ShoppingCartView(),
-              const SizedBox(height: 8),
-              _AddOrderButton(),
-              const SizedBox(height: 56.0),
-              _NextToProcessButton()
-            ],
+      child: Stack(
+        alignment: Alignment.topLeft,
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  _StoreNameInput(_storeNameController),
+                  const SizedBox(height: 16),
+                  _StoreAddressInput(_storeAddressController),
+                  const SizedBox(height: 16),
+                  _DeliveryAddressInput(_deliveryAddressController),
+                  _DistanceCalculationView(),
+                  const SizedBox(height: 48),
+                  _ShoppingCartView(),
+                  const SizedBox(height: 8),
+                  _AddOrderButton(),
+                  const SizedBox(height: 56.0),
+                  _NextToProcessButton()
+                ],
+              ),
+            ),
           ),
-        ),
+          Visibility(
+            visible: state.loading && state.calculating,
+            child: Container(
+              height: 16,
+              width: 16,
+              margin: EdgeInsets.only(left: 16),
+              child: CircularProgressIndicator.adaptive(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade900),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

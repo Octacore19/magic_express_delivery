@@ -15,23 +15,26 @@ class DeliveryState extends Equatable {
     required this.estimatedDistance,
     required this.estimatedDuration,
     required this.order,
+    required this.calculating,
   });
 
   factory DeliveryState.initial({required Charges charges}) {
     return DeliveryState._(
-        pickupAddress: '',
-        deliveryAddress: '',
-        pickupDetail: PlaceDetail.empty(),
-        deliveryDetail: PlaceDetail.empty(),
-        cartItems: List.empty(),
-        totalCartPrice: 0,
-        deliveryOrder: DeliveryOrder.empty(),
-        status: Status.initial,
-        message: '',
-        charges: charges,
-        estimatedDistance: TextValueObject.empty(),
-        estimatedDuration: TextValueObject.empty(),
-        order: NewOrder.empty());
+      pickupAddress: '',
+      deliveryAddress: '',
+      pickupDetail: PlaceDetail.empty(),
+      deliveryDetail: PlaceDetail.empty(),
+      cartItems: List.empty(),
+      totalCartPrice: 0,
+      deliveryOrder: DeliveryOrder.empty(),
+      status: Status.initial,
+      message: '',
+      charges: charges,
+      estimatedDistance: TextValueObject.empty(),
+      estimatedDuration: TextValueObject.empty(),
+      order: NewOrder.empty(),
+      calculating: false,
+    );
   }
 
   final String pickupAddress;
@@ -42,6 +45,7 @@ class DeliveryState extends Equatable {
 
   final List<CartItem> cartItems;
   final double totalCartPrice;
+  final bool calculating;
 
   final DeliveryOrder deliveryOrder;
   final NewOrder order;
@@ -85,20 +89,20 @@ class DeliveryState extends Equatable {
     return totalCartPrice + deliveryAmount;
   }
 
-  DeliveryState copyWith({
-    String? pickupAddress,
-    String? deliveryAddress,
-    PlaceDetail? pickupDetail,
-    PlaceDetail? deliveryDetail,
-    List<CartItem>? cartItems,
-    double? totalCartPrice,
-    DeliveryOrder? deliverOrder,
-    Status? status,
-    String? message,
-    TextValueObject? distance,
-    TextValueObject? duration,
-    NewOrder? order,
-  }) {
+  DeliveryState copyWith(
+      {String? pickupAddress,
+      String? deliveryAddress,
+      PlaceDetail? pickupDetail,
+      PlaceDetail? deliveryDetail,
+      List<CartItem>? cartItems,
+      double? totalCartPrice,
+      DeliveryOrder? deliverOrder,
+      Status? status,
+      String? message,
+      TextValueObject? distance,
+      TextValueObject? duration,
+      NewOrder? order,
+      bool? calculating}) {
     return DeliveryState._(
       pickupAddress: pickupAddress ?? this.pickupAddress,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
@@ -113,6 +117,7 @@ class DeliveryState extends Equatable {
       estimatedDuration: duration ?? this.estimatedDuration,
       estimatedDistance: distance ?? this.estimatedDistance,
       order: order ?? this.order,
+      calculating: calculating ?? false,
     );
   }
 
@@ -131,5 +136,6 @@ class DeliveryState extends Equatable {
         estimatedDuration,
         order,
         estimatedDistance,
+        calculating,
       ];
 }

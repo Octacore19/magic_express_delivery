@@ -16,10 +16,10 @@ class RiderHomeCubit extends Cubit<RiderHomeState> {
         _handler = errorHandler,
         super(RiderHomeState.init()) {
     _orderSubscription = ridersRepo.history.listen((history) {
-      emit(state.copyWith(history: history));
+      emit(state.copyWith(history: history, status: Status.initial));
     });
     _detailSubscription = ridersRepo.detail.listen((detail) {
-      emit(state.copyWith(detail: detail));
+      emit(state.copyWith(detail: detail, status: Status.initial));
     });
   }
 
@@ -62,10 +62,11 @@ class RiderHomeCubit extends Cubit<RiderHomeState> {
   void updatePaymentStatus() async {
     emit(state.copyWith(status: Status.loading, task: Task.payment));
     try {
-      _ridersRepo.fetchAllHistory();
-      await _ridersRepo.updateOrderPaymentStatus(state.detail.id.toString());
+      final id = state.detail.id.toString();
+      await _ridersRepo.updateOrderPaymentStatus(id);
       emit(state.copyWith(status: Status.success));
-      _ridersRepo.fetchHistoryDetail(state.detail.id.toString());
+      _ridersRepo.fetchAllHistory();
+      _ridersRepo.fetchHistoryDetail(id);
     } on Exception catch (e) {
       _handler.handleExceptions(e);
       emit(state.copyWith(status: Status.error));
@@ -75,10 +76,11 @@ class RiderHomeCubit extends Cubit<RiderHomeState> {
   void updateOrderStatus(OrderStatus status) async {
     emit(state.copyWith(status: Status.loading, task: Task.order));
     try {
-      await _ridersRepo.updateOrderStatus(state.detail.id.toString(), status);
+      final id = state.detail.id.toString();
+      await _ridersRepo.updateOrderStatus(id, status);
       emit(state.copyWith(status: Status.success));
       _ridersRepo.fetchAllHistory();
-      _ridersRepo.fetchHistoryDetail(state.detail.id.toString());
+      _ridersRepo.fetchHistoryDetail(id);
     } on Exception catch (e) {
       _handler.handleExceptions(e);
       emit(state.copyWith(status: Status.error));

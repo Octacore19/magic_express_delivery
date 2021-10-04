@@ -16,6 +16,7 @@ class ErrandState extends Equatable {
     required this.order,
     required this.estimatedDistance,
     required this.estimatedDuration,
+    required this.calculating,
   });
 
   factory ErrandState.init({required Charges charges}) {
@@ -34,6 +35,7 @@ class ErrandState extends Equatable {
       status: Status.initial,
       estimatedDistance: TextValueObject.empty(),
       estimatedDuration: TextValueObject.empty(),
+      calculating: false,
     );
   }
 
@@ -51,6 +53,7 @@ class ErrandState extends Equatable {
   final NewOrder order;
   final Status status;
   final String message;
+  final bool calculating;
 
   final TextValueObject estimatedDistance;
   final TextValueObject estimatedDuration;
@@ -84,30 +87,29 @@ class ErrandState extends Equatable {
   }
 
   double get deliveryAmount {
-    final dis = estimatedDistance.value/1000;
-    return charges.basePrice +
-        (dis * charges.pricePerKm).toDouble();
+    final dis = estimatedDistance.value / 1000;
+    return charges.basePrice + (dis * charges.pricePerKm).toDouble();
   }
 
   double get totalAmount {
     return totalCartPrice + deliveryAmount;
   }
 
-  ErrandState copyWith({
-    String? storeName,
-    String? storeAddress,
-    String? deliveryAddress,
-    PlaceDetail? storeDetail,
-    PlaceDetail? deliveryDetail,
-    List<CartItem>? cartItems,
-    double? totalCartPrice,
-    Status? status,
-    ErrandOrder? errandOrder,
-    String? message,
-    NewOrder? order,
-    TextValueObject? distance,
-    TextValueObject? duration,
-  }) {
+  ErrandState copyWith(
+      {String? storeName,
+      String? storeAddress,
+      String? deliveryAddress,
+      PlaceDetail? storeDetail,
+      PlaceDetail? deliveryDetail,
+      List<CartItem>? cartItems,
+      double? totalCartPrice,
+      Status? status,
+      ErrandOrder? errandOrder,
+      String? message,
+      NewOrder? order,
+      TextValueObject? distance,
+      TextValueObject? duration,
+      bool? calculating}) {
     return ErrandState._(
       storeName: storeName ?? this.storeName,
       storeAddress: storeAddress ?? this.storeAddress,
@@ -123,6 +125,7 @@ class ErrandState extends Equatable {
       order: order ?? this.order,
       estimatedDuration: duration ?? this.estimatedDuration,
       estimatedDistance: distance ?? this.estimatedDistance,
+      calculating: calculating ?? false,
     );
   }
 
@@ -142,5 +145,6 @@ class ErrandState extends Equatable {
         order,
         estimatedDuration,
         estimatedDistance,
+        calculating,
       ];
 }

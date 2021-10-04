@@ -123,6 +123,7 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     ErrandEvent event,
     ErrandState state,
   ) async* {
+    yield (state.copyWith(status: Status.loading, calculating: true));
     try {
       final res = await _placesRepo.getDistanceCalc(_startPlaceId, _endPlaceId);
       yield state.copyWith(

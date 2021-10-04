@@ -31,33 +31,67 @@ class RequestDetail extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: BlocConsumer<RiderHomeCubit, RiderHomeState>(
           listener: (_, state) {
-            if (state.success) {
+            if (state.success && state.task == Task.payment) {
               showDialog(
                 context: context,
-                builder: (_) => AlertDialog(
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.check_circle_outline, size: 48.0),
-                      const SizedBox(height: 16.0),
-                      Text(
-                        'Order updated successfully',
-                        style: Theme.of(context).textTheme.headline6,
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24.0),
-                  ),
-                ),
+                builder: (context) {
+                  CountdownTimer(Duration(seconds: 3), Duration(seconds: 1))
+                      .listen((event) async {
+                    if (event.elapsed.inSeconds == 3) {
+                      Navigator.of(context, rootNavigator: true).pop();
+                    }
+                  });
+                  return AlertDialog(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.check_circle_outline, size: 48.0),
+                        const SizedBox(height: 16.0),
+                        Text(
+                          'Order updated successfully',
+                          style: Theme.of(context).textTheme.headline6,
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                    ),
+                  );
+                },
               );
-              CountdownTimer(Duration(seconds: 3), Duration(seconds: 1))
-                  .listen((event) {
-                if (event.elapsed.inSeconds == 3) {
-                  Navigator.of(context, rootNavigator: true).pop();
-                }
-              });
+            }
+            if (state.success && state.task == Task.order) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  CountdownTimer(Duration(seconds: 3), Duration(seconds: 1))
+                      .listen((event) async {
+                    if (event.elapsed.inSeconds == 3) {
+                      Navigator.of(context, rootNavigator: true)
+                          .pushAndRemoveUntil(
+                              DashboardPage.route(), (route) => false);
+                    }
+                  });
+                  return AlertDialog(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.check_circle_outline, size: 48.0),
+                        const SizedBox(height: 16.0),
+                        Text(
+                          'Order updated successfully',
+                          style: Theme.of(context).textTheme.headline6,
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                    ),
+                  );
+                },
+              );
             }
           },
           builder: (_, state) {
@@ -99,7 +133,7 @@ class RequestDetail extends StatelessWidget {
                   Builder(
                     builder: (_) {
                       final d = state.detail;
-                      if (d.paymentMethod.toLowerCase() == 'cash' &&
+                      if (d.paymentMethod.toLowerCase() == 'pay on delivery' &&
                           d.paymentStatus.toLowerCase() == 'not paid' &&
                           d.status == OrderStatus.transit) {
                         return _RiderOptionsButton(

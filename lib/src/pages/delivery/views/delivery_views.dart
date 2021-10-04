@@ -282,7 +282,7 @@ class _NextToProcessButton extends StatelessWidget {
           onPressed: s.buttonActive ? () => navigate(context) : null,
           child: Builder(
             builder: (_) {
-              if (s.loading) {
+              if (s.loading && !s.calculating) {
                 return SizedBox(
                     child: CircularProgressIndicator.adaptive(
                   valueColor: AlwaysStoppedAnimation(Colors.blue.shade500),
