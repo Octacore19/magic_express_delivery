@@ -30,6 +30,10 @@ class AuthRepo implements IAuthRepo {
   Future<void> onAppLaunch() => _authRepo.onAppLaunch();
 
   @override
+  Future<void> resendVerification(String email) =>
+      _authRepo.resendVerification(email);
+
+  @override
   void dispose() => _authRepo.dispose();
 
   @override

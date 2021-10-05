@@ -123,6 +123,20 @@ class AuthRepoImpl extends IAuthRepo {
   }
 
   @override
+  Future<void> resendVerification(String email) async {
+    try {
+      final data = {'email': email};
+      final response = await _auth.resendVerification(data);
+      if (!response.success) throw RequestFailureException(response.message);
+      final res = BaseResponse.fromJson(response.data).data;
+      if (res == null) throw AuthenticationException();
+      return res['message'];
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
+
+  @override
   void dispose() {
     _statusController.close();
   }

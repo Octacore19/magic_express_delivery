@@ -15,6 +15,10 @@ class AuthService implements IAuthenticationService {
       _auth.loginUser(data);
 
   @override
+  Future<DioResponse> resendVerification(Map<String, String> data) =>
+      _auth.resendVerification(data);
+
+  @override
   Future<DioResponse> registerUser(Map<String, dynamic> data) =>
       _auth.registerUser(data);
 

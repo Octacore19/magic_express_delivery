@@ -25,6 +25,19 @@ class AuthImpl implements IAuthenticationService {
   }
 
   @override
+  Future<DioResponse> resendVerification(Map<String, String> data) async {
+    try {
+      final baseResponse = await _dio.post(
+        ApiEndpoints.RESEND_VERIFY,
+        queryParameters: data,
+      );
+      return DioResponse.fromJson(baseResponse.data);
+    } on Exception catch (e) {
+      throw e;
+    }
+  }
+
+  @override
   Future<DioResponse> registerUser(Map<String, dynamic> data) async {
     try {
       final baseResponse = await _dio.post(

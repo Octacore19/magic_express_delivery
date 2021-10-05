@@ -5,6 +5,7 @@ class ApiEndpoints {
   static const LOGIN_USER = '/auth/login';
   static const REGISTER_USER = '/auth/register';
   static const FORGOT_PASSWORD = '/auth/password/forgot';
+  static const RESEND_VERIFY = '/auth/resend-verification';
   static const LOG_OUT = '/logout';
 
   //ORDERS

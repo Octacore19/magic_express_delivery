@@ -13,6 +13,8 @@ abstract class IAuthRepo {
 
   Future<void> loginUser(String email, String password);
 
+  Future<void> resendVerification(String email);
+
   Future<String?> registerUser(
       String firstName,
       String lastName,
