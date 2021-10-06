@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:magic_express_delivery/src/app/resources/resources.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:repositories/repositories.dart';
 
@@ -11,7 +12,8 @@ class SplashScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late bool _loadingInProgress;
 
   late Animation<double> _angleAnimation;
@@ -58,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade300,
+      backgroundColor: Colors.blue.shade900,
       body: Center(
         child: BlocListener<AppBloc, AppState>(
           listener: (_, state) async {
@@ -72,7 +74,21 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               Navigator.of(context).pushReplacement(LoginPage.route());
             }
           },
-          child: _buildAnimation(),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image(
+                  image: AssetImage(AppImages.MAGIC_LOGO),
+                  height: MediaQuery.of(context).size.height * .3,
+                  width: MediaQuery.of(context).size.width * .4,
+                ),
+                _buildAnimation(),
+              ],
+            ),
+          ),
         ),
       ),
     );
