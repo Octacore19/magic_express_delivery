@@ -7,6 +7,7 @@ class LoginState extends Equatable {
     this.password = const Password.pure(),
     this.passwordObscured = true,
     this.message = '',
+    this.notVerified = false,
   });
 
   final FormzStatus status;
@@ -15,12 +16,15 @@ class LoginState extends Equatable {
   final bool passwordObscured;
   final String message;
 
+  final bool notVerified;
+
   LoginState copyWith({
     FormzStatus? status,
     Email? email,
     Password? password,
     bool? passwordVisible,
     String? message,
+    bool? notVerified,
   }) {
     return LoginState(
       status: status ?? this.status,
@@ -28,9 +32,17 @@ class LoginState extends Equatable {
       password: password ?? this.password,
       passwordObscured: passwordVisible ?? this.passwordObscured,
       message: message ?? this.message,
+      notVerified: notVerified ?? false,
     );
   }
 
   @override
-  List<Object> get props => [status, email, password, passwordObscured, message];
+  List<Object> get props => [
+        status,
+        email,
+        password,
+        passwordObscured,
+        message,
+        notVerified,
+      ];
 }

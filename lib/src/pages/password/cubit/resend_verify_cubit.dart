@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/models/models.dart';
+import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:repositories/repositories.dart';
 
 class ResendVerifyState extends Equatable {
@@ -11,17 +13,17 @@ class ResendVerifyState extends Equatable {
 
   factory ResendVerifyState.init() {
     return ResendVerifyState._(
-      status: Status.initial,
-      email: '',
+      status: FormzStatus.pure,
+      email: Email.pure(),
     );
   }
 
-  final Status status;
-  final String email;
+  final FormzStatus status;
+  final Email email;
 
   ResendVerifyState copyWith({
-    Status? status,
-    String? email,
+    FormzStatus? status,
+    Email? email,
   }) {
     return ResendVerifyState._(
       status: status ?? this.status,
@@ -45,17 +47,27 @@ class ResendVerifyCubit extends Cubit<ResendVerifyState> {
   final ErrorHandler _handler;
 
   void onEmailChanged(String email) {
-    emit(state.copyWith(email: email));
+    final e = Email.dirty(email);
+    emit(state.copyWith(email: e, status: Formz.validate([e])));
+  }
+
+  void onEmailUnFocused() {
+    final email = Email.dirty(state.email.value);
+    emit(state.copyWith(email: email, status: Formz.validate([email])));
   }
 
   void onSubmitVerificationEmail() async {
-    emit(state.copyWith(status: Status.loading));
-    try {
-      await _authRepo.resendVerification(state.email);
-      emit(state.copyWith(status: Status.success));
-    } on Exception catch (e) {
-      _handler.handleExceptions(e);
-      emit(state.copyWith(status: Status.error));
+    final email = Email.dirty(state.email.value);
+    emit(state.copyWith(status: Formz.validate([email]), email: email));
+    if (state.status.isValidated) {
+      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+      try {
+        await _authRepo.resendVerification(state.email.value);
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      } on Exception catch (e) {
+        _handler.handleExceptions(e);
+        emit(state.copyWith(status: FormzStatus.submissionFailure));
+      }
     }
   }
 }

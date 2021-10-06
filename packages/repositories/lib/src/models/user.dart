@@ -10,6 +10,7 @@ class User extends Equatable {
     required this.phoneNumber,
     this.role,
     this.paystackKey = '',
+    this.isVerified = false,
   });
 
   final String? firstName;
@@ -18,6 +19,7 @@ class User extends Equatable {
   final String phoneNumber;
   final String? role;
   final String paystackKey;
+  final bool isVerified;
 
   static const empty = User(email: '', phoneNumber: '');
 
@@ -36,6 +38,7 @@ class User extends Equatable {
       phoneNumber: json['phoneNumber'] ?? '',
       role: json['role'],
       paystackKey: pKey,
+      isVerified: json['isVerified']
     );
   }
 
@@ -47,6 +50,7 @@ class User extends Equatable {
         '"email":"${this.email}",'
         '"phoneNumber":"${this.phoneNumber}",'
         '"p":"$p",'
+        '"isVerified":"$isVerified",'
         '"role": "${this.role}"'
         '}';
     return json;

@@ -76,6 +76,10 @@ class _LoginFormState extends State<_LoginForm> {
           Navigator.of(context).pushReplacement(DashboardPage.route());
         }
 
+        if (state.status.isSubmissionFailure && state.notVerified) {
+          Navigator.of(context).pushReplacement(ResendVerifyPage.route());
+        }
+
         if (state.status.isSubmissionFailure && state.message.isNotEmpty) {
           SnackBar snack = SnackBar(content: Text(state.message));
           ScaffoldMessenger.of(context)

@@ -106,6 +106,8 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
       try {
         await _authRepo.loginUser(state.email.value, state.password.value);
         yield state.copyWith(status: FormzStatus.submissionSuccess);
+      } on UnverifiedUserException catch (e) {
+        yield state.copyWith(status: FormzStatus.submissionFailure, notVerified: true);
       } on AuthenticationException catch (e) {
         yield state.copyWith(
           status: FormzStatus.submissionFailure,

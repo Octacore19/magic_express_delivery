@@ -7,6 +7,10 @@ abstract class BaseException implements Exception {
   String toString() => "${runtimeType.toString()}: $message";
 }
 
+class UnverifiedUserException extends BaseException {
+  const UnverifiedUserException([String message = '']) : super(message);
+}
+
 class AuthenticationException extends BaseException {
   const AuthenticationException([String message = '']) : super(message);
 }

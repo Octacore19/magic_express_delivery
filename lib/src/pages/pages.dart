@@ -7,6 +7,7 @@ export 'history/history.dart';
 export 'home/home.dart';
 export 'login/login.dart';
 export 'options/options.dart';
+export 'password/password.dart';
 export 'paystack_payment/paystack_page.dart';
 export 'process/process.dart';
 export 'profile/profile.dart';

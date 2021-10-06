@@ -11,7 +11,10 @@ part 'registration_views.dart';
 class RegistrationPage extends StatelessWidget {
   const RegistrationPage();
 
-  static Route route() => AppRoutes.generateRoute(child: RegistrationPage());
+  static Route route() => AppRoutes.generateRoute(
+        child: RegistrationPage(),
+        fullScreenDialog: true,
+      );
 
   @override
   Widget build(BuildContext context) {

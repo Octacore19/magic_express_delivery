@@ -67,6 +67,7 @@ class AuthRepoImpl extends IAuthRepo {
       final data = BaseResponse.fromJson(response.data).data;
       if (data == null) throw AuthenticationException();
       final user = LoginResponse.fromJson(data).toUser;
+      if (!user.isVerified) throw UnverifiedUserException();
       if ((user.role?.toLowerCase() == 'user' && _isRider) ||
           (user.role?.toLowerCase() == 'rider' && !_isRider))
         throw AuthenticationException('Account cannot log in here');
@@ -173,12 +174,14 @@ extension on LoginResponse {
       final u = user!;
       if (u.email != null && u.phoneNumber != null) {
         return User(
-            email: u.email ?? '',
-            phoneNumber: u.phoneNumber ?? '',
-            firstName: u.firstName,
-            lastName: u.lastName,
-            role: u.role,
-            paystackKey: paystackKey ?? '');
+          email: u.email ?? '',
+          phoneNumber: u.phoneNumber ?? '',
+          firstName: u.firstName,
+          lastName: u.lastName,
+          role: u.role,
+          paystackKey: paystackKey ?? '',
+          isVerified: u.isVerified ?? false
+        );
       }
     }
     return User.empty;

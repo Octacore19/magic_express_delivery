@@ -18,6 +18,7 @@ class _User {
   final String? phoneNumber;
   final String? email;
   final String? role;
+  final bool? isVerified;
 
   _User({
     this.firstName,
@@ -25,6 +26,7 @@ class _User {
     this.phoneNumber,
     this.email,
     this.role,
+    this.isVerified,
   });
 
   _User.fromJson(Map<String, dynamic> json)
@@ -32,7 +34,8 @@ class _User {
         lastName = json['last_name'],
         phoneNumber = json['phone_number'],
         email = json['email'],
-        role = json['role'];
+        role = json['role'],
+        isVerified = json['is_verified'];
 
   @override
   String toString() {
@@ -40,6 +43,7 @@ class _User {
         'lastName: $lastName, '
         'phoneNumber: $phoneNumber, '
         'email: $email, '
+        'isVerified: $isVerified, '
         'role: $role)';
   }
 }
