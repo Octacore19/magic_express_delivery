@@ -38,7 +38,7 @@ class User extends Equatable {
       phoneNumber: json['phoneNumber'] ?? '',
       role: json['role'],
       paystackKey: pKey,
-      isVerified: json['isVerified']
+      isVerified: json['isVerified'] == 'true' ? true : false,
     );
   }
 

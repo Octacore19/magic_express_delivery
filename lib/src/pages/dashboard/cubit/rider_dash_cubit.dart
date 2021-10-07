@@ -19,7 +19,10 @@ class RiderDashCubit extends Cubit<RiderDashState> with HydratedMixin {
         "1",
         LocationUpdateTask,
         frequency: Duration(minutes: 30),
+        constraints: Constraints(networkType: NetworkType.connected),
       );
+    } else {
+      Workmanager().cancelByUniqueName("1");
     }
   }
 
@@ -55,9 +58,10 @@ class RiderDashCubit extends Cubit<RiderDashState> with HydratedMixin {
           await _miscRepo.updateAvailability(value);
           if (value) {
             Workmanager().registerPeriodicTask(
-              LocationUpdateTask,
+              "1",
               LocationUpdateTask,
               frequency: Duration(minutes: 30),
+              constraints: Constraints(networkType: NetworkType.connected),
             );
           } else {
             Workmanager().cancelByUniqueName("1");
@@ -67,9 +71,10 @@ class RiderDashCubit extends Cubit<RiderDashState> with HydratedMixin {
         await _miscRepo.updateAvailability(value);
         if (value) {
           Workmanager().registerPeriodicTask(
-            LocationUpdateTask,
+            "1",
             LocationUpdateTask,
             frequency: Duration(minutes: 30),
+            constraints: Constraints(networkType: NetworkType.connected),
           );
         } else {
           Workmanager().cancelByUniqueName("1");
@@ -125,9 +130,10 @@ class RiderDashState extends Equatable {
 
   factory RiderDashState.fromJson(Map<String, dynamic> json) {
     return RiderDashState._(
-        pages: RiderDashPages.ORDER,
-        riderAvailability: json['available'],
-        status: Status.initial);
+      pages: RiderDashPages.ORDER,
+      riderAvailability: json['available'],
+      status: Status.initial,
+    );
   }
 
   Map<String, dynamic> toJson() {

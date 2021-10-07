@@ -103,7 +103,7 @@ class _LoginFormState extends State<_LoginForm> {
                   text: 'Forgot password',
                   align: Alignment.centerRight,
                   onPressed: () {
-                    // Navigator.of(context).push(RegistrationPage.route());
+                    Navigator.of(context).push(ForgotPasswordPage.route());
                   },
                 ),
                 const SizedBox(height: 120.0),

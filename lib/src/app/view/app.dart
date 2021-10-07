@@ -30,10 +30,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
     if (widget.isRider) {
       _checkLocationPermissions();
-      Workmanager().initialize(
-        callbackDispatcher,
-        isInDebugMode: true,
-      );
+      Workmanager().initialize(callbackDispatcher);
     }
   }
 
@@ -49,8 +46,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        final snack = SnackBar(
-            content: Text('Enable permission to use device location'));
+        final snack =
+            SnackBar(content: Text('Enable permission to use device location'));
         ScaffoldMessenger.maybeOf(context)
           ?..hideCurrentSnackBar()
           ..showSnackBar(snack);

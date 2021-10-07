@@ -20,14 +20,12 @@ class ResendVerifyPage extends StatelessWidget {
         elevation: 0,
       ),
       backgroundColor: Colors.blue.shade50,
-      body: DoubleBackToCloseWidget(
-        child: BlocProvider(
-          create: (_) => ResendVerifyCubit(
-            authRepo: RepositoryProvider.of(context),
-            errorHandler: RepositoryProvider.of(context),
-          ),
-          child: _Form(),
+      body: BlocProvider(
+        create: (_) => SendEmailCubit(
+          authRepo: RepositoryProvider.of(context),
+          errorHandler: RepositoryProvider.of(context),
         ),
+        child: _Form(),
       ),
     );
   }
@@ -46,7 +44,7 @@ class _State extends State<_Form> {
     super.initState();
     _emailFocusNode.addListener(() {
       if (!_emailFocusNode.hasFocus) {
-        context.read<ResendVerifyCubit>().onEmailUnFocused();
+        context.read<SendEmailCubit>().onEmailUnFocused();
       }
     });
   }
@@ -59,7 +57,7 @@ class _State extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ResendVerifyCubit, ResendVerifyState>(
+    return BlocListener<SendEmailCubit, SendEmailState>(
       listener: (context, state) async {
         if (state.status.isSubmissionSuccess) {
           Navigator.of(context).pushReplacement(LoginPage.route());
@@ -90,6 +88,7 @@ class _State extends State<_Form> {
     return Align(
       alignment: Alignment.topLeft,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Verify Email',
@@ -101,7 +100,7 @@ class _State extends State<_Form> {
           const SizedBox(height: 24),
           Text(
             'Check your email for the verification link sent to you, '
-            'or you can request for a new verification link.',
+                'or you can request for a new verification link.',
             style: Theme.of(context)
                 .textTheme
                 .bodyText1
@@ -120,7 +119,7 @@ class _EmailInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<LoginBloc, LoginState, Email>(
+    return BlocSelector<SendEmailCubit, SendEmailState, Email>(
       selector: (s) => s.email,
       builder: (context, state) => TextFormField(
         initialValue: state.value,
@@ -129,7 +128,7 @@ class _EmailInput extends StatelessWidget {
         textInputAction: TextInputAction.next,
         cursorColor: Theme.of(context).primaryColorDark,
         onChanged: (email) =>
-            context.read<ResendVerifyCubit>().onEmailChanged(email),
+            context.read<SendEmailCubit>().onEmailChanged(email),
         decoration: setInputDecoration(context),
       ),
     );
@@ -137,7 +136,7 @@ class _EmailInput extends StatelessWidget {
 
   InputDecoration setInputDecoration(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColorDark;
-    final error = context.select((LoginBloc b) => b.state.email).error;
+    final error = context.select((SendEmailCubit b) => b.state.email).error;
     return InputDecoration(
       prefixIcon: Icon(Icons.email, color: primaryColor),
       focusColor: primaryColor,
@@ -173,7 +172,7 @@ class _SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
-    return BlocBuilder<ResendVerifyCubit, ResendVerifyState>(
+    return BlocBuilder<SendEmailCubit, SendEmailState>(
       buildWhen: (p, c) => p.status != c.status,
       builder: (context, state) {
         return SizedBox(
@@ -202,11 +201,11 @@ class _SubmitButton extends StatelessWidget {
             ),
             onPressed: state.status.isValidated
                 ? () {
-                    FocusScope.of(context).unfocus();
-                    context
-                        .read<ResendVerifyCubit>()
-                        .onSubmitVerificationEmail();
-                  }
+              FocusScope.of(context).unfocus();
+              context
+                  .read<SendEmailCubit>()
+                  .onSubmitVerificationEmail();
+            }
                 : null,
           ),
         );
@@ -217,7 +216,7 @@ class _SubmitButton extends StatelessWidget {
   Color primaryColorSelect(BuildContext context) {
     final primaryColorDark = Theme.of(context).primaryColorDark;
     final isLoading =
-        context.select((LoginBloc b) => b.state.status).isSubmissionInProgress;
+        context.select((SendEmailCubit b) => b.state.status).isSubmissionInProgress;
     if (isLoading) return Colors.transparent;
     return primaryColorDark;
   }
