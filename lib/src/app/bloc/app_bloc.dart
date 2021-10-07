@@ -28,6 +28,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         _ridersRepo = ridersRepo,
         super(AppState.unknown(isRider)) {
     _statusSubscription = _authRepo.status.listen(_onStatusChanged);
+    _initBloc();
     if (isRider) {
       FirebaseMessaging.onMessage.listen((message) async {
         final notification = message.notification;
@@ -115,6 +116,28 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   void _onStatusChanged(AuthStatus status) =>
       add(AuthenticationStatusChanged(status));
+
+  void _initBloc() async {
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+    if (initialMessage != null) {
+      if (state.isRider) {
+        final data = initialMessage.data;
+        log('Data gotten => $data');
+        final fcmData = FCMOrder.fromJson(data);
+        add(OnMessageReceived(fcmData));
+      }
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      final data = message.data;
+      log('Data gotten => $data');
+      final fcmData = FCMOrder.fromJson(data);
+      add(OnMessageReceived(fcmData));
+    });
+  }
 
   @override
   Stream<AppState> mapEventToState(AppEvent event) async* {

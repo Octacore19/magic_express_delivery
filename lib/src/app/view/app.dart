@@ -55,8 +55,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     }
     if (permission == LocationPermission.deniedForever) {
       final snack = SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.'));
+        content: Text(
+            'Location permissions are permanently denied, we cannot request permissions.'),
+      );
       ScaffoldMessenger.maybeOf(context)
         ?..hideCurrentSnackBar()
         ..showSnackBar(snack);
