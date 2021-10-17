@@ -119,6 +119,7 @@ class UserResponse {
     required this.firstName,
     required this.lastName,
     required this.email,
+    required this.phoneNumber,
   });
 
   static UserResponse? fromJson(Map<String, dynamic>? json) {
@@ -128,6 +129,7 @@ class UserResponse {
       firstName: json['first_name'],
       lastName: json['last_name'],
       email: json['email'],
+      phoneNumber: json['phone_number'],
     );
   }
 
@@ -135,6 +137,7 @@ class UserResponse {
   final String? firstName;
   final String? lastName;
   final String? email;
+  final String? phoneNumber;
 
   @override
   String toString() {
@@ -142,6 +145,7 @@ class UserResponse {
         'id: $id, '
         'firstName: $firstName, '
         'lastName: $lastName, '
+        'phoneNumber: $phoneNumber, '
         'email: $email'
         ')';
   }

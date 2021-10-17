@@ -96,19 +96,51 @@ class _RiderDetailWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Visibility(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
                         children: [
-                          Text(
-                            'Your Rider',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                ?.copyWith(fontWeight: FontWeight.w700),
+                          Image(
+                            image: AssetImage(AppImages.DELIVERY_IMAGE),
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            height: MediaQuery.of(context).size.height * 0.2,
                           ),
-                          Text('${detail.rider.firstName} ${detail.rider.lastName}'),
-                          Text(detail.rider.email),
+                          const SizedBox(width: 16),
+                          Flexible(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${detail.rider.firstName} ${detail.rider.lastName}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline5
+                                      ?.copyWith(fontWeight: FontWeight.w700),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  detail.rider.email,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      ?.copyWith(fontWeight: FontWeight.w700),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  detail.rider.phoneNumber,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      ?.copyWith(fontWeight: FontWeight.w700),
+                                ),
+                                const SizedBox(height: 16),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.phone),
+                                  color: Theme.of(context).primaryColorDark,
+                                )
+                              ],
+                            ),
+                          )
                         ],
                       ),
                       visible: detail.senderName.isNotEmpty,

@@ -182,6 +182,7 @@ class OrderUser extends Equatable {
     required this.firstName,
     required this.lastName,
     required this.email,
+    required this.phoneNumber,
   });
 
   factory OrderUser.empty() {
@@ -190,6 +191,7 @@ class OrderUser extends Equatable {
       firstName: '',
       lastName: '',
       email: '',
+      phoneNumber: '',
     );
   }
 
@@ -202,6 +204,7 @@ class OrderUser extends Equatable {
       firstName: response.firstName ?? '',
       lastName: response.lastName ?? '',
       email: response.email ?? '',
+      phoneNumber: response.phoneNumber ?? '',
     );
   }
 
@@ -209,9 +212,10 @@ class OrderUser extends Equatable {
   final String firstName;
   final String lastName;
   final String email;
+  final String phoneNumber;
 
   @override
-  List<Object?> get props => [id, firstName, lastName, email];
+  List<Object?> get props => [id, firstName, lastName, email, phoneNumber];
 
   @override
   String toString() {
@@ -219,6 +223,7 @@ class OrderUser extends Equatable {
         'id: $id, '
         'firstName: $firstName, '
         'lastName: $lastName, '
+        'phoneNumber: $phoneNumber, '
         'email: $email'
         ')';
   }
