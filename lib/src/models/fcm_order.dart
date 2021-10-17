@@ -20,11 +20,13 @@ class FCMOrder extends Equatable {
   }
 
   factory FCMOrder.fromJson(Map<String, dynamic> json) {
+    final rider = json['rider'];
+    final user = json['user'];
     return FCMOrder._(
       orderId: json['id'],
-      rider: FCMUser.fromJson(jsonDecode(json['rider'])),
-      user: FCMUser.fromJson(jsonDecode(json['user'])),
-      trackingNumber: json['tracking_number'],
+      rider: rider == null ? FCMUser.empty() : FCMUser.fromJson(jsonDecode(rider)),
+      user: user == null ? FCMUser.empty() : FCMUser.fromJson(jsonDecode(user)),
+      trackingNumber: json['tracking_number'] ?? '',
     );
   }
 

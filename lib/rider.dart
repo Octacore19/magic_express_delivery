@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,52 +22,60 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = MyBlocObserver();
-  await Firebase.initializeApp();
-  HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: await getTemporaryDirectory(),
+  runZonedGuarded<Future<void>>(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      Bloc.observer = MyBlocObserver();
+      await Firebase.initializeApp();
+      HydratedBloc.storage = await HydratedStorage.build(
+        storageDirectory: await getTemporaryDirectory(),
+      );
+
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+      FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler);
+
+      runApp(MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(create: (_) => Cache()),
+          RepositoryProvider(create: (context) => ErrorHandler()),
+          RepositoryProvider(create: (_) => Preferences()),
+          RepositoryProvider(
+            create: (context) => ApiProvider(
+              preference: RepositoryProvider.of(context),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) {
+              return AuthRepo(
+                preference: RepositoryProvider.of(context),
+                api: RepositoryProvider.of(context),
+                isRider: true,
+              )..onAppLaunch();
+            },
+          ),
+          RepositoryProvider(
+            create: (context) => RidersRepo(
+              api: RepositoryProvider.of(context),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => MiscRepo(
+              api: RepositoryProvider.of(context),
+            ),
+          ),
+          RepositoryProvider(
+            create: (context) => NotificationRepo(
+              api: RepositoryProvider.of(context),
+            ),
+          )
+        ],
+        child: App(true),
+      ));
+    },
+    (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack),
   );
-
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  runApp(MultiRepositoryProvider(
-    providers: [
-      RepositoryProvider(create: (_) => Cache()),
-      RepositoryProvider(create: (context) => ErrorHandler()),
-      RepositoryProvider(create: (_) => Preferences()),
-      RepositoryProvider(
-        create: (context) => ApiProvider(
-          preference: RepositoryProvider.of(context),
-        ),
-      ),
-      RepositoryProvider(
-        create: (context) {
-          return AuthRepo(
-            preference: RepositoryProvider.of(context),
-            api: RepositoryProvider.of(context),
-            isRider: true,
-          )..onAppLaunch();
-        },
-      ),
-      RepositoryProvider(
-        create: (context) => RidersRepo(
-          api: RepositoryProvider.of(context),
-        ),
-      ),
-      RepositoryProvider(
-        create: (context) => MiscRepo(
-          api: RepositoryProvider.of(context),
-        ),
-      ),
-      RepositoryProvider(
-        create: (context) => NotificationRepo(
-          api: RepositoryProvider.of(context),
-        ),
-      )
-    ],
-    child: App(true),
-  ));
 }
 
 const LocationUpdateTask = 'Rider Location Update';
@@ -77,13 +88,16 @@ void callbackDispatcher() {
       final miscRepo = MiscRepo(api: api);
 
       LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.always || permission == LocationPermission.whileInUse) {
+      if (permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse) {
         Position userLocation = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
         );
-        final res = await placemarkFromCoordinates(userLocation.latitude, userLocation.longitude);
+        final res = await placemarkFromCoordinates(
+            userLocation.latitude, userLocation.longitude);
         final b = res.first;
-        final add = '${b.street} ${b.subAdministrativeArea} ${b.administrativeArea}';
+        final add =
+            '${b.street} ${b.subAdministrativeArea} ${b.administrativeArea}';
         await miscRepo.updateUserLocation(
           userLocation.latitude,
           userLocation.longitude,

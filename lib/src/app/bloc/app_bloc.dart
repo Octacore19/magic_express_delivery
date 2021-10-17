@@ -29,18 +29,16 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         super(AppState.unknown(isRider)) {
     _statusSubscription = _authRepo.status.listen(_onStatusChanged);
     _initBloc();
-    if (isRider) {
-      FirebaseMessaging.onMessage.listen((message) async {
-        final notification = message.notification;
-        final android = notification?.android;
-        final context = AppKeys.navigatorKey.currentState?.context;
 
-        if (notification != null && android != null && context != null) {
-          print('Notification title: ${notification.title}');
-          print('Notification content: ${notification.body}');
-          bool value = await showDialog(
+    FirebaseMessaging.onMessage.listen((message) async {
+      final notification = message.notification;
+      final android = notification?.android;
+      final context = AppKeys.navigatorKey.currentState?.context;
+
+      if (notification != null && android != null && context != null) {
+        if (notification.title != 'New Order Created') {
+          bool? value = await showDialog(
             context: context,
-            barrierDismissible: false,
             builder: (_) => AlertDialog(
               shape: RoundedRectangleBorder(
                 side: BorderSide(),
@@ -68,13 +66,16 @@ class AppBloc extends Bloc<AppEvent, AppState> {
                     width: MediaQuery.of(context).size.width * 0.25,
                   ),
                   const SizedBox(height: 16.0),
-                  Text(
-                    notification.body ?? '',
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2
-                        ?.copyWith(fontWeight: FontWeight.w700),
-                    textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      notification.body ?? '',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          ?.copyWith(fontWeight: FontWeight.w700),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   const SizedBox(height: 16.0),
                   SizedBox(
@@ -97,15 +98,14 @@ class AppBloc extends Bloc<AppEvent, AppState> {
               ),
             ),
           );
-          if (value) {
+          if (value != null && value) {
             final data = message.data;
-            log('Data gotten => $data');
             final fcmData = FCMOrder.fromJson(data);
             add(OnMessageReceived(fcmData));
           }
         }
-      });
-    }
+      }
+    });
   }
 
   final AuthRepo _authRepo;
@@ -121,19 +121,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
-      if (state.isRider) {
-        final data = initialMessage.data;
-        log('Data gotten => $data');
-        final fcmData = FCMOrder.fromJson(data);
-        add(OnMessageReceived(fcmData));
-      }
+      final data = initialMessage.data;
+      final fcmData = FCMOrder.fromJson(data);
+      add(OnMessageReceived(fcmData));
     }
 
     // Also handle any interaction when the app is in the background via a
     // Stream listener
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       final data = message.data;
-      log('Data gotten => $data');
       final fcmData = FCMOrder.fromJson(data);
       add(OnMessageReceived(fcmData));
     });

@@ -72,6 +72,9 @@ class DeliveryState extends Equatable {
 
   bool get success => status == Status.success;
 
+  bool get isPayStackPayment =>
+      success && deliveryOrder.paymentType == PaymentType.card;
+
   int get totalQuantity {
     int total = 0;
     cartItems.forEach((e) {
@@ -82,7 +85,7 @@ class DeliveryState extends Equatable {
 
   double get deliveryAmount {
     final dis = estimatedDistance.value / 1000;
-    return charges.basePrice + (dis * charges.pricePerKm).toDouble();
+    return charges.deliveryBasePrice + (dis * charges.deliveryPricePerKm).toDouble();
   }
 
   double get totalAmount {

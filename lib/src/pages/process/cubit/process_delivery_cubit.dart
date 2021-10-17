@@ -28,16 +28,9 @@ class ProcessDeliveryCubit extends Cubit<ProcessDeliveryState> {
   late StreamSubscription _errandOrderSub;
 
   void _init() async {
-    if (state.errand) {
-      emit(state.copyWith(paymentSelection: [true, false]));
-      final order = await _coordinatorCubit.errandOrder.first;
-      emit(state.copyWith(personnelType: order.personnelType));
-    } else {
-      emit(state.copyWith(paymentSelection: [true]));
-      final order = await _coordinatorCubit.deliveryOrder.first;
-      emit(state.copyWith(personnelType: order.personnelType));
-    }
-    print(state);
+    emit(state.copyWith(paymentSelection: [true, false]));
+    final order = await _coordinatorCubit.errandOrder.first;
+    emit(state.copyWith(personnelType: order.personnelType));
   }
 
   void onSenderNameChanged(String? value) {
@@ -71,7 +64,6 @@ class ProcessDeliveryCubit extends Cubit<ProcessDeliveryState> {
         p[i] = false;
       }
     }
-    print('Payment type => $type');
     emit(state.copyWith(paymentSelection: p, paymentType: type));
   }
 

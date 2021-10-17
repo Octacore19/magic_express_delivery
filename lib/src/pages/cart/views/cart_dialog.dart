@@ -8,17 +8,22 @@ import 'package:magic_express_delivery/src/utils/utils.dart';
 part 'cart_views.dart';
 
 class CartDialog extends StatelessWidget {
+  CartDialog({this.isDelivery = false});
+
   void show(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => BlocProvider(
         create: (context) => CartCubit(
           coordinatorCubit: BlocProvider.of(context),
+          isDelivery: isDelivery,
         ),
-        child: CartDialog(),
+        child: CartDialog(isDelivery: isDelivery),
       ),
     );
   }
+
+  final bool isDelivery;
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +52,15 @@ class CartDialog extends StatelessWidget {
                   ?.copyWith(fontWeight: FontWeight.w700)),
         ),
       ],
-      content: _CartForm(),
+      content: _CartForm(isDelivery: isDelivery),
     );
   }
 }
 
 class _CartForm extends StatefulWidget {
+  _CartForm({required this.isDelivery});
+
+  final bool isDelivery;
   @override
   State<StatefulWidget> createState() => _CartFormState();
 }
@@ -86,11 +94,13 @@ class _CartFormState extends State<_CartForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Add an item',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    ?.copyWith(fontWeight: FontWeight.w700)),
+            Text(
+              'Add an item',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6
+                  ?.copyWith(fontWeight: FontWeight.w700),
+            ),
             const SizedBox(height: 24),
             _ItemNameInput(_itemNameController),
             const SizedBox(height: 24),
@@ -101,7 +111,11 @@ class _CartFormState extends State<_CartForm> {
               children: [
                 _QuantityInput(_quantityController),
                 const SizedBox(width: 72),
-                _UnitPriceInput(_priceController)
+                Visibility(
+                  child: _UnitPriceInput(_priceController),
+                  visible: !widget.isDelivery,
+                )
+                // if (!widget.isDelivery)
               ],
             ),
             _ErrorDisplay(),

@@ -88,7 +88,7 @@ class ErrandState extends Equatable {
 
   double get deliveryAmount {
     final dis = estimatedDistance.value / 1000;
-    return charges.basePrice + (dis * charges.pricePerKm).toDouble();
+    return charges.errandBasePrice + (dis * charges.errandPricePerKm).toDouble();
   }
 
   double get totalAmount {

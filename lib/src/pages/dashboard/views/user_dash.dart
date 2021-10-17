@@ -14,38 +14,44 @@ class _State extends State<UserDash> {
   @override
   Widget build(BuildContext context) {
     int position = context.watch<UserDashCubit>().state.position;
-    return Scaffold(
-      appBar: AppBar(
-        actions: _actionBars(position),
+    return BlocProvider(
+      create: (context) => HistoryBloc(
+        ordersRepo: RepositoryProvider.of(context),
+        errorHandler: RepositoryProvider.of(context),
       ),
-      body: DoubleBackToCloseWidget(
-        child: _pages[position],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
-        selectedIconTheme: IconThemeData(color: Colors.blue[900], size: 32),
-        selectedItemColor: Colors.blue[900],
-        unselectedIconTheme: IconThemeData(color: Colors.grey, size: 24),
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        onTap: (index) => context.read<UserDashCubit>().setCurrentPage(index),
-        currentIndex: context.read<UserDashCubit>().state.position,
-        enableFeedback: true,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_rounded),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: '',
-          ),
-        ],
+      child: Scaffold(
+        appBar: AppBar(
+          actions: _actionBars(position),
+        ),
+        body: DoubleBackToCloseWidget(
+          child: _pages[position],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.shifting,
+          selectedIconTheme: IconThemeData(color: Colors.blue[900], size: 32),
+          selectedItemColor: Colors.blue[900],
+          unselectedIconTheme: IconThemeData(color: Colors.grey, size: 24),
+          unselectedItemColor: Colors.grey,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          onTap: (index) => context.read<UserDashCubit>().setCurrentPage(index),
+          currentIndex: context.read<UserDashCubit>().state.position,
+          enableFeedback: true,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list_rounded),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: '',
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -172,82 +172,52 @@ class _PaymentOptionsView extends StatelessWidget {
   }
 
   List<Widget> paymentSelectionWidgets(BuildContext context) {
-    final state = context.read<ProcessDeliveryCubit>().state;
-    List<Widget> content = [];
-    if (state.errand) {
-      content.addAll([
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text.rich(
-            TextSpan(
-              text: 'Cash  ',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  ?.copyWith(fontWeight: FontWeight.w700),
-              children: [
-                WidgetSpan(
-                  alignment: PlaceholderAlignment.middle,
-                  child: Icon(
-                    MdiIcons.cash,
-                    size: 24.0,
-                    color: Colors.blue[900],
-                  ),
-                )
-              ],
-            ),
+    return [
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        child: Text.rich(
+          TextSpan(
+            text: 'Cash  ',
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                ?.copyWith(fontWeight: FontWeight.w700),
+            children: [
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: Icon(
+                  MdiIcons.cash,
+                  size: 24.0,
+                  color: Colors.blue[900],
+                ),
+              )
+            ],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text.rich(
-            TextSpan(
-              text: 'Card   ',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  ?.copyWith(fontWeight: FontWeight.w700),
-              children: [
-                WidgetSpan(
-                  alignment: PlaceholderAlignment.middle,
-                  child: Icon(
-                    MdiIcons.creditCard,
-                    size: 24.0,
-                    color: Colors.blue[900],
-                  ),
-                )
-              ],
-            ),
-          ),
-        )
-      ]);
-    } else {
-      content.add(
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text.rich(
-            TextSpan(
-              text: 'Cash   ',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  ?.copyWith(fontWeight: FontWeight.w700),
-              children: [
-                WidgetSpan(
-                  alignment: PlaceholderAlignment.middle,
-                  child: Icon(
-                    MdiIcons.cash,
-                    size: 24.0,
-                    color: Colors.blue[900],
-                  ),
-                )
-              ],
-            ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        child: Text.rich(
+          TextSpan(
+            text: 'Card   ',
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                ?.copyWith(fontWeight: FontWeight.w700),
+            children: [
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: Icon(
+                  MdiIcons.creditCard,
+                  size: 24.0,
+                  color: Colors.blue[900],
+                ),
+              )
+            ],
           ),
         ),
-      );
-    }
-    return content;
+      )
+    ];
   }
 }
 

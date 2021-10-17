@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:magic_express_delivery/src/utils/utils.dart';
 import 'package:magic_express_delivery/src/widgets/widgets.dart';
@@ -11,6 +12,19 @@ class RiderDash extends StatefulWidget {
 }
 
 class _State extends State<RiderDash> {
+  bool enabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkPermission();
+  }
+
+  _checkPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    enabled = permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,19 +65,22 @@ class _State extends State<RiderDash> {
                 Text(
                   'Availability:',
                   style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                    color: state.riderAvailability ? Colors.green : Colors.red,
-                    fontWeight: FontWeight.w700
-                  ),
+                      color: _getColor(state.riderAvailability),
+                      fontWeight: FontWeight.w700),
                 ),
                 SizedBox(width: 4.0),
                 Switch.adaptive(
                   value: state.riderAvailability,
                   activeColor: Colors.white,
-                  activeTrackColor: Colors.green,
-                  inactiveTrackColor: Colors.red,
-                  onChanged: (b) {
-                    context.read<RiderDashCubit>().toggleRiderAvailability(b);
-                  },
+                  activeTrackColor: enabled ? Colors.green : Colors.grey,
+                  inactiveTrackColor: enabled ? Colors.red : Colors.grey,
+                  onChanged: enabled
+                      ? (b) {
+                    context
+                        .read<RiderDashCubit>()
+                        .toggleRiderAvailability(b);
+                  }
+                      : null,
                 ),
               ],
             );
@@ -76,6 +93,15 @@ class _State extends State<RiderDash> {
         )
       ];
     }
+  }
+
+  Color _getColor(bool available) {
+    if (available && enabled) {
+      return Colors.green;
+    } else if (!available && enabled) {
+      return Colors.red;
+    }
+    return Colors.grey;
   }
 
   final List<Widget> _pages = [

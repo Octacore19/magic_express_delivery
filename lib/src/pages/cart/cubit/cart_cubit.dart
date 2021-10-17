@@ -7,11 +7,15 @@ import 'package:repositories/repositories.dart';
 part 'cart_state.dart';
 
 class CartCubit extends HydratedCubit<CartState> {
-  CartCubit({required CoordinatorCubit coordinatorCubit})
-      : _coordinatorCubit = coordinatorCubit,
+  CartCubit({
+    required CoordinatorCubit coordinatorCubit,
+    bool isDelivery = false,
+  })  : _coordinatorCubit = coordinatorCubit,
+        _isDelivery = isDelivery,
         super(CartState.initial());
 
   final CoordinatorCubit _coordinatorCubit;
+  final bool _isDelivery;
 
   void onItemNameChanged(String? value) {
     emit(state.copyWith(itemName: value));
@@ -38,7 +42,7 @@ class CartCubit extends HydratedCubit<CartState> {
       emit(state.copyWith(message: 'Quantity cannot be empty', error: true));
     } else if (state.quantity == '0') {
       emit(state.copyWith(message: 'Quantity cannot be zero', error: true));
-    } else if (state.unitPrice.isEmpty) {
+    } else if (state.unitPrice.isEmpty && !_isDelivery) {
       emit(state.copyWith(message: 'Price cannot be empty', error: true));
     } else {
       final item = CartItem(
@@ -48,8 +52,7 @@ class CartCubit extends HydratedCubit<CartState> {
         unitPrice: state.unitPrice,
       );
       final _items = await _coordinatorCubit.cartItems.first;
-      List<CartItem> l = List.from(_items)
-        ..add(item);
+      List<CartItem> l = List.from(_items)..add(item);
       _coordinatorCubit.setCartItems(l);
       emit(CartState.initial());
     }

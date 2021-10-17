@@ -1,24 +1,32 @@
 class ChargesResponse {
   const ChargesResponse._({
-    required this.pricePerKm,
-    required this.basePrice,
+    required this.deliveryBasePrice,
+    required this.deliveryPricePerKm,
+    required this.errandBasePrice,
+    required this.errandPricePerKm,
   });
 
   factory ChargesResponse.fromJson(Map<String, dynamic> json) {
     return ChargesResponse._(
-      pricePerKm: json['price_per_km'],
-      basePrice: json['base_price'],
+      deliveryPricePerKm: json['price_per_km'],
+      deliveryBasePrice: json['base_price'],
+      errandBasePrice: json[''],
+      errandPricePerKm: json[''],
     );
   }
 
-  final int? basePrice;
-  final int? pricePerKm;
+  final int? deliveryBasePrice;
+  final int? deliveryPricePerKm;
+  final int? errandBasePrice;
+  final int? errandPricePerKm;
 
   @override
   String toString() {
     return '$runtimeType('
-        'basePrice: $basePrice, '
-        'pricePerKm: $pricePerKm'
+        'deliveryBasePrice: $deliveryBasePrice, '
+        'deliveryPricePerKm: $deliveryPricePerKm, '
+        'errandBasePrice: $errandBasePrice, '
+        'errandPricePerKm: $errandPricePerKm'
         ')';
   }
 }

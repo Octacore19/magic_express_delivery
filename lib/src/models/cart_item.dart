@@ -53,9 +53,9 @@ class CartItem extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'item': this.name,
-      'quantity': int.parse(this.quantity),
+      'quantity': int.tryParse(this.quantity) ?? 0,
       'description': this.description,
-      'price': double.parse(this.unitPrice),
+      'price': double.tryParse(this.unitPrice) ?? 0,
     };
   }
 

@@ -50,9 +50,16 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
   ) async* {
     yield state.copyWith(status: Status.loading, detail: OrderDetail.empty());
     try {
-      Order arg = event.args as Order;
-      final res = await _ordersRepo.fetchHistoryDetail(arg.id.toString());
-      yield state.copyWith(status: Status.success, detail: res);
+      Object? arg = event.args;
+      if (arg != null) {
+        if (arg is Order) {
+          final res = await _ordersRepo.fetchHistoryDetail(arg.id.toString());
+          yield state.copyWith(status: Status.success, detail: res);
+        } else if (arg is FCMOrder){
+          final res = await _ordersRepo.fetchHistoryDetail(arg.orderId);
+          yield state.copyWith(status: Status.success, detail: res);
+        }
+      }
     } on Exception catch (e) {
       _handler.handleExceptionsWithAction(e, () => add(event));
       yield state.copyWith(status: Status.error);

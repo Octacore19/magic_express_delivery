@@ -171,7 +171,7 @@ class _ShoppingCartView extends StatelessWidget {
             ),
           ),
           _CartItemsView(),
-          BlocSelector<DeliveryBloc, DeliveryState, double>(
+          /*BlocSelector<DeliveryBloc, DeliveryState, double>(
             selector: (s) => s.totalCartPrice,
             builder: (context, total) {
               return Visibility(
@@ -190,7 +190,7 @@ class _ShoppingCartView extends StatelessWidget {
                 ),
               );
             },
-          ),
+          ),*/
         ],
       ),
     );
@@ -256,7 +256,7 @@ class _AddOrderButton extends StatelessWidget {
               ?.copyWith(fontWeight: FontWeight.w700),
         ),
         onPressed: () {
-          CartDialog()..show(context);
+          CartDialog(isDelivery: true)..show(context);
         },
         icon: Icon(
           MdiIcons.plus,

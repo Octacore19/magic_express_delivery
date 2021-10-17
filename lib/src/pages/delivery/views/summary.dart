@@ -40,6 +40,7 @@ class DeliverySummaryDialog extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
+            print('This button is clicked');
             final action = DeliveryAction.OnOrderSubmitted;
             final event = DeliveryEvent(action);
             context.read<DeliveryBloc>().add(event);
@@ -47,10 +48,11 @@ class DeliverySummaryDialog extends StatelessWidget {
           },
           child: Text('Place order'),
           style: TextButton.styleFrom(
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .button
-                  ?.copyWith(fontWeight: FontWeight.w700)),
+            textStyle: Theme.of(context)
+                .textTheme
+                .button
+                ?.copyWith(fontWeight: FontWeight.w700),
+          ),
         )
       ],
       contentPadding: EdgeInsets.all(24),
@@ -133,47 +135,20 @@ class _ItemsDetails extends StatelessWidget {
     return BlocBuilder<DeliveryBloc, DeliveryState>(
       builder: (_, state) => Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Flexible(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'No of items',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(fontWeight: FontWeight.w700),
-                ),
-                Text(
-                  'Total Amount in Cart',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(fontWeight: FontWeight.w700),
-                )
-              ],
-            ),
+          Text(
+            'No of items',
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                ?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 4),
-          Flexible(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  state.totalQuantity.toString(),
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                Text(
-                  convertToNairaAndKobo(state.totalCartPrice),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.copyWith(fontFamily: 'Roboto'),
-                )
-              ],
-            ),
-          )
+          Text(
+            state.totalQuantity.toString(),
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
         ],
       ),
     );

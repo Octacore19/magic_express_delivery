@@ -2,7 +2,6 @@ export 'cart/cart.dart';
 export 'dashboard/dashboard.dart';
 export 'delivery/delivery.dart';
 export 'errand/errand.dart';
-export 'find_rider/find_rider_page.dart';
 export 'history/history.dart';
 export 'home/home.dart';
 export 'login/login.dart';

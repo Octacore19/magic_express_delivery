@@ -48,7 +48,55 @@ class PaystackPage extends StatelessWidget {
         child: BlocConsumer<PaystackCubit, PaystackState>(
           listener: (_, state) {
             if (state.success) {
-              Navigator.of(context).push(FindRiderPage.route());
+              showDialog(
+                context: context,
+                builder: (context) {
+                  Future.delayed(Duration(seconds: 5)).then((value){
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  });
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8.0),
+                      ),
+                    ),
+                    contentPadding: EdgeInsets.zero,
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 16.0),
+                        Text(
+                          'Payment Confirmed',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16.0),
+                        Image(
+                          image: AssetImage(AppImages.DELIVERY_IMAGE),
+                          height: MediaQuery.of(context).size.width * 0.25,
+                          width: MediaQuery.of(context).size.width * 0.25,
+                        ),
+                        const SizedBox(height: 16.0),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            "Your payment has been confirmed. We'll notify you when a rider has been assigned to your order.",
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
             }
           },
           builder: (_, state) {

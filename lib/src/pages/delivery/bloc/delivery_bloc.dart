@@ -93,8 +93,8 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
         break;
       case DeliveryAction.OnCartItemsAdded:
         List<CartItem> items = event.args as List<CartItem>;
-        double total = _calculateTotalPrice(items);
-        yield state.copyWith(cartItems: items, totalCartPrice: total);
+        // double total = _calculateTotalPrice(items);
+        yield state.copyWith(cartItems: items/*, totalCartPrice: total*/);
         break;
       case DeliveryAction.OnDeliveryOrderChanged:
         DeliveryOrder order = event.args as DeliveryOrder;
@@ -135,6 +135,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
 
   Stream<DeliveryState> _mapOnOrderSubmitted(
       DeliveryEvent event, DeliveryState state) async* {
+    print('This method is called');
     yield state.copyWith(status: Status.loading);
     try {
       final order = state.deliveryOrder.copyWith(
@@ -143,7 +144,10 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
         destinationLocation: Location.fromPlace(state.deliveryDetail),
         totalPrice: state.totalAmount,
       );
-      await _ordersRepo.createOrder(order.toJson());
+      print('Order: => $order');
+      final json = order.toJson();
+      print('Order json => $json');
+      await _ordersRepo.createOrder(json);
       yield state.copyWith(status: Status.success);
     } on NoDataException {
       yield state.copyWith(status: Status.error, message: 'No order created');
@@ -159,7 +163,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     _coordinatorCubit.setCartItems(l);
     return state.copyWith(
       cartItems: l,
-      totalCartPrice: _calculateTotalPrice(l),
+      // totalCartPrice: _calculateTotalPrice(l),
     );
   }
 

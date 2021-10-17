@@ -3,36 +3,52 @@ import 'package:services/services.dart';
 
 class Charges extends Equatable {
   const Charges._({
-    required this.pricePerKm,
-    required this.basePrice,
+    required this.errandPricePerKm,
+    required this.errandBasePrice,
+    required this.deliveryBasePrice,
+    required this.deliveryPricePerKm,
   });
 
   factory Charges.empty() {
     return Charges._(
-      pricePerKm: 1,
-      basePrice: 0,
+      errandBasePrice: 0,
+      errandPricePerKm: 1,
+      deliveryBasePrice: 0,
+      deliveryPricePerKm: 1,
     );
   }
 
   factory Charges.fromResponse(ChargesResponse response) {
-    final price = response.pricePerKm ?? 1;
+    final errandPrice = response.errandPricePerKm ?? 1;
+    final deliveryPrice = response.deliveryPricePerKm ?? 1;
     return Charges._(
-      pricePerKm: price == 0 ? 1 : price,
-      basePrice: response.basePrice ?? 0,
+      errandPricePerKm: errandPrice == 0 ? 1 : errandPrice,
+      errandBasePrice: response.errandBasePrice ?? 0,
+      deliveryPricePerKm: deliveryPrice == 0 ? 1 : deliveryPrice,
+      deliveryBasePrice: response.deliveryBasePrice ?? 0,
     );
   }
 
-  final int basePrice;
-  final int pricePerKm;
+  final int deliveryBasePrice;
+  final int deliveryPricePerKm;
+  final int errandBasePrice;
+  final int errandPricePerKm;
 
   @override
   String toString() {
     return '$runtimeType('
-        'basePrice: $basePrice, '
-        'pricePerKm: $pricePerKm'
+        'deliveryBasePrice: $deliveryBasePrice, '
+        'deliveryPricePerKm: $deliveryPricePerKm, '
+        'errandBasePrice: $errandBasePrice, '
+        'errandPricePerKm: $errandPricePerKm'
         ')';
   }
 
   @override
-  List<Object?> get props => [basePrice, pricePerKm];
+  List<Object?> get props => [
+        deliveryPricePerKm,
+        deliveryBasePrice,
+        errandBasePrice,
+        errandPricePerKm,
+      ];
 }

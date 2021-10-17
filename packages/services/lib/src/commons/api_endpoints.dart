@@ -34,7 +34,7 @@ class ApiEndpoints {
   static const USER_LOCATION = '/settings/update-location';
 
   //MISCELLANEOUS
-  static const CHARGES = '/charges';
+  static const CHARGES = '/app-charges';
   static const VERIFY_PAYMENT = '/verify_transaction';
   static const TRACK_ORDER = '/track/order';
 }
