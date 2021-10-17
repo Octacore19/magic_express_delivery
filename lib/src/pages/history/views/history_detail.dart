@@ -54,6 +54,7 @@ class HistoryDetailPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _LocationWidget(detail: detail),
+                  _RiderDetailWidget(detail: detail),
                   const SizedBox(height: 24),
                   _PersonnelDetailHeader(),
                   const SizedBox(height: 16),

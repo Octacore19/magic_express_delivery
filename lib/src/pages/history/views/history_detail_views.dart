@@ -66,6 +66,109 @@ class _LocationWidget extends StatelessWidget {
   }
 }
 
+class _RiderDetailWidget extends StatelessWidget {
+  const _RiderDetailWidget({
+    required this.detail,
+    Key? key,
+  }) : super(key: key);
+
+  final OrderDetail detail;
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: detail.rider != OrderUser.empty(),
+      child: Column(
+        children: [
+          const SizedBox(height: 24),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Card(
+              color: Colors.blue[50]?.withOpacity(1),
+              shadowColor: Colors.blue[100],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Visibility(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Your Rider',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                          ),
+                          Text('${detail.rider.firstName} ${detail.rider.lastName}'),
+                          Text(detail.rider.email),
+                        ],
+                      ),
+                      visible: detail.senderName.isNotEmpty,
+                    ),
+                    Visibility(
+                      visible: detail.receiverName.isNotEmpty,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 16),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text.rich(
+                              TextSpan(
+                                text: 'Receiver Name: ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(fontWeight: FontWeight.w700),
+                                children: [
+                                  TextSpan(
+                                    text: detail.receiverName,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  )
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text.rich(
+                              TextSpan(
+                                text: 'Receiver Phone: ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(fontWeight: FontWeight.w700),
+                                children: [
+                                  TextSpan(
+                                    text: detail.receiverPhone,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
 class _PersonnelDetailHeader extends StatelessWidget {
   const _PersonnelDetailHeader({
     Key? key,

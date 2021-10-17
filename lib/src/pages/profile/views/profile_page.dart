@@ -42,19 +42,23 @@ class ProfilePage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  user.email,
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle1
-                      ?.copyWith(fontWeight: FontWeight.w700),
+                Flexible(
+                  child: Text(
+                    user.email,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        ?.copyWith(fontWeight: FontWeight.w700),
+                  ),
                 ),
-                Text(
-                  user.phoneNumber,
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle1
-                      ?.copyWith(fontWeight: FontWeight.w700),
+                Flexible(
+                  child: Text(
+                    user.phoneNumber,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        ?.copyWith(fontWeight: FontWeight.w700),
+                  ),
                 )
               ],
             ),
