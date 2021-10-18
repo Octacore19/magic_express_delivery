@@ -21,13 +21,7 @@ class UsersRepoImpl implements IUsersRepo {
   Stream<List<Order>> get history => _historyController.stream;
 
   @override
-  Charges get charges => _charges ?? Charges.empty();
-
-  @override
   void initRepo() {
-    if (_charges == null) {
-      getCharges();
-    }
     if (!_historyController.hasValue) {
       fetchAllHistory();
     }
@@ -96,7 +90,6 @@ class UsersRepoImpl implements IUsersRepo {
     }
   }
 
-  @override
   Future<void> getCharges() async {
 
   }

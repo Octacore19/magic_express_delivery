@@ -32,6 +32,7 @@ class ErrandPage extends StatelessWidget {
           placesRepo: RepositoryProvider.of(context),
           ordersRepo: RepositoryProvider.of(context),
           errorHandler: RepositoryProvider.of(context),
+          miscRepo: RepositoryProvider.of(context),
         ),
         child: _ErrandPageForm(),
       ),

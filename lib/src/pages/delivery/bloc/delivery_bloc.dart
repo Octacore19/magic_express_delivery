@@ -15,12 +15,13 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     required CoordinatorCubit coordinatorCubit,
     required PlacesRepo placesRepo,
     required UsersRepo ordersRepo,
+    required MiscRepo miscRepo,
     required ErrorHandler errorHandler,
   })  : _placesRepo = placesRepo,
         _coordinatorCubit = coordinatorCubit,
         _handler = errorHandler,
         _ordersRepo = ordersRepo,
-        super(DeliveryState.initial(charges: ordersRepo.charges)) {
+        super(DeliveryState.initial(charges: miscRepo.charges)) {
     _ordersRepo.initRepo();
     _coordinatorCubit.setCartItems(List.empty());
     _pickupAddressSub = placesRepo.pickupDetail.listen((detail) {
@@ -135,7 +136,6 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
 
   Stream<DeliveryState> _mapOnOrderSubmitted(
       DeliveryEvent event, DeliveryState state) async* {
-    print('This method is called');
     yield state.copyWith(status: Status.loading);
     try {
       final order = state.deliveryOrder.copyWith(
@@ -144,9 +144,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
         destinationLocation: Location.fromPlace(state.deliveryDetail),
         totalPrice: state.totalAmount,
       );
-      print('Order: => $order');
       final json = order.toJson();
-      print('Order json => $json');
       await _ordersRepo.createOrder(json);
       yield state.copyWith(status: Status.success);
     } on NoDataException {

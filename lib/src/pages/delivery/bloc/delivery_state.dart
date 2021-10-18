@@ -85,27 +85,34 @@ class DeliveryState extends Equatable {
 
   double get deliveryAmount {
     final dis = estimatedDistance.value / 1000;
-    return charges.deliveryBasePrice + (dis * charges.deliveryPricePerKm).toDouble();
+    print('Distance => $dis');
+    print('Base price => ${charges.deliveryBasePrice}');
+    print('Price per km => ${charges.deliveryPricePerKm}');
+    final amount = charges.deliveryBasePrice +
+        (dis * charges.deliveryPricePerKm).toDouble();
+    print('Amount => $amount');
+    return amount;
   }
 
   double get totalAmount {
     return totalCartPrice + deliveryAmount;
   }
 
-  DeliveryState copyWith(
-      {String? pickupAddress,
-      String? deliveryAddress,
-      PlaceDetail? pickupDetail,
-      PlaceDetail? deliveryDetail,
-      List<CartItem>? cartItems,
-      double? totalCartPrice,
-      DeliveryOrder? deliverOrder,
-      Status? status,
-      String? message,
-      TextValueObject? distance,
-      TextValueObject? duration,
-      NewOrder? order,
-      bool? calculating}) {
+  DeliveryState copyWith({
+    String? pickupAddress,
+    String? deliveryAddress,
+    PlaceDetail? pickupDetail,
+    PlaceDetail? deliveryDetail,
+    List<CartItem>? cartItems,
+    double? totalCartPrice,
+    DeliveryOrder? deliverOrder,
+    Status? status,
+    String? message,
+    TextValueObject? distance,
+    TextValueObject? duration,
+    NewOrder? order,
+    bool? calculating,
+  }) {
     return DeliveryState._(
       pickupAddress: pickupAddress ?? this.pickupAddress,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,

@@ -19,6 +19,8 @@ class Charges extends Equatable {
   }
 
   factory Charges.fromResponse(ChargesResponse response) {
+    print('baseDelivery => ${response.deliveryBasePrice}');
+    print('baseErrand => ${response.errandBasePrice}');
     final errandPrice = response.errandPricePerKm ?? 1;
     final deliveryPrice = response.deliveryPricePerKm ?? 1;
     return Charges._(

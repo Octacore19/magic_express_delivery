@@ -16,11 +16,12 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
     required PlacesRepo placesRepo,
     required UsersRepo ordersRepo,
     required ErrorHandler errorHandler,
+    required MiscRepo miscRepo
   })  : _placesRepo = placesRepo,
         _coordinatorCubit = coordinatorCubit,
         _ordersRepo = ordersRepo,
         _handler = errorHandler,
-        super(ErrandState.init(charges: ordersRepo.charges)) {
+        super(ErrandState.init(charges: miscRepo.charges)) {
     _ordersRepo.initRepo();
     _storeAddressSub = _placesRepo.pickupDetail.listen((detail) {
       final action = ErrandAction.OnStoreDetailChanged;

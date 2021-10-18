@@ -134,7 +134,10 @@ class _RiderDetailWidget extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 16),
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () async{
+                                    final number = 'tel://${detail.rider.phoneNumber}';
+                                    await launch(number);
+                                  },
                                   icon: Icon(Icons.phone),
                                   color: Theme.of(context).primaryColorDark,
                                 )

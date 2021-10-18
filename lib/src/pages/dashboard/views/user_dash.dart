@@ -21,7 +21,7 @@ class _State extends State<UserDash> {
       ),
       child: Scaffold(
         appBar: AppBar(
-          actions: _actionBars(position),
+          // actions: _actionBars(position),
         ),
         body: DoubleBackToCloseWidget(
           child: _pages[position],

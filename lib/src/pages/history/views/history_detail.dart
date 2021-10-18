@@ -5,6 +5,7 @@ import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:magic_express_delivery/src/utils/utils.dart';
 import 'package:repositories/repositories.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 part 'history_detail_views.dart';
 

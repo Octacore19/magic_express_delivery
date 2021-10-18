@@ -33,8 +33,5 @@ class UsersRepo implements IUsersRepo {
   Stream<NewOrder> get order => _repo.order;
 
   @override
-  Charges get charges => _repo.charges;
-
-  @override
   Stream<List<Order>> get history => _repo.history;
 }

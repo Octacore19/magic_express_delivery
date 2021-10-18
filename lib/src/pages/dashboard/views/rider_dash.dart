@@ -22,8 +22,9 @@ class _State extends State<RiderDash> {
 
   _checkPermission() async {
     LocationPermission permission = await Geolocator.checkPermission();
-    enabled = permission == LocationPermission.whileInUse ||
-        permission == LocationPermission.always;
+    enabled = permission != LocationPermission.denied ||
+        permission != LocationPermission.deniedForever;
+    setState(() {});
   }
 
   @override

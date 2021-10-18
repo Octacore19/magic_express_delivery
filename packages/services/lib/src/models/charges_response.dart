@@ -8,10 +8,10 @@ class ChargesResponse {
 
   factory ChargesResponse.fromJson(Map<String, dynamic> json) {
     return ChargesResponse._(
-      deliveryPricePerKm: json['price_per_km'],
-      deliveryBasePrice: json['base_price'],
-      errandBasePrice: json[''],
-      errandPricePerKm: json[''],
+      deliveryPricePerKm: json['dispatch_price_per_km'],
+      deliveryBasePrice: json['dispatch_base_price'],
+      errandBasePrice: json['errand_base_price'],
+      errandPricePerKm: json['errand_price_per_km'],
     );
   }
 
