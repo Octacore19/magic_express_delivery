@@ -7,17 +7,16 @@ import 'package:magic_express_delivery/src/models/models.dart';
 import 'package:repositories/repositories.dart';
 
 part 'errand_event.dart';
-
 part 'errand_state.dart';
 
 class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
-  ErrandBloc({
-    required CoordinatorCubit coordinatorCubit,
-    required PlacesRepo placesRepo,
-    required UsersRepo ordersRepo,
-    required ErrorHandler errorHandler,
-    required MiscRepo miscRepo
-  })  : _placesRepo = placesRepo,
+  ErrandBloc(
+      {required CoordinatorCubit coordinatorCubit,
+      required PlacesRepo placesRepo,
+      required UsersRepo ordersRepo,
+      required ErrorHandler errorHandler,
+      required MiscRepo miscRepo})
+      : _placesRepo = placesRepo,
         _coordinatorCubit = coordinatorCubit,
         _ordersRepo = ordersRepo,
         _handler = errorHandler,
@@ -206,8 +205,8 @@ class ErrandBloc extends Bloc<ErrandEvent, ErrandState> {
   double _calculateTotalPrice(List<CartItem> items) {
     double p = 0;
     items.forEach((element) {
-      final v = double.parse(element.unitPrice);
-      final q = int.parse(element.quantity);
+      final v = double.tryParse(element.unitPrice) ?? 0;
+      final q = int.tryParse(element.quantity) ?? 1;
       double i = v * q;
       p += i;
     });
