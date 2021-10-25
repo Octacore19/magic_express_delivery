@@ -11,7 +11,9 @@ class ProcessDeliveryState extends Equatable {
     this.paymentType = PaymentType.cash,
     this.personnelType = PersonnelType.unknown,
     this.orderType = OrderType.unknown,
-  });
+  }) {
+    print('Personnel type $personnelType');
+  }
 
   final List<bool> paymentSelection;
   final String senderName;
