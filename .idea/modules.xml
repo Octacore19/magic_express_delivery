@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/magic_express_delivery.iml" filepath="$PROJECT_DIR$/magic_express_delivery.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/magic_express_delivery_android.iml" filepath="$PROJECT_DIR$/android/magic_express_delivery_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/magic_express_delivery.iml" filepath="$PROJECT_DIR$/.idea/magic_express_delivery.iml" />
     </modules>
   </component>
 </project>
