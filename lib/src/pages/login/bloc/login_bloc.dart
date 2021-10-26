@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -106,7 +105,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
       try {
         await _authRepo.loginUser(state.email.value, state.password.value);
         yield state.copyWith(status: FormzStatus.submissionSuccess);
-      } on UnverifiedUserException catch (e) {
+      } on UnverifiedUserException catch (_) {
         yield state.copyWith(status: FormzStatus.submissionFailure, notVerified: true);
       } on AuthenticationException catch (e) {
         yield state.copyWith(

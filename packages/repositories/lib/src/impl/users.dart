@@ -12,7 +12,6 @@ class UsersRepoImpl implements IUsersRepo {
   final _historyController =
       BehaviorSubject<List<Order>>.seeded(List.empty());
 
-  Charges? _charges;
 
   @override
   Stream<NewOrder> get order => _orderController.stream;

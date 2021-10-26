@@ -6,11 +6,9 @@ class RequestInterceptor extends Interceptor {
   RequestInterceptor({
     required Preferences preference,
     required Dio dio,
-  })  : _preference = preference,
-        _dio = dio;
+  })  : _preference = preference;
 
   final Preferences _preference;
-  final Dio _dio;
 
   @override
   void onRequest(

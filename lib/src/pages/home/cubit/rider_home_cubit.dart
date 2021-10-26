@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';

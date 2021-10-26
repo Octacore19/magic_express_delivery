@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:magic_express_delivery/src/pages/pages.dart';
-import 'package:magic_express_delivery/src/widgets/widgets.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   static Route route() => AppRoutes.generateRoute(
