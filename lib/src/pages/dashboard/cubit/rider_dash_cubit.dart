@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -15,14 +17,9 @@ class RiderDashCubit extends Cubit<RiderDashState> with HydratedMixin {
         _handler = errorHandler,
         super(RiderDashState.init()) {
     if (state.riderAvailability) {
-      Workmanager().registerPeriodicTask(
-        "1",
-        LocationUpdateTask,
-        frequency: Duration(minutes: 30),
-        constraints: Constraints(networkType: NetworkType.connected),
-      );
+      _registerBackgroundTask();
     } else {
-      Workmanager().cancelByUniqueName("1");
+      Workmanager().cancelAll();
     }
   }
 
@@ -57,27 +54,17 @@ class RiderDashCubit extends Cubit<RiderDashState> with HydratedMixin {
         } else {
           await _miscRepo.updateAvailability(value);
           if (value) {
-            Workmanager().registerPeriodicTask(
-              "1",
-              LocationUpdateTask,
-              frequency: Duration(minutes: 30),
-              constraints: Constraints(networkType: NetworkType.connected),
-            );
+            _registerBackgroundTask();
           } else {
-            Workmanager().cancelByUniqueName("1");
+            Workmanager().cancelAll();
           }
         }
       } else {
         await _miscRepo.updateAvailability(value);
         if (value) {
-          Workmanager().registerPeriodicTask(
-            "1",
-            LocationUpdateTask,
-            frequency: Duration(minutes: 30),
-            constraints: Constraints(networkType: NetworkType.connected),
-          );
+          _registerBackgroundTask();
         } else {
-          Workmanager().cancelByUniqueName("1");
+          Workmanager().cancelAll();
         }
       }
     } on Exception catch (e) {
@@ -86,6 +73,18 @@ class RiderDashCubit extends Cubit<RiderDashState> with HydratedMixin {
         riderAvailability: !value,
       ));
       _handler.handleExceptions(e);
+    }
+  }
+
+  void _registerBackgroundTask() {
+    if (Platform.isIOS) {
+    } else if (Platform.isAndroid) {
+      Workmanager().registerPeriodicTask(
+        "1",
+        LocationUpdateTask,
+        frequency: Duration(minutes: 30),
+        constraints: Constraints(networkType: NetworkType.connected),
+      );
     }
   }
 
