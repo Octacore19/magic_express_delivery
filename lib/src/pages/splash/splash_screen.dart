@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magic_express_delivery/src/app/resources/resources.dart';
@@ -8,6 +9,10 @@ import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:repositories/repositories.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({required this.isRider});
+
+  final bool isRider;
+
   @override
   State<StatefulWidget> createState() => _SplashScreenState();
 }
@@ -21,6 +26,15 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _scaleAnimation;
 
   late AnimationController _controller;
+
+  @override
+  void dispose() {
+    _angleAnimation.removeListener(() {});
+    _angleAnimation.removeStatusListener((status) {});
+    _scaleAnimation.removeListener(() {});
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -63,15 +77,48 @@ class _SplashScreenState extends State<SplashScreen>
       backgroundColor: Colors.blue.shade900,
       body: Center(
         child: BlocListener<AppBloc, AppState>(
-          listener: (_, state) async {
+          listener: (context, state) async {
             await Future.delayed(Duration(seconds: 10));
             setState(() {
               _loadingInProgress = false;
             });
-            if (state.status == AuthStatus.loggedIn) {
-              Navigator.of(context).pushReplacement(DashboardPage.route());
-            } else if (state.status == AuthStatus.loggedOut) {
-              Navigator.of(context).pushReplacement(LoginPage.route());
+            await Future.delayed(Duration(seconds: 2));
+            if (widget.isRider) {
+              bool enabled = await Geolocator.isLocationServiceEnabled();
+              if (enabled) {
+                final permission = await Geolocator.checkPermission();
+                if (permission == LocationPermission.denied ||
+                    permission == LocationPermission.deniedForever) {
+                  Navigator.maybeOf(context)
+                      ?.pushReplacement(PermissionScreen.route());
+                } else {
+                  if (state.status == AuthStatus.loggedIn) {
+                    Navigator.of(context)
+                        .pushReplacement(DashboardPage.route());
+                  } else if (state.status == AuthStatus.loggedOut) {
+                    Navigator.of(context).pushReplacement(LoginPage.route());
+                  }
+                }
+              } else {
+                final snack = SnackBar(
+                    content: Text(
+                  'Location services are disabled. Go to your phone settings to enable location services.',
+                ));
+                ScaffoldMessenger.maybeOf(context)
+                  ?..hideCurrentSnackBar()
+                  ..showSnackBar(snack);
+                if (state.status == AuthStatus.loggedIn) {
+                  Navigator.of(context).pushReplacement(DashboardPage.route());
+                } else if (state.status == AuthStatus.loggedOut) {
+                  Navigator.of(context).pushReplacement(LoginPage.route());
+                }
+              }
+            } else {
+              if (state.status == AuthStatus.loggedIn) {
+                Navigator.of(context).pushReplacement(DashboardPage.route());
+              } else if (state.status == AuthStatus.loggedOut) {
+                Navigator.of(context).pushReplacement(LoginPage.route());
+              }
             }
           },
           child: Center(

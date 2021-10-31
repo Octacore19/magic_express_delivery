@@ -36,6 +36,11 @@ void main() async {
       FirebaseMessaging.onBackgroundMessage(
           _firebaseMessagingBackgroundHandler);
 
+      await Workmanager().initialize(
+        callbackDispatcher,
+        isInDebugMode: true,
+      );
+
       runApp(MultiRepositoryProvider(
         providers: [
           RepositoryProvider(create: (_) => Cache()),

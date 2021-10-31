@@ -1,11 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:magic_express_delivery/rider.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:repositories/repositories.dart';
-import 'package:workmanager/workmanager.dart';
 
 import 'app_view.dart';
 
@@ -25,41 +22,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   void initState() {
     _binding.addObserver(this);
     super.initState();
-
-    if (widget.isRider) {
-      _checkLocationPermissions();
-      Workmanager().initialize(callbackDispatcher);
-    }
-  }
-
-  void _checkLocationPermissions() async {
-    bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!isServiceEnabled) {
-      final snack = SnackBar(content: Text('Location services are disabled'));
-      ScaffoldMessenger.maybeOf(context)
-        ?..hideCurrentSnackBar()
-        ..showSnackBar(snack);
-    }
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        final snack =
-            SnackBar(content: Text('Enable permission to use device location'));
-        ScaffoldMessenger.maybeOf(context)
-          ?..hideCurrentSnackBar()
-          ..showSnackBar(snack);
-      }
-    }
-    if (permission == LocationPermission.deniedForever) {
-      final snack = SnackBar(
-        content: Text(
-            'Location permissions are permanently denied, we cannot request permissions.'),
-      );
-      ScaffoldMessenger.maybeOf(context)
-        ?..hideCurrentSnackBar()
-        ..showSnackBar(snack);
-    }
   }
 
   @override
@@ -86,7 +48,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         ),
         BlocProvider(create: (_) => CoordinatorCubit())
       ],
-      child: AppView(),
+      child: AppView(isRider: widget.isRider),
     );
   }
 

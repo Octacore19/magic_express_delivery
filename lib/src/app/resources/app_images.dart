@@ -10,4 +10,5 @@ class AppImages {
   static const SHOPPING_CART = 'assets/shopping_cart.png';
   static const DRIVER_IMAGE = 'assets/driver.png';
   static const DELIVERY_IMAGE = 'assets/delivery.png';
+  static const LOCATION_IMAGE = 'assets/location.png';
 }

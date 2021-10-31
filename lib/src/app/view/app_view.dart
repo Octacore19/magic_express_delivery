@@ -4,7 +4,9 @@ import 'package:magic_express_delivery/src/pages/pages.dart';
 import 'package:magic_express_delivery/src/utils/utils.dart';
 
 class AppView extends StatelessWidget {
-  const AppView();
+  const AppView({required this.isRider});
+
+  final bool isRider;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class AppView extends StatelessWidget {
       title: 'Magic Express Delivery',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.userTheme,
-      home: SplashScreen(),
+      home: SplashScreen(isRider: isRider),
     );
   }
 }
