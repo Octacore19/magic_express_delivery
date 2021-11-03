@@ -109,7 +109,7 @@ void callbackDispatcher() {
           add,
         );
       }
-    } else if (taskName == Workmanager.iOSBackgroundProcessingTask) {
+    } else if (taskName == Workmanager.iOSBackgroundTask) {
       print('This is called in iOS background here. ============>>>>>>');
     }
     return Future.value(true);

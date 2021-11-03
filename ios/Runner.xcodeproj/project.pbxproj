@@ -150,14 +150,15 @@
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
 				75F05F6D8AD50A4EF8953BC1 /* [CP] Check Pods Manifest.lock */,
+				5A9AC488272931FA00311606 /* Copy GoogleService-info.plist to the current location. */,
 				9740EEB61CF901F6004384FC /* Run Script */,
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
-				5A9AC488272931FA00311606 /* Copy GoogleService-info.plist to the current location. */,
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				C5E7F2E8616A5AC9A7DF14DB /* [CP] Embed Pods Frameworks */,
+				5A847F6127325E4A00EFE923 /* FirebaseCrashlyticRun */,
 			);
 			buildRules = (
 			);
@@ -232,6 +233,25 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
 		};
+		5A847F6127325E4A00EFE923 /* FirebaseCrashlyticRun */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = FirebaseCrashlyticRun;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/FirebaseCrashlytics/run\n$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)\n";
+		};
 		5A9AC488272931FA00311606 /* Copy GoogleService-info.plist to the current location. */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -285,7 +305,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 		C5E7F2E8616A5AC9A7DF14DB /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

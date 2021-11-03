@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>760103469339-9af03ste4i6ucp064eqj5bbt6c6iqglb.apps.googleusercontent.com</string>
+	<string>760103469339-1hfn7tfruo159gsgkc6dqdlansohevno.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.760103469339-9af03ste4i6ucp064eqj5bbt6c6iqglb</string>
+	<string>com.googleusercontent.apps.760103469339-1hfn7tfruo159gsgkc6dqdlansohevno</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBz1FVvFh2raEKPT04pBX0GlEcVgkUm0Ok</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.octacoresoftwares.magicExpressDelivery.rider</string>
+	<string>com.octacoresoftwares.magicExpressDelivery1.rider</string>
 	<key>PROJECT_ID</key>
 	<string>magic-express-delivery</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:760103469339:ios:3d4d9f96366f396ae393be</string>
+	<string>1:760103469339:ios:269510c762d552fce393be</string>
 </dict>
 </plist>

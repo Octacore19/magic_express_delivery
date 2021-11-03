@@ -19,7 +19,7 @@ class RiderDashCubit extends Cubit<RiderDashState> with HydratedMixin {
     if (state.riderAvailability) {
       _registerBackgroundTask();
     } else {
-      if (!Platform.isIOS)
+      // if (!Platform.isIOS)
       Workmanager().cancelAll();
     }
   }
@@ -57,7 +57,7 @@ class RiderDashCubit extends Cubit<RiderDashState> with HydratedMixin {
           if (value) {
             _registerBackgroundTask();
           } else {
-            if (!Platform.isIOS)
+            // if (!Platform.isIOS)
             Workmanager().cancelAll();
           }
         }
@@ -66,7 +66,7 @@ class RiderDashCubit extends Cubit<RiderDashState> with HydratedMixin {
         if (value) {
           _registerBackgroundTask();
         } else {
-          if (!Platform.isIOS)
+          // if (!Platform.isIOS)
           Workmanager().cancelAll();
         }
       }

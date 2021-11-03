@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -75,21 +76,22 @@ class _State extends State<RiderDash> {
                   inactiveTrackColor: enabled ? Colors.red : Colors.grey,
                   onChanged: enabled
                       ? (b) {
-                    context
-                        .read<RiderDashCubit>()
-                        .toggleRiderAvailability(b);
-                  }
+                          context
+                              .read<RiderDashCubit>()
+                              .toggleRiderAvailability(b);
+                        }
                       : null,
                 ),
               ],
             );
           },
         ),
-        IconButton(
+        SizedBox(width: 16)
+        /*IconButton(
           onPressed: () {},
           icon: Icon(Icons.notifications),
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        )
+        )*/
       ];
     }
   }
