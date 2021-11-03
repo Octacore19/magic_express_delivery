@@ -30,6 +30,7 @@ void main() async {
       HydratedBloc.storage = await HydratedStorage.build(
         storageDirectory: await getTemporaryDirectory(),
       );
+      await FirebaseMessaging.instance.requestPermission();
 
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
