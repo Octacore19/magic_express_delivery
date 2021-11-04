@@ -7,20 +7,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:magic_express_delivery/src/app/app.dart';
 import 'package:repositories/repositories.dart';
 import 'package:services/services.dart';
 import 'package:path_provider/path_provider.dart';
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('Handling a background message ${message.messageId}');
-}
-
-late AndroidNotificationChannel channel;
-
-late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 void main() async {
   runZonedGuarded<Future<void>>(
@@ -34,9 +25,6 @@ void main() async {
       await FirebaseMessaging.instance.requestPermission();
 
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-
-      FirebaseMessaging.onBackgroundMessage(
-          _firebaseMessagingBackgroundHandler);
 
       runApp(MultiRepositoryProvider(
         providers: [

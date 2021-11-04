@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
@@ -14,12 +15,6 @@ import 'package:repositories/repositories.dart';
 import 'package:services/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:workmanager/workmanager.dart';
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('Handling a background message in rider app ${message.messageId}');
-  final data = message.data;
-  print('Data gotten => $data');
-}
 
 void main() async {
   runZonedGuarded<Future<void>>(
@@ -34,12 +29,9 @@ void main() async {
 
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-      FirebaseMessaging.onBackgroundMessage(
-          _firebaseMessagingBackgroundHandler);
-
       await Workmanager().initialize(
         callbackDispatcher,
-        isInDebugMode: true,
+        isInDebugMode: kDebugMode,
       );
 
       runApp(MultiRepositoryProvider(
