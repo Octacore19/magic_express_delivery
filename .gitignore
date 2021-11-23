@@ -78,3 +78,4 @@ fastlane/readme.md
 .dart_tool/package_config_subset
 .dart_tool/version
 .packages
+.DS_Store
