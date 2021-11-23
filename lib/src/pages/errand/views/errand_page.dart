@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -223,9 +224,10 @@ class _ErrandPageFormState extends State<_ErrandPageForm> {
               height: 16,
               width: 16,
               margin: EdgeInsets.only(left: 16),
-              child: CircularProgressIndicator.adaptive(
+              child: CupertinoActivityIndicator(),
+              /*child: CircularProgressIndicator.adaptive(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade900),
-              ),
+              ),*/
             ),
           ),
         ],

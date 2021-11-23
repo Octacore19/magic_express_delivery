@@ -54,7 +54,7 @@ class _PickUpAddressInput extends StatelessWidget {
         trailing: SizedBox(
           height: 16,
           width: 16,
-          child: CircularProgressIndicator.adaptive(),
+          child: CupertinoActivityIndicator(),
         ),
       ),
       hideOnEmpty: true,
@@ -123,7 +123,7 @@ class _DeliveryAddressInput extends StatelessWidget {
         trailing: SizedBox(
           height: 16,
           width: 16,
-          child: CircularProgressIndicator.adaptive(),
+          child: CupertinoActivityIndicator(),
         ),
       ),
       hideOnEmpty: true,
