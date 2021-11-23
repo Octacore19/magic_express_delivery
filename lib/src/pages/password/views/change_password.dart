@@ -37,7 +37,10 @@ class _Form extends StatefulWidget {
 class _FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         headerWidget(),
         const SizedBox(height: 8.0),
@@ -48,32 +51,12 @@ class _FormState extends State<_Form> {
   Widget headerWidget() {
     return Align(
       alignment: Alignment.topLeft,
-      child: Builder(
-        builder: (context) {
-          /*final status = context.select((SendEmailCubit c) => c.state.status);
-          if (status.isSubmissionSuccess) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Check your email and follow the instruction.',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 16),
-              ],
-            );
-          }*/
-          return Text(
-            'Change Password',
-            style: Theme.of(context)
-                .textTheme
-                .headline6
-                ?.copyWith(fontWeight: FontWeight.w700),
-          );
-        },
+      child: Text(
+        'Change Password',
+        style: Theme.of(context)
+            .textTheme
+            .headline6
+            ?.copyWith(fontWeight: FontWeight.w700),
       ),
     );
   }
