@@ -58,7 +58,9 @@ class _State extends State<_Form> {
     return BlocListener<SendEmailCubit, SendEmailState>(
       listener: (context, state) async {
         if (state.status.isSubmissionSuccess) {
-          Navigator.of(context).pushReplacement(LoginPage.route());
+          _SuccessDialogBuilder(
+            message: "A reset link has been sent to your email. Check your email!",
+          )..show(context);
         }
       },
       child: Center(
@@ -67,13 +69,14 @@ class _State extends State<_Form> {
             padding: EdgeInsets.symmetric(horizontal: 24),
             alignment: Alignment.center,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 headerWidget(),
                 const SizedBox(height: 8.0),
                 _EmailInput(_emailFocusNode),
                 const SizedBox(height: 24.0),
                 const SizedBox(height: 120.0),
-                _SubmitButton()
+                _SubmitButton(),
               ],
             ),
           ),
@@ -85,45 +88,25 @@ class _State extends State<_Form> {
   Widget headerWidget() {
     return Align(
       alignment: Alignment.topLeft,
-      child: Builder(
-        builder: (context) {
-          final status = context.select((SendEmailCubit c) => c.state.status);
-          if (status.isSubmissionSuccess) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Check your email and follow the instruction.',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 16),
-              ],
-            );
-          }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Forgot Password',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    ?.copyWith(fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Enter your email.',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    ?.copyWith(fontWeight: FontWeight.w700),
-              )
-            ],
-          );
-        },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Forgot Password',
+            style: Theme.of(context)
+                .textTheme
+                .headline6
+                ?.copyWith(fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Enter your email.',
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                ?.copyWith(fontWeight: FontWeight.w700),
+          )
+        ],
       ),
     );
   }
@@ -189,57 +172,144 @@ class _SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
-    return BlocBuilder<SendEmailCubit, SendEmailState>(
-      builder: (context, state) {
-        return SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            child: Builder(
-              builder: (_) {
-                if (state.status.isSubmissionInProgress) {
-                  return SizedBox.fromSize(
-                    child: CircularProgressIndicator.adaptive(
-                      valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-                    ),
-                    size: Size(22.0, 22.0),
-                  );
-                }
-                if (state.status.isSubmissionSuccess) {
-                  return Text('Back to Login');
-                }
-                return Text('Submit');
-              },
-            ),
-            style: ElevatedButton.styleFrom(
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .button
-                  ?.copyWith(fontWeight: FontWeight.w700),
-              padding: EdgeInsets.all(16.0),
-              primary: primaryColorSelect(context),
-            ),
-            onPressed: state.status.isValidated
-                ? () {
-                    if (state.status.isSubmissionSuccess) {
-                      Navigator.of(context).pop();
-                    } else {
-                      context.read<SendEmailCubit>().onSubmitForgotPassword();
-                    }
-                    FocusScope.of(context).unfocus();
-                  }
-                : null,
-          ),
-        );
-      },
+    final state = context.select((SendEmailCubit b) => b.state);
+    return ElevatedButton(
+      child: Builder(
+        builder: (_) {
+          if (state.loading) {
+            return SizedBox.fromSize(
+              child: CircularProgressIndicator.adaptive(
+                valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+              ),
+              size: Size(22.0, 22.0),
+            );
+          }
+          return Text('Submit');
+        },
+      ),
+      style: ElevatedButton.styleFrom(
+        textStyle: Theme.of(context)
+            .textTheme
+            .button
+            ?.copyWith(fontWeight: FontWeight.w700),
+        padding: EdgeInsets.all(16.0),
+        primary: primaryColorSelect(context),
+      ),
+      onPressed: state.loading || state.status.isValidated
+          ? () {
+              FocusScope.of(context).unfocus();
+              context.read<SendEmailCubit>().onSubmitForgotPassword();
+            }
+          : null,
     );
   }
 
   Color primaryColorSelect(BuildContext context) {
     final primaryColorDark = Theme.of(context).primaryColorDark;
-    final isLoading = context
-        .select((SendEmailCubit b) => b.state.status)
-        .isSubmissionInProgress;
+    final isLoading = context.select((SendEmailCubit b) => b.state.loading);
     if (isLoading) return Colors.transparent;
     return primaryColorDark;
+  }
+}
+
+class _SuccessDialogBuilder extends StatelessWidget {
+  _SuccessDialogBuilder({required this.message, this.onRetry});
+
+  final String message;
+  final VoidCallback? onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        side: BorderSide(),
+        borderRadius: BorderRadius.all(
+          Radius.circular(8.0),
+        ),
+      ),
+      contentPadding: EdgeInsets.zero,
+      content: ConstrainedBox(
+        constraints:
+            BoxConstraints(minWidth: MediaQuery.of(context).size.width * 0.3),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 24.0),
+            Icon(Icons.check, size: 48),
+            const SizedBox(height: 24.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Text(
+                    message,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        ?.copyWith(fontWeight: FontWeight.w700),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(LoginPage.route());
+                    },
+                    child: Text('DISMISS'),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      textStyle: Theme.of(context)
+                          .textTheme
+                          .button
+                          ?.copyWith(fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: onRetry != null,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            if (onRetry != null) {
+                              onRetry!();
+                            }
+                          },
+                          child: Text('RETRY'),
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .button
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void show(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => _SuccessDialogBuilder(
+        message: message,
+        onRetry: onRetry,
+      ),
+    );
   }
 }

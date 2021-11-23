@@ -67,7 +67,9 @@ class ProfilePage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(ChangePasswordPage.route());
+                  },
                   contentPadding: EdgeInsets.symmetric(horizontal: 8),
                   tileColor: Colors.grey.shade50,
                   title: Text(

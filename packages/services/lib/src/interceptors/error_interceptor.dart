@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
+
     switch (err.type) {
       case DioErrorType.connectTimeout:
       case DioErrorType.sendTimeout:
@@ -39,6 +40,8 @@ class ErrorInterceptor extends Interceptor {
                   requestOptions: err.requestOptions,
                 );
                 handler.resolve(newResponse);
+              } else {
+                handler.reject(err);
               }
             }
             break;

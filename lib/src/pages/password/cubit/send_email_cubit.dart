@@ -6,32 +6,37 @@ import 'package:repositories/repositories.dart';
 
 class SendEmailState extends Equatable {
   const SendEmailState._({
+    required this.loading,
     required this.status,
     required this.email,
   });
 
   factory SendEmailState.init() {
     return SendEmailState._(
+      loading: false,
       status: FormzStatus.pure,
       email: Email.pure(),
     );
   }
 
+  final bool loading;
   final FormzStatus status;
   final Email email;
 
   SendEmailState copyWith({
+    bool? loading,
     FormzStatus? status,
     Email? email,
   }) {
     return SendEmailState._(
+      loading: loading ?? this.loading,
       status: status ?? this.status,
       email: email ?? this.email,
     );
   }
 
   @override
-  List<Object?> get props => [status, email];
+  List<Object?> get props => [loading, status, email];
 }
 
 class SendEmailCubit extends Cubit<SendEmailState> {
@@ -71,13 +76,13 @@ class SendEmailCubit extends Cubit<SendEmailState> {
   }
 
   void onSubmitForgotPassword() async {
-    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    emit(state.copyWith(loading: true));
     try {
       await _authRepo.forgotPassword(state.email.value);
-      emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      emit(state.copyWith(loading: false, status: FormzStatus.submissionSuccess));
     } on Exception catch (e) {
       _handler.handleExceptions(e);
-      emit(state.copyWith(status: FormzStatus.submissionFailure));
+      emit(state.copyWith(loading: false, status: FormzStatus.submissionFailure));
     }
   }
 }

@@ -115,9 +115,9 @@ class AuthRepoImpl extends IAuthRepo {
       final data = {'email': email};
       final response = await _auth.forgotPassword(data);
       if (!response.success) throw RequestFailureException(response.message);
-      final res = response.data['status'];
+      final res = response.data['data']['status'];
       if (res == null) throw AuthenticationException();
-      return res['message'];
+      return res;
     } on Exception catch (e) {
       throw e;
     }

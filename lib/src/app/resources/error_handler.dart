@@ -93,6 +93,12 @@ class ErrorHandler {
             message: msg ?? 'Unexpected error occurred!',
             onRetry: onPressed,
           )..show(context);
+        } else if (code == 422) {
+          final msg = e.response?.data['status'];
+          _ErrorDialogBuilder(
+            message: msg ?? 'Unexpected error occurred!',
+            onRetry: onPressed,
+          )..show(context);
         }
         break;
       case DioErrorType.cancel:
