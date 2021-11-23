@@ -243,25 +243,3 @@ class _SubmitButton extends StatelessWidget {
     return primaryColorDark;
   }
 }
-
-class _BackButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        child: Text('Back to Login'),
-        style: ElevatedButton.styleFrom(
-          textStyle: Theme.of(context)
-              .textTheme
-              .button
-              ?.copyWith(fontWeight: FontWeight.w700),
-          padding: EdgeInsets.all(16.0),
-          primary: Theme.of(context).primaryColorDark,
-        ),
-        onPressed: () =>
-            Navigator.of(context).pushReplacement(LoginPage.route()),
-      ),
-    );
-  }
-}

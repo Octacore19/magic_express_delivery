@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -235,7 +235,6 @@
 		};
 		5A847F6127325E4A00EFE923 /* FirebaseCrashlyticRun */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 12;
 			files = (
 			);
@@ -254,7 +253,6 @@
 		};
 		5A9AC488272931FA00311606 /* Copy GoogleService-info.plist to the current location. */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 12;
 			files = (
 			);

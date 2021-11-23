@@ -54,18 +54,6 @@ class _State extends State<UserDash> {
     );
   }
 
-  List<Widget>? _actionBars(int position) {
-    if (position == 0) {
-      return [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.notifications),
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        )
-      ];
-    }
-  }
-
   final List<Widget> _pages = [
     UserHomePage(),
     HistoryPage(),
