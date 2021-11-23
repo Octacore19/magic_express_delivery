@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,7 +23,7 @@ void main() async {
       HydratedBloc.storage = await HydratedStorage.build(
         storageDirectory: await getTemporaryDirectory(),
       );
-      await FirebaseMessaging.instance.requestPermission();
+      if (Platform.isIOS) await FirebaseMessaging.instance.requestPermission();
 
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 

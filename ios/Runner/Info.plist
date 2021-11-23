@@ -27,9 +27,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs access to location when in the background.</string>
+	<string>The app retrieves your current location to allow the admin determine how close you are to a customer&apos;s request.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
+	<string>The app retrieves your current location to allow the admin determine how close you are to a customer&apos;s request.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

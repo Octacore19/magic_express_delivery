@@ -42,6 +42,7 @@ class _StoreAddressInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return TypeAheadField(
       debounceDuration: Duration(milliseconds: 1000),
+      minCharsForSuggestions: 2,
       textFieldConfiguration: TextFieldConfiguration(
         controller: controller,
         keyboardType: TextInputType.streetAddress,
@@ -68,16 +69,27 @@ class _StoreAddressInput extends StatelessWidget {
         return await context.read<ErrandBloc>().searchPlaces(pattern);
       },
       itemBuilder: (_, Prediction prediction) => ListTile(
-        title: Text(prediction.description),
+        title: Text(
+          prediction.description,
+          style: Theme.of(context).textTheme.caption,
+        ),
+      ),
+      errorBuilder: (_, e) => ListTile(
+        title: Text(
+          'Error searching location',
+          style: Theme.of(context)
+              .textTheme
+              .caption
+              ?.copyWith(color: Theme.of(context).errorColor),
+        ),
       ),
       loadingBuilder: (_) => ListTile(
         trailing: SizedBox(
-          height: 24,
-          width: 24,
+          height: 16,
+          width: 16,
           child: CircularProgressIndicator.adaptive(),
         ),
       ),
-      hideOnError: true,
       hideOnEmpty: true,
       hideSuggestionsOnKeyboardHide: true,
       onSuggestionSelected: (Prediction data) {
@@ -99,6 +111,7 @@ class _DeliveryAddressInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return TypeAheadField(
       debounceDuration: Duration(milliseconds: 1000),
+      minCharsForSuggestions: 2,
       textFieldConfiguration: TextFieldConfiguration(
         controller: controller,
         keyboardType: TextInputType.streetAddress,
@@ -125,16 +138,27 @@ class _DeliveryAddressInput extends StatelessWidget {
         return await context.read<ErrandBloc>().searchPlaces(pattern);
       },
       itemBuilder: (_, Prediction prediction) => ListTile(
-        title: Text(prediction.description),
+        title: Text(
+          prediction.description,
+          style: Theme.of(context).textTheme.caption,
+        ),
+      ),
+      errorBuilder: (_, e) => ListTile(
+        title: Text(
+          'Error searching location',
+          style: Theme.of(context)
+              .textTheme
+              .caption
+              ?.copyWith(color: Theme.of(context).errorColor),
+        ),
       ),
       loadingBuilder: (_) => ListTile(
         trailing: SizedBox(
-          height: 24,
-          width: 24,
+          height: 16,
+          width: 16,
           child: CircularProgressIndicator.adaptive(),
         ),
       ),
-      hideOnError: true,
       hideOnEmpty: true,
       hideSuggestionsOnKeyboardHide: true,
       onSuggestionSelected: (Prediction data) {

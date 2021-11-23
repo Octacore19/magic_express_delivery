@@ -161,7 +161,6 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     _coordinatorCubit.setCartItems(l);
     return state.copyWith(
       cartItems: l,
-      // totalCartPrice: _calculateTotalPrice(l),
     );
   }
 
@@ -189,24 +188,8 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     }
   }
 
-  Future<List<Prediction>> searchPlaces(String keyword) {
-    try {
-      if (keyword.isEmpty) throw Exception();
-      return _placesRepo.searchForPlaces(keyword);
-    } on Exception catch (e) {
-      throw e;
-    }
-  }
-
-  double _calculateTotalPrice(List<CartItem> items) {
-    double p = 0;
-    items.forEach((element) {
-      final v = double.tryParse(element.unitPrice) ?? 0;
-      final q = int.tryParse(element.quantity) ?? 0;
-      double i = v * q;
-      p += i;
-    });
-    return p;
+  FutureOr<List<Prediction>> searchPlaces(String keyword) async {
+    return await _placesRepo.searchForPlaces(keyword);
   }
 
   @override
